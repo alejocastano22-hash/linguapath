@@ -3,7 +3,7 @@
  * Proporciona funcionamiento 100% offline y soporte PWA para móviles.
  */
 
-const CACHE_NAME = 'linguapath-cache-v1';
+const CACHE_NAME = 'linguapath-cache-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -37,10 +37,14 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Intercepción de peticiones (Network First con fallback a Cache)
+// Intercepción de peticiones (Network First para contenido local)
 self.addEventListener('fetch', (event) => {
-  // Solo manejar peticiones GET
   if (event.request.method !== 'GET') return;
+
+  // Dejar que las peticiones externas (CDN, audio stream) pasen directamente por la red
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
 
   event.respondWith(
     fetch(event.request)
