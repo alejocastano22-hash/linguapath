@@ -1,0 +1,2893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinguaPath Super Pro — Maestría Gramatical en Inglés (B1 → C1)</title>
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#58CC02" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="LinguaPath" />
+  <link rel="apple-touch-icon" href="./icon.svg" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <!-- Google Fonts: Nunito & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Nunito', 'system-ui', 'sans-serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            duo: {
+              green: '#58CC02',
+              greenDark: '#46A302',
+              greenLight: '#D7FFB8',
+              blue: '#1CB0F6',
+              blueDark: '#1899D6',
+              purple: '#CE82FF',
+              purpleDark: '#A560E8',
+              gold: '#FFC800',
+              goldDark: '#E5A900',
+              red: '#FF4B4B',
+              redDark: '#EA2B2B',
+              redLight: '#FFDFE0',
+              ink: '#3C3C3C',
+              muted: '#777777',
+              border: '#E5E5E5',
+              bg: '#F7F7F7',
+              gem: '#00CD9C',
+              gemDark: '#00A37A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #ffffff;
+      color: #3C3C3C;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    h1, h2, h3, .font-duo {
+      font-family: 'Nunito', system-ui, sans-serif;
+    }
+
+    /* Duolingo Signature 3D Tactile Buttons */
+    .btn-3d {
+      border-bottom-width: 4px;
+      transition: transform 0.08s ease, border-bottom-width 0.08s ease, filter 0.15s ease;
+    }
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(3px);
+      border-bottom-width: 1px;
+    }
+    .btn-3d:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* Path Node 3D Circle */
+    .path-node {
+      border-bottom-width: 6px;
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), border-bottom-width 0.1s ease;
+    }
+    .path-node:active {
+      transform: translateY(4px);
+      border-bottom-width: 2px;
+    }
+
+    /* Super Premium Gradient & Badges */
+    .super-gradient {
+      background: linear-gradient(135deg, #131F42 0%, #2B1E5C 52%, #4C1D95 100%);
+    }
+    .super-badge {
+      background: linear-gradient(90deg, #00CD9C 0%, #1CB0F6 50%, #CE82FF 100%);
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #FFC800 0%, #FFA800 100%);
+    }
+
+    /* Animations */
+    @keyframes popIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes pulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(88, 204, 2, 0.45); }
+      70% { box-shadow: 0 0 0 14px rgba(88, 204, 2, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(88, 204, 2, 0); }
+    }
+    .node-active-ring {
+      animation: pulseRing 2s infinite;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F7F7F7; }
+    ::-webkit-scrollbar-thumb { background: #D4D4D4; border-radius: 9999px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-white">
+
+  <!-- ==================== MOBILE TOP STATUS BAR ==================== -->
+  <header class="lg:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-xs border-b-2 border-duo-border px-4 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div id="mobAvatarIcon" class="w-8 h-8 rounded-xl bg-duo-green border-b-2 border-duo-greenDark text-white font-duo font-black flex items-center justify-center text-sm shadow-xs cursor-pointer" onclick="switchMainView('coach')">
+        🦉
+      </div>
+      <button onclick="triggerPwaInstall()" class="super-badge text-white text-[10px] font-duo font-black px-2 py-0.5 rounded-md tracking-wider uppercase flex items-center gap-1 cursor-pointer">
+        <span>📲</span>
+        <span>INSTALAR</span>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-3 text-xs sm:text-sm font-duo font-extrabold">
+      <span class="flex items-center gap-1 text-orange-500" title="Racha de estudio diaria">
+        🔥 <span id="mobStreak">1</span>
+      </span>
+      <span class="flex items-center gap-1 text-duo-gemDark" title="Gemas acumuladas">
+        💎 <span id="mobGems">150</span>
+      </span>
+      <span class="flex items-center gap-1 text-duo-blue" title="Puntos de experiencia (XP)">
+        ⚡ <span id="mobXp">0</span>
+      </span>
+      <span class="flex items-center gap-1 text-fuchsia-600" title="Vidas Ilimitadas Super">
+        ❤️ <span class="text-base leading-none">∞</span>
+      </span>
+    </div>
+  </header>
+
+  <!-- ==================== 3-COLUMN DUOLINGO PRO SHELL ==================== -->
+  <div class="flex-1 max-w-7xl w-full mx-auto flex">
+
+    <!-- ==================== LEFT SIDEBAR (DESKTOP) ==================== -->
+    <aside class="hidden lg:flex flex-col w-64 shrink-0 border-r-2 border-duo-border p-5 sticky top-0 h-screen justify-between">
+      <div class="space-y-6">
+        <!-- Brand Logo -->
+        <div class="flex items-center gap-3 px-2">
+          <div id="deskBrandAvatar" class="w-11 h-11 rounded-2xl bg-duo-green border-b-4 border-duo-greenDark text-white font-duo font-black flex items-center justify-center text-2xl shadow-sm">
+            🦉
+          </div>
+          <div>
+            <span class="font-duo font-black text-xl text-duo-green tracking-tight block leading-none">LinguaPath</span>
+            <span class="super-badge text-white text-[10px] font-duo font-black px-2 py-0.5 rounded-md tracking-wider uppercase inline-block mt-1">
+              SUPER B1→C1
+            </span>
+          </div>
+        </div>
+
+        <!-- User Profile Pill -->
+        <div onclick="switchMainView('coach')" class="p-3 rounded-2xl border-2 border-duo-border bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer flex items-center justify-between">
+          <div class="flex items-center gap-2.5 truncate">
+            <span id="deskUserAvatarBadge" class="text-2xl">👤</span>
+            <div class="truncate">
+              <h4 id="deskUserNameDisplay" class="font-duo font-black text-sm text-duo-ink truncate">Learner</h4>
+              <p id="deskUserTitleDisplay" class="text-[10px] font-bold text-duo-muted uppercase tracking-wider truncate">Cambridge Scholar</p>
+            </div>
+          </div>
+          <span class="text-xs text-duo-blue font-black font-duo">Perfil →</span>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="space-y-2">
+          <button onclick="switchMainView('learn')" id="desk-nav-learn"
+            class="desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-sky-200 bg-sky-50 text-duo-blue font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer">
+            <span class="text-xl">🗺️</span>
+            <span>Ruta de Aprendizaje</span>
+          </button>
+
+          <button onclick="switchMainView('practice')" id="desk-nav-practice"
+            class="desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-transparent hover:bg-slate-100 text-duo-muted font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer">
+            <span class="text-xl">🏋️</span>
+            <span>Centro de Práctica</span>
+          </button>
+
+          <button onclick="switchMainView('coach')" id="desk-nav-coach"
+            class="desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-transparent hover:bg-slate-100 text-duo-muted font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer">
+            <span class="text-xl">🧠</span>
+            <span>Tutor & Diagnóstico</span>
+          </button>
+
+          <button onclick="switchMainView('shop')" id="desk-nav-shop"
+            class="desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-transparent hover:bg-slate-100 text-duo-muted font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer">
+            <span class="text-xl">💎</span>
+            <span>Tienda & Recompensas</span>
+          </button>
+
+          <button onclick="switchMainView('bank')" id="desk-nav-bank"
+            class="desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-transparent hover:bg-slate-100 text-duo-muted font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer">
+            <span class="text-xl">📚</span>
+            <span>Bóveda de Oraciones</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Footer Utilities -->
+      <div class="space-y-2 pt-4 border-t-2 border-duo-border">
+        <button onclick="triggerPwaInstall()" id="pwaInstallBtnDesk"
+          class="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-duo-greenLight border border-duo-green text-xs font-duo font-black text-duo-greenDark hover:bg-emerald-100 cursor-pointer shadow-2xs">
+          <span>📲</span>
+          <span>Instalar en Dispositivo</span>
+        </button>
+        <div id="boostBannerDesk" class="hidden p-2 rounded-xl bg-amber-50 border border-amber-200 text-center text-xs font-duo font-bold text-amber-700">
+          ⚡ 2x XP ACTIVO (<span id="boostTimeRemaining">15:00</span>)
+        </div>
+        <button onclick="toggleAudioFx()" id="soundToggleBtn"
+          class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-600 cursor-pointer">
+          <span>Efectos de Audio y Voz</span>
+          <span id="soundStateIcon">🔊 ON</span>
+        </button>
+        <button onclick="openResetModal()"
+          class="w-full text-center py-1 text-[11px] font-semibold text-slate-400 hover:text-duo-red cursor-pointer">
+          Reiniciar Progreso
+        </button>
+      </div>
+    </aside>
+
+    <!-- ==================== CENTER WORKSPACE ==================== -->
+    <main class="flex-1 min-w-0 pb-24 lg:pb-12 px-4 sm:px-8 pt-4 sm:pt-6">
+
+      <!-- ============================================================
+           VIEW 1: DUOLINGO WINDING LEARNING PATH (B1 -> B2 -> C1)
+           ============================================================ -->
+      <section id="view-learn" class="max-w-2xl mx-auto space-y-6">
+
+        <!-- CEFR Section Switcher -->
+        <div class="bg-duo-bg p-1.5 rounded-2xl border-2 border-duo-border grid grid-cols-3 gap-1.5">
+          <button onclick="selectCefrSection('B1')" id="sec-btn-B1"
+            class="sec-pill py-2.5 px-3 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border">
+            <span class="block text-[10px] uppercase tracking-wider text-duo-green">Nivel 1</span>
+            <span>B1 Intermedio</span>
+          </button>
+          <button onclick="selectCefrSection('B2')" id="sec-btn-B2"
+            class="sec-pill py-2.5 px-3 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink">
+            <span class="block text-[10px] uppercase tracking-wider text-duo-blue">Nivel 2</span>
+            <span>B2 Alto</span>
+          </button>
+          <button onclick="selectCefrSection('C1')" id="sec-btn-C1"
+            class="sec-pill py-2.5 px-3 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink">
+            <span class="block text-[10px] uppercase tracking-wider text-purple-600">Nivel 3</span>
+            <span>C1 Avanzado</span>
+          </button>
+        </div>
+
+        <!-- Units & Zig-Zag Winding Path Container -->
+        <div id="unitsPathContainer" class="space-y-12 pb-8">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           VIEW 2: PRACTICE HUB (MULTI-SKILL WORKOUTS & FLUENCY SPRINT)
+           ============================================================ -->
+      <section id="view-practice" class="hidden max-w-2xl mx-auto space-y-6">
+        <div class="super-gradient rounded-3xl p-6 sm:p-8 text-white shadow-lg space-y-3 relative overflow-hidden">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-duo font-black uppercase tracking-wider">
+            <span>✨ Entrenamiento Autónomo Adaptativo</span>
+          </div>
+          <h1 class="font-duo font-black text-2xl sm:text-3xl">Centro de Práctica de Habilidades</h1>
+          <p class="text-sm text-indigo-100 leading-relaxed">
+            Perfecciona la procedimentalización de la gramática inglesa: corrige errores pasados en la clínica, entrena tu oído con dictados rápidos o pon a prueba tu velocidad en el Sprint de Fluidez.
+          </p>
+        </div>
+
+        <!-- Fluency Sprint Banner Card -->
+        <div class="rounded-3xl border-2 border-amber-300 bg-linear-to-r from-amber-50 to-orange-50 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+          <div class="space-y-1.5 text-center sm:text-left">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-200 text-amber-900 font-duo font-black text-xs">
+              <span>⚡ Desafío Contrarreloj (60s)</span>
+            </div>
+            <h2 class="font-duo font-black text-xl text-duo-ink">Sprint de Fluidez Sintáctica</h2>
+            <p class="text-xs text-duo-muted max-w-md">Responde tantas oraciones B1–C1 como puedas en 60 segundos. ¡Multiplica tus gemas y XP con combos seguidos!</p>
+          </div>
+          <button onclick="launchSprintMode()" class="btn-3d px-6 py-3.5 rounded-2xl bg-amber-500 border-amber-600 hover:bg-amber-400 text-white font-duo font-black text-sm uppercase tracking-wider shrink-0 cursor-pointer shadow-md">
+            🚀 Iniciar Sprint
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Workout 1: Mistakes Clinic -->
+          <div class="rounded-2xl border-2 border-duo-border p-5 flex flex-col justify-between gap-4 hover:border-duo-red transition-colors bg-white">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="w-11 h-11 rounded-2xl bg-duo-redLight text-duo-red flex items-center justify-center text-2xl shadow-xs">🩹</span>
+                <span id="hubMistakesBadge" class="px-2.5 py-1 rounded-full bg-rose-100 text-duo-red font-duo font-extrabold text-xs">
+                  0 errores
+                </span>
+              </div>
+              <h3 class="font-duo font-extrabold text-lg text-duo-ink">Clínica de Errores</h3>
+              <p class="text-xs text-duo-muted leading-relaxed">
+                Repasa exactamente las oraciones y reglas donde te equivocaste hasta dominar su sintaxis.
+              </p>
+            </div>
+            <button onclick="startCustomWorkout('mistakes')"
+              class="btn-3d w-full py-3 rounded-xl bg-duo-red border-duo-redDark text-white font-duo font-extrabold text-sm uppercase tracking-wide cursor-pointer">
+              Limpiar Errores
+            </button>
+          </div>
+
+          <!-- Workout 2: Listening & Dictation Lab -->
+          <div class="rounded-2xl border-2 border-duo-border p-5 flex flex-col justify-between gap-4 hover:border-duo-blue transition-colors bg-white">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="w-11 h-11 rounded-2xl bg-sky-100 text-duo-blue flex items-center justify-center text-2xl shadow-xs">🎧</span>
+                <span class="px-2.5 py-1 rounded-full bg-sky-100 text-duo-blue font-duo font-extrabold text-xs">
+                  Connected Speech
+                </span>
+              </div>
+              <h3 class="font-duo font-extrabold text-lg text-duo-ink">Laboratorio Auditivo</h3>
+              <p class="text-xs text-duo-muted leading-relaxed">
+                Captura contracciones difíciles (<em>'d have, shouldn't have</em>) y entrena la discriminación auditiva.
+              </p>
+            </div>
+            <button onclick="startCustomWorkout('listening')"
+              class="btn-3d w-full py-3 rounded-xl bg-duo-blue border-duo-blueDark text-white font-duo font-extrabold text-sm uppercase tracking-wide cursor-pointer">
+              Práctica de Oído
+            </button>
+          </div>
+
+          <!-- Workout 3: Speaking Shadowing -->
+          <div class="rounded-2xl border-2 border-duo-border p-5 flex flex-col justify-between gap-4 hover:border-duo-green transition-colors bg-white">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="w-11 h-11 rounded-2xl bg-duo-greenLight text-duo-greenDark flex items-center justify-center text-2xl shadow-xs">🎙️</span>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-duo font-extrabold text-xs">
+                  Fluidez Oral
+                </span>
+              </div>
+              <h3 class="font-duo font-extrabold text-lg text-duo-ink">Shadowing & Pronunciación</h3>
+              <p class="text-xs text-duo-muted leading-relaxed">
+                Habla en voz alta con reconocimiento de voz en tiempo real e interioriza patrones gramaticales rítmicos.
+              </p>
+            </div>
+            <button onclick="startCustomWorkout('speaking')"
+              class="btn-3d w-full py-3 rounded-xl bg-duo-green border-duo-greenDark text-white font-duo font-extrabold text-sm uppercase tracking-wide cursor-pointer">
+              Hablar en Voz Alta
+            </button>
+          </div>
+
+          <!-- Workout 4: Cambridge Key Word Transformations -->
+          <div class="rounded-2xl border-2 border-duo-border p-5 flex flex-col justify-between gap-4 hover:border-purple-500 transition-colors bg-white">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="w-11 h-11 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl shadow-xs">⚡</span>
+                <span class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-duo font-extrabold text-xs">
+                  Estándar Cambridge
+                </span>
+              </div>
+              <h3 class="font-duo font-extrabold text-lg text-duo-ink">Key Word Transformations</h3>
+              <p class="text-xs text-duo-muted leading-relaxed">
+                Reescribe oraciones con palabras clave fijas (inversión negativa, clefts, pasivas impersonales).
+              </p>
+            </div>
+            <button onclick="startCustomWorkout('transformations')"
+              class="btn-3d w-full py-3 rounded-xl bg-purple-600 border-purple-800 text-white font-duo font-extrabold text-sm uppercase tracking-wide cursor-pointer">
+              Reto Cambridge
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           VIEW 3: SMART AI COACH & DIAGNOSTICS (PERFIL & RECOMENDACIONES)
+           ============================================================ -->
+      <section id="view-coach" class="hidden max-w-2xl mx-auto space-y-6">
+
+        <!-- User Profile Card -->
+        <div class="rounded-3xl border-2 border-duo-border p-6 bg-white shadow-sm space-y-5">
+          <div class="flex items-start justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-4">
+              <div id="userAvatarLarge" class="w-16 h-16 rounded-3xl bg-duo-green border-b-4 border-duo-greenDark text-white flex items-center justify-center text-3xl shadow-sm">
+                🦉
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 id="coachUserName" class="font-duo font-black text-2xl text-duo-ink">Estudiante</h2>
+                  <button onclick="openProfileModal()" class="text-xs text-duo-blue font-bold hover:underline cursor-pointer">✏️ Editar</button>
+                </div>
+                <p id="coachUserTitle" class="text-xs font-bold text-duo-muted">Cambridge Scholar • Meta: Fluidez Ejecutiva</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 font-duo font-black text-xs">
+                Meta Diaria: <span id="coachDailyTarget">50 XP</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Overall Mastery Bar -->
+          <div class="space-y-2 pt-2 border-t border-duo-border/80">
+            <div class="flex justify-between items-center text-xs font-duo font-extrabold">
+              <span class="text-duo-ink">Índice de Retención y Dominio Sintáctico</span>
+              <span id="overallMasteryPct" class="text-duo-blue text-sm">15%</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-duo-border">
+              <div id="overallMasteryBar" class="bg-linear-to-r from-duo-green via-duo-blue to-purple-600 h-full transition-all duration-500 rounded-full" style="width: 15%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Diagnostic Recommendations Card -->
+        <div class="rounded-3xl border-2 border-duo-blue/30 bg-sky-50/50 p-6 space-y-4">
+          <div class="flex items-center gap-2.5">
+            <span class="text-2xl">🧠</span>
+            <div>
+              <h3 class="font-duo font-black text-lg text-duo-ink">Diagnóstico Pedagógico Personalizado</h3>
+              <p class="text-xs text-duo-muted">Generado dinámicamente según tus respuestas y patrones de error</p>
+            </div>
+          </div>
+
+          <div id="aiRecommendationsList" class="space-y-3">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Grammar Pillars Competency Grid -->
+        <div class="rounded-3xl border-2 border-duo-border p-6 bg-white space-y-4">
+          <h3 class="font-duo font-black text-lg text-duo-ink">Pilares Lingüísticos (CEFR B1 → C1)</h3>
+          <div id="pillarsGrid" class="space-y-3 text-xs font-bold">
+            <!-- Pillars rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           VIEW 4: SUPER REWARDS STORE & ACHIEVEMENTS
+           ============================================================ -->
+      <section id="view-shop" class="hidden max-w-2xl mx-auto space-y-6">
+
+        <!-- Gem Balance Card -->
+        <div class="gold-gradient rounded-3xl p-6 text-slate-900 shadow-md flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-duo font-black uppercase tracking-wider text-amber-900">Bóveda de Sabiduría</span>
+            <h2 class="font-duo font-black text-3xl flex items-center gap-2">
+              <span>💎</span>
+              <span id="shopGemsDisplay">150</span> Gemas
+            </h2>
+            <p class="text-xs text-amber-950/80 font-medium">Gana más gemas completando lecciones, retos legendarios y rachas.</p>
+          </div>
+          <div class="text-4xl">👑</div>
+        </div>
+
+        <!-- Interactive Items Store -->
+        <div class="space-y-3">
+          <h3 class="font-duo font-black text-xl text-duo-ink">Mejoras de Estudio (Consumibles)</h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Item 1: Streak Freeze -->
+            <div class="p-4 rounded-2xl border-2 border-duo-border bg-white flex flex-col justify-between gap-3 shadow-xs">
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-3xl">🧊</span>
+                  <span id="freezeQtyBadge" class="text-xs font-duo font-black px-2.5 py-0.5 rounded-full bg-sky-100 text-duo-blue">0 activos</span>
+                </div>
+                <h4 class="font-duo font-black text-base text-duo-ink">Protector de Racha</h4>
+                <p class="text-xs text-duo-muted">Protege tu racha si un día no puedes estudiar por imprevistos laborales.</p>
+              </div>
+              <button onclick="buyStoreItem('freeze')" class="btn-3d w-full py-2.5 rounded-xl bg-duo-blue border-duo-blueDark text-white font-duo font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>Comprar</span>
+                <span>💎 120</span>
+              </button>
+            </div>
+
+            <!-- Item 2: Double XP Boost -->
+            <div class="p-4 rounded-2xl border-2 border-duo-border bg-white flex flex-col justify-between gap-3 shadow-xs">
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-3xl">🧪</span>
+                  <span id="boostActiveBadge" class="text-xs font-duo font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">Inactivo</span>
+                </div>
+                <h4 class="font-duo font-black text-base text-duo-ink">Poción 2x XP (15 min)</h4>
+                <p class="text-xs text-duo-muted">Duplica la experiencia de cada lección y acelera tu progreso diario.</p>
+              </div>
+              <button onclick="buyStoreItem('boost')" class="btn-3d w-full py-2.5 rounded-xl bg-amber-500 border-amber-600 text-white font-duo font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>Comprar</span>
+                <span>💎 80</span>
+              </button>
+            </div>
+
+            <!-- Item 3: Legendary Pass Key -->
+            <div class="p-4 rounded-2xl border-2 border-duo-border bg-white flex flex-col justify-between gap-3 shadow-xs">
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-3xl">🗝️</span>
+                  <span id="keysQtyBadge" class="text-xs font-duo font-black px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800">1 llave</span>
+                </div>
+                <h4 class="font-duo font-black text-base text-duo-ink">Llave Maestra C1</h4>
+                <p class="text-xs text-duo-muted">Desbloquea instantáneamente un nodo de corona dorada sin gastar turnos.</p>
+              </div>
+              <button onclick="buyStoreItem('key')" class="btn-3d w-full py-2.5 rounded-xl bg-purple-600 border-purple-800 text-white font-duo font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>Comprar</span>
+                <span>💎 150</span>
+              </button>
+            </div>
+
+            <!-- Item 4: Prestige Avatar -->
+            <div class="p-4 rounded-2xl border-2 border-duo-border bg-white flex flex-col justify-between gap-3 shadow-xs">
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-3xl">🎓</span>
+                  <span class="text-xs font-duo font-black px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Coleccionable</span>
+                </div>
+                <h4 class="font-duo font-black text-base text-duo-ink">Título: Oxford Fellow</h4>
+                <p class="text-xs text-duo-muted">Insignia de prestigio que viste tu perfil y te identifica en el curso.</p>
+              </div>
+              <button onclick="buyStoreItem('title_oxford')" id="btnBuyOxfordTitle" class="btn-3d w-full py-2.5 rounded-xl bg-duo-green border-duo-greenDark text-white font-duo font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>Equipar</span>
+                <span>💎 200</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trophy Room / Achievements -->
+        <div class="space-y-3 pt-2">
+          <div class="flex items-center justify-between">
+            <h3 class="font-duo font-black text-xl text-duo-ink">Salón de Trofeos & Misiones</h3>
+            <span id="achievementsCount" class="text-xs font-duo font-black text-duo-muted">0 / 6 Reclamados</span>
+          </div>
+
+          <div id="achievementsList" class="space-y-3">
+            <!-- Achievements rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           VIEW 5: GRAMMAR VAULT (EXPLORADOR CON AUDIO NATIVO)
+           ============================================================ -->
+      <section id="view-bank" class="hidden max-w-3xl mx-auto space-y-5">
+        <div class="rounded-2xl border-2 border-duo-border p-5 bg-duo-bg/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h1 class="font-duo font-black text-xl sm:text-2xl text-duo-ink">Bóveda Gramatical & Banco de Oraciones</h1>
+              <p class="text-xs sm:text-sm text-duo-muted">Estudia cada estructura con audio nativo en inglés estadounidense y británico.</p>
+            </div>
+            <span id="vaultTotalBadge" class="px-3 py-1 rounded-full bg-duo-greenLight text-duo-greenDark font-duo font-extrabold text-xs">
+              340+ Oraciones
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <input type="text" id="vaultSearch" oninput="renderVault(1)" placeholder="Buscar palabra, tiempo o regla..."
+              class="px-3.5 py-2.5 rounded-xl border-2 border-duo-border bg-white text-sm font-medium focus:outline-none focus:border-duo-blue" />
+            <select id="vaultLevel" onchange="renderVault(1)"
+              class="px-3.5 py-2.5 rounded-xl border-2 border-duo-border bg-white text-sm font-bold text-duo-ink">
+              <option value="all">Todos los niveles (B1 – C1)</option>
+              <option value="B1">B1 Intermedio</option>
+              <option value="B2">B2 Intermedio Alto</option>
+              <option value="C1">C1 Avanzado</option>
+            </select>
+            <select id="vaultUnit" onchange="renderVault(1)"
+              class="px-3.5 py-2.5 rounded-xl border-2 border-duo-border bg-white text-sm font-bold text-duo-ink">
+              <option value="all">Todas las 18 Unidades</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="vaultList" class="space-y-3"></div>
+        <div id="vaultPagination" class="flex items-center justify-between pt-2 text-xs sm:text-sm font-bold"></div>
+      </section>
+
+    </main>
+
+    <!-- ==================== RIGHT SIDEBAR (DESKTOP STATS) ==================== -->
+    <aside class="hidden lg:flex flex-col w-80 shrink-0 p-5 sticky top-0 h-screen overflow-y-auto space-y-5">
+      
+      <!-- Top Stats Strip -->
+      <div class="flex items-center justify-around py-2 font-duo font-extrabold text-sm sm:text-base border-b-2 border-duo-border/60 pb-4">
+        <div class="flex items-center gap-1.5 text-orange-500" title="Racha de días de estudio consecutivos">
+          <span class="text-xl">🔥</span>
+          <span id="deskStreak">1</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-duo-gemDark" title="Gemas acumuladas para la tienda">
+          <span class="text-xl">💎</span>
+          <span id="deskGems">150</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-duo-blue" title="Puntos de Experiencia (XP)">
+          <span class="text-xl">⚡</span>
+          <span id="deskXp">0 XP</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-fuchsia-600" title="Vidas Ilimitadas en modo Super">
+          <span class="text-xl">❤️</span>
+          <span class="text-xl leading-none">∞</span>
+        </div>
+      </div>
+
+      <!-- Super Status Card -->
+      <div class="super-gradient rounded-2xl p-5 text-white shadow-md space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="super-badge text-white text-[10px] font-duo font-black px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+            SUPER PRO ACTIVO
+          </span>
+          <span class="text-xl">🦉✨</span>
+        </div>
+        <h3 class="font-duo font-extrabold text-base">Modo Inmersivo B1→C1</h3>
+        <p class="text-xs text-indigo-100 leading-relaxed">
+          Acceso sin restricciones a todos los nudos C1, transformaciones Cambridge y clínica ilimitada.
+        </p>
+      </div>
+
+      <!-- Daily XP Goal Card -->
+      <div class="rounded-2xl border-2 border-duo-border p-5 space-y-3 bg-white">
+        <div class="flex items-center justify-between">
+          <h3 class="font-duo font-extrabold text-base text-duo-ink">Meta Diaria</h3>
+          <span id="dailyGoalText" class="text-xs font-extrabold text-duo-goldDark">0 / 50 XP</span>
+        </div>
+        <div class="w-full h-3.5 bg-duo-bg rounded-full overflow-hidden border border-duo-border">
+          <div id="dailyGoalBar" class="bg-duo-gold h-full transition-all duration-500 rounded-full" style="width: 0%"></div>
+        </div>
+        <p class="text-xs text-duo-muted">Completa 2 lecciones hoy para mantener tu racha activa y ganar gemas.</p>
+      </div>
+
+      <!-- Course CEFR Progress -->
+      <div class="rounded-2xl border-2 border-duo-border p-5 space-y-3 bg-white">
+        <h3 class="font-duo font-extrabold text-base text-duo-ink">Dominio por Nivel</h3>
+        <div class="space-y-3 text-xs font-bold">
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-duo-greenDark">B1 Intermedio</span>
+              <span id="progB1Text">0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-duo-bg rounded-full overflow-hidden border border-duo-border">
+              <div id="progB1Bar" class="bg-duo-green h-full transition-all" style="width: 0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-duo-blueDark">B2 Intermedio Alto</span>
+              <span id="progB2Text">0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-duo-bg rounded-full overflow-hidden border border-duo-border">
+              <div id="progB2Bar" class="bg-duo-blue h-full transition-all" style="width: 0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-purple-700">C1 Avanzado</span>
+              <span id="progC1Text">0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-duo-bg rounded-full overflow-hidden border border-duo-border">
+              <div id="progC1Bar" class="bg-purple-600 h-full transition-all" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- ==================== MOBILE BOTTOM NAVIGATION ==================== -->
+  <nav class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t-2 border-duo-border px-1 py-1.5 flex items-center justify-around">
+    <button onclick="switchMainView('learn')" id="mob-nav-learn" class="mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-blue font-duo font-extrabold text-[10px]">
+      <span class="text-lg">🗺️</span>
+      <span>Ruta</span>
+    </button>
+    <button onclick="switchMainView('practice')" id="mob-nav-practice" class="mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-muted font-duo font-extrabold text-[10px]">
+      <span class="text-lg">🏋️</span>
+      <span>Práctica</span>
+    </button>
+    <button onclick="switchMainView('coach')" id="mob-nav-coach" class="mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-muted font-duo font-extrabold text-[10px]">
+      <span class="text-lg">🧠</span>
+      <span>Tutor</span>
+    </button>
+    <button onclick="switchMainView('shop')" id="mob-nav-shop" class="mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-muted font-duo font-extrabold text-[10px]">
+      <span class="text-lg">💎</span>
+      <span>Tienda</span>
+    </button>
+    <button onclick="switchMainView('bank')" id="mob-nav-bank" class="mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-muted font-duo font-extrabold text-[10px]">
+      <span class="text-lg">📚</span>
+      <span>Bóveda</span>
+    </button>
+  </nav>
+
+  <!-- ============================================================
+       FULL-SCREEN LESSON PLAYER OVERLAY
+       ============================================================ -->
+  <div id="lessonOverlay" class="hidden fixed inset-0 z-50 bg-white flex flex-col">
+    
+    <!-- Top Lesson Progress Bar -->
+    <div class="max-w-4xl w-full mx-auto px-4 sm:px-6 pt-5 pb-3 flex items-center gap-4">
+      <button onclick="closeLesson()" aria-label="Salir" class="text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none cursor-pointer">
+        ✕
+      </button>
+
+      <!-- Progress Track -->
+      <div class="flex-1 h-4 bg-duo-border rounded-full overflow-hidden relative">
+        <div id="lessonProgressBar" class="bg-duo-green h-full rounded-full transition-all duration-300 relative" style="width: 10%">
+          <div class="absolute inset-x-2 top-1 h-1 bg-white/35 rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- Hearts & Boost Indicator -->
+      <div class="flex items-center gap-2 font-duo font-black text-fuchsia-600 text-sm sm:text-base shrink-0">
+        <span id="lessonBoostIcon" class="hidden text-amber-500" title="2x XP Activo">⚡2x</span>
+        <span>❤️</span>
+        <span class="text-lg">∞</span>
+      </div>
+    </div>
+
+    <!-- Center Stage -->
+    <div class="flex-1 overflow-y-auto px-4 sm:px-6 py-4 flex items-center justify-center">
+      <div id="exerciseStage" class="max-w-2xl w-full space-y-6 animate-pop">
+        <!-- Skill Badge & Unit Tag -->
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="exSkillBadge" class="px-2.5 py-0.5 rounded-lg bg-sky-100 text-duo-blueDark font-duo font-extrabold text-xs uppercase tracking-wider">
+              📖 Lectura & Sintaxis
+            </span>
+            <span id="exUnitTag" class="text-xs font-bold text-duo-muted">
+              Unidad 1 • B1
+            </span>
+          </div>
+          <h2 id="exInstruction" class="font-duo font-black text-xl sm:text-2xl text-duo-ink">
+            Completa la oración con la forma precisa
+          </h2>
+        </div>
+
+        <!-- Prompt Card (Audio + Sentence) -->
+        <div id="exPromptCard" class="rounded-2xl border-2 border-duo-border p-4 sm:p-5 bg-duo-bg/50 flex items-start gap-3.5">
+          <div class="flex flex-col gap-1.5 shrink-0">
+            <button onclick="speakCurrentPrompt(1.0)" title="Escuchar velocidad normal"
+              class="btn-3d w-11 h-11 rounded-2xl bg-duo-blue border-duo-blueDark text-white flex items-center justify-center text-lg cursor-pointer">
+              🔊
+            </button>
+            <button onclick="speakCurrentPrompt(0.7)" title="Escuchar pausado"
+              class="btn-3d w-11 h-8 rounded-xl bg-white border-duo-border text-duo-blue flex items-center justify-center text-xs font-bold cursor-pointer">
+              🐢
+            </button>
+          </div>
+          <div class="flex-1 space-y-1.5 pt-1">
+            <p id="exPromptText" class="text-base sm:text-lg font-semibold text-duo-ink leading-relaxed"></p>
+            <p id="exContextHint" class="text-xs text-duo-muted italic"></p>
+          </div>
+        </div>
+
+        <!-- Dynamic Interaction Stage -->
+        <div id="exInteractionArea" class="space-y-4">
+          <!-- Rendered according to exercise type -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Check / Feedback Drawer -->
+    <div id="lessonFooter" class="border-t-2 border-duo-border bg-white px-4 sm:px-6 py-4 sm:py-5 transition-colors">
+      <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        
+        <!-- Feedback Info Box -->
+        <div id="lessonFeedbackInfo" class="hidden flex-1 flex items-start gap-3.5">
+          <div id="fbIconCircle" class="w-11 h-11 rounded-full bg-white flex items-center justify-center text-2xl shrink-0 shadow-xs">
+            ✓
+          </div>
+          <div class="space-y-1">
+            <h4 id="fbTitle" class="font-duo font-black text-lg">¡Excelente!</h4>
+            <p id="fbCorrectAnswer" class="text-xs sm:text-sm font-bold"></p>
+            <p id="fbGrammarRule" class="text-xs sm:text-sm leading-relaxed opacity-95"></p>
+          </div>
+        </div>
+
+        <!-- Skip Button -->
+        <button id="skipBtn" onclick="skipExercise()"
+          class="btn-3d px-6 py-3.5 rounded-2xl bg-white border-2 border-duo-border text-duo-muted hover:bg-slate-50 font-duo font-extrabold text-sm uppercase tracking-wider cursor-pointer">
+          Saltar
+        </button>
+
+        <!-- Primary Action Button -->
+        <button id="primaryLessonBtn" onclick="handlePrimaryLessonAction()" disabled
+          class="btn-3d px-8 py-3.5 rounded-2xl bg-duo-green border-duo-greenDark text-white font-duo font-extrabold text-sm sm:text-base uppercase tracking-wider cursor-pointer sm:min-w-[180px]">
+          Comprobar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FLUENCY SPRINT OVERLAY (60s TIME ATTACK)
+       ============================================================ -->
+  <div id="sprintOverlay" class="hidden fixed inset-0 z-50 bg-slate-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+    <div class="max-w-lg w-full bg-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border-4 border-amber-400 animate-pop text-center">
+      
+      <!-- Sprint Top Bar -->
+      <div class="flex items-center justify-between border-b-2 border-duo-border pb-4">
+        <div class="text-left">
+          <span class="text-xs font-duo font-black text-amber-600 uppercase tracking-widest block">Tiempo Restante</span>
+          <span id="sprintTimerText" class="font-duo font-black text-3xl text-duo-ink">60s</span>
+        </div>
+        <div class="text-right">
+          <span class="text-xs font-duo font-black text-duo-blue uppercase tracking-widest block">Puntaje / Combo</span>
+          <div class="flex items-center gap-1.5 justify-end">
+            <span id="sprintScoreText" class="font-duo font-black text-3xl text-duo-ink">0</span>
+            <span id="sprintMultiplierBadge" class="px-2 py-0.5 rounded-lg bg-orange-100 text-orange-700 font-duo font-black text-xs">x1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sprint Prompt -->
+      <div class="space-y-3 py-2">
+        <span id="sprintLevelBadge" class="px-3 py-1 rounded-full bg-slate-100 font-duo font-black text-xs text-duo-ink">Nivel C1</span>
+        <h3 id="sprintQuestionText" class="font-duo font-black text-xl sm:text-2xl text-duo-ink leading-snug min-h-[60px] flex items-center justify-center">
+          ...
+        </h3>
+      </div>
+
+      <!-- Sprint 2 Rapid Options -->
+      <div id="sprintOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <button onclick="quitSprintEarly()" class="text-xs text-duo-muted hover:text-duo-red font-bold underline cursor-pointer">
+        Terminar Sprint
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       CELEBRATION / LESSON COMPLETE MODAL
+       ============================================================ -->
+  <div id="lessonCompleteModal" class="hidden fixed inset-0 z-50 bg-white flex flex-col items-center justify-center p-6 text-center">
+    <div class="max-w-md w-full space-y-6 animate-pop">
+      <div class="text-6xl animate-bounce">🦉🏆</div>
+      <div class="space-y-1">
+        <h2 class="font-duo font-black text-3xl text-duo-goldDark">¡Lección Completada!</h2>
+        <p id="completeSubtitle" class="text-sm text-duo-muted font-medium">Has fortalecido tu dominio autónomo de la gramática.</p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2.5">
+        <div class="rounded-2xl border-2 border-duo-gold bg-amber-50 p-3">
+          <span class="text-[10px] font-duo font-black uppercase text-duo-goldDark block">Total XP</span>
+          <strong id="earnedXpStat" class="font-duo font-black text-xl text-duo-ink">+25 XP</strong>
+        </div>
+        <div class="rounded-2xl border-2 border-duo-gem bg-emerald-50 p-3">
+          <span class="text-[10px] font-duo font-black uppercase text-duo-gemDark block">Gemas</span>
+          <strong id="earnedGemsStat" class="font-duo font-black text-xl text-duo-ink">+15 💎</strong>
+        </div>
+        <div class="rounded-2xl border-2 border-duo-green bg-emerald-50 p-3">
+          <span class="text-[10px] font-duo font-black uppercase text-duo-greenDark block">Precisión</span>
+          <strong id="earnedAccStat" class="font-duo font-black text-xl text-duo-ink">100%</strong>
+        </div>
+      </div>
+
+      <button onclick="closeCompleteModal()"
+        class="btn-3d w-full py-4 rounded-2xl bg-duo-green border-duo-greenDark text-white font-duo font-extrabold text-base uppercase tracking-wider cursor-pointer shadow-lg">
+        Continuar Ruta
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       UNIT GRAMMAR GUIDEBOOK MODAL
+       ============================================================ -->
+  <div id="guidebookModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl border-2 border-duo-border overflow-hidden animate-pop">
+      <div class="p-5 border-b-2 border-duo-border flex items-center justify-between bg-duo-bg">
+        <div>
+          <span id="gbLevelTag" class="text-xs font-duo font-black uppercase tracking-wider text-duo-blue">B1 • Unidad 1</span>
+          <h3 id="gbTitle" class="font-duo font-black text-xl text-duo-ink">Guía Gramatical y Pragmática</h3>
+        </div>
+        <button onclick="closeGuidebook()" class="w-9 h-9 rounded-xl bg-white border border-duo-border font-bold text-slate-500 hover:text-slate-800 cursor-pointer">✕</button>
+      </div>
+      <div id="gbBody" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-sm"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       EDIT PROFILE MODAL
+       ============================================================ -->
+  <div id="profileModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 border-2 border-duo-border shadow-2xl space-y-4 animate-pop">
+      <div class="flex items-center justify-between">
+        <h3 class="font-duo font-black text-xl text-duo-ink">Editar Perfil de Estudiante</h3>
+        <button onclick="closeProfileModal()" class="text-slate-400 font-bold hover:text-slate-700 cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-duo-muted uppercase mb-1">Tu Nombre / Apodo</label>
+          <input type="text" id="inputProfileName" class="w-full p-3 rounded-xl border-2 border-duo-border font-bold text-duo-ink focus:border-duo-blue outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-duo-muted uppercase mb-1">Avatar</label>
+          <div class="flex gap-2 flex-wrap" id="avatarSelectorList">
+            <!-- Avatars rendered dynamically -->
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-duo-muted uppercase mb-1">Objetivo de Dominio</label>
+          <select id="selectProfileGoal" class="w-full p-3 rounded-xl border-2 border-duo-border font-bold text-duo-ink focus:border-duo-blue outline-none">
+            <option value="executive">Inglés Ejecutivo & Negociación C1</option>
+            <option value="cambridge">Certificación Cambridge CAE / CPE</option>
+            <option value="ielts">IELTS Académico 7.5+</option>
+            <option value="fluency">Fluidez Natural para la Vida Diaria</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-duo-muted uppercase mb-1">Meta Diaria de XP</label>
+          <select id="selectDailyTarget" class="w-full p-3 rounded-xl border-2 border-duo-border font-bold text-duo-ink focus:border-duo-blue outline-none">
+            <option value="20">Casual (20 XP / ~1 lección)</option>
+            <option value="50">Regular (50 XP / ~2 lecciones)</option>
+            <option value="100">Intensivo (100 XP / ~4 lecciones)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="closeProfileModal()" class="btn-3d flex-1 py-2.5 rounded-xl bg-white border-2 border-duo-border font-duo font-extrabold text-sm text-duo-ink cursor-pointer">Cancelar</button>
+        <button onclick="saveUserProfile()" class="btn-3d flex-1 py-2.5 rounded-xl bg-duo-green border-duo-greenDark font-duo font-extrabold text-sm text-white cursor-pointer">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESET CONFIRMATION MODAL -->
+  <div id="resetModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 border-2 border-duo-border shadow-xl space-y-4">
+      <h3 class="font-duo font-black text-xl text-duo-ink">¿Reiniciar todo el progreso?</h3>
+      <p class="text-xs sm:text-sm text-duo-muted">Tu racha, gemas acumuladas, compras de la tienda y nodos completados volverán al estado inicial.</p>
+      <div class="flex gap-2.5 pt-2">
+        <button onclick="closeResetModal()" class="btn-3d flex-1 py-2.5 rounded-xl bg-white border-2 border-duo-border font-duo font-extrabold text-sm text-duo-ink cursor-pointer">Cancelar</button>
+        <button onclick="confirmResetProgress()" class="btn-3d flex-1 py-2.5 rounded-xl bg-duo-red border-duo-redDark font-duo font-extrabold text-sm text-white cursor-pointer">Reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       APPLICATION LOGIC & CURRICULUM DATA STORE
+       ============================================================ -->
+  <script>
+    /**
+     * ============================================================================
+     * CURRÍCULO GRAMATICAL EXHAUSTIVO (B1 → B2 → C1)
+     * 18 Unidades completas, integrando Transformaciones Cambridge, Registro
+     * Ejecutivo, Deducción, Oraciones Escindidas e Inversión Negativa.
+     * ============================================================================
+     */
+    const UNITS_DATA = [
+      // -------------------- SECCIÓN B1: INTERMEDIATE --------------------
+      {
+        id: 'u1', cefr: 'B1', number: 1, color: 'green',
+        pillar: 'aspect',
+        title: 'Present Perfect vs. Past Simple',
+        subtitle: 'Experiencias de vida, tiempo no cerrado y fechas puntuales',
+        guideNotes: [
+          { rule: 'Present Perfect (have/has + V3)', desc: 'Conecta el pasado con el ahora. Se usa con since (punto de inicio) y for (duración), o para experiencias sin fecha exacta.', ex: 'I have managed corporate audits for over six years.' },
+          { rule: 'Past Simple (V2)', desc: 'Indica una acción completamente cerrada en un momento específico del pasado (yesterday, in 2022, two months ago).', ex: 'Our team finalized the merger report last Monday.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'I ___ in the finance department since I graduated from university.', options: ['have worked', 'worked', 'am working', 'had worked'], ans: 'have worked', context: 'Periodo de tiempo no finalizado que empezó en el pasado.', rule: 'Usa Present Perfect con "since + punto de partida" para una acción o estado que continúa en el presente.' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'Our team ___ the quarterly audit report late last Friday.', options: ['submitted', 'has submitted', 'have submitted', 'was submit'], ans: 'submitted', context: 'Tiempo pasado finalizado con marcador específico ("last Friday").', rule: '"Last Friday" es un marcador de tiempo cerrado que exige Past Simple ("submitted").' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Ordena las palabras para preguntar por una experiencia de vida:', sentence: 'Have you ever attended an international conference?', distractors: ['did', 'attend', 'going'], context: 'Pregunta de experiencia hasta hoy.', rule: 'Estructura interrogativa estándar: "Have you ever + past participle...?"' },
+          { type: 'listening', skill: '🎧 Dictado Auditivo', prompt: 'Escucha con atención y reconstruye la oración exacta:', sentence: 'She has already reviewed all the tax documents.', distractors: ['yet', 'review', 'had'], context: 'Reporte laboral.', rule: '"Already" va entre el auxiliar have/has y el participio pasado en oraciones afirmativas.' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa con el verbo en participio: "We haven\'t ___ (receive) the client\'s feedback yet."', sentence: 'We haven\'t received the client\'s feedback yet.', blankAnswer: 'received', context: 'Negación en Present Perfect.', rule: '"Yet" al final de una oración negativa requiere Present Perfect ("haven\'t received").' },
+          { type: 'speaking', skill: '🎙️ Shadowing Oral', prompt: 'Pronuncia esta oración en voz alta con entonación natural:', sentence: 'I have lived in Colombia for over ten years.', context: 'Perfil profesional.', rule: 'Usa "for + duración" con Present Perfect para estados continuos.' }
+        ]
+      },
+      {
+        id: 'u2', cefr: 'B1', number: 2, color: 'green',
+        pillar: 'aspect',
+        title: 'Tiempos Narrativos & Storytelling',
+        subtitle: 'Past Simple, Continuous y Past Perfect en contexto',
+        guideNotes: [
+          { rule: 'Past Continuous vs. Past Simple', desc: 'Past Continuous crea la atmósfera de fondo (was/were + -ing) mientras que Past Simple interrumpe la acción.', ex: 'I was drafting the email when the server went down.' },
+          { rule: 'Past Perfect (had + V3)', desc: 'Indica la acción anterior al pasado relatado ("el pasado del pasado").', ex: 'By the time the client called, we had already sent the proposal.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'While I ___ the balance sheet, my laptop suddenly crashed.', options: ['was checking', 'checked', 'have checked', 'had checked'], ans: 'was checking', context: 'Acción de fondo interrumpida.', rule: 'Past Continuous ("was checking") describe la acción en desarrollo interrumpida por un evento puntual.' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'When we reached the gate, the boarding flight ___ already ___.', options: ['had / closed', 'has / closed', 'was / closing', 'did / close'], ans: 'had / closed', context: 'Acción ocurrida antes del momento de llegada.', rule: 'Past Perfect ("had closed") clarifica qué acción ocurrió primero en el relato.' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Construye la oración narrativa:', sentence: 'It was raining heavily when we left the venue.', distractors: ['rained', 'rain', 'leaving'], context: 'Descripción del entorno pasado.', rule: 'El clima de fondo en narraciones se construye típicamente en Past Continuous.' },
+          { type: 'listening', skill: '🎧 Dictado Auditivo', prompt: 'Escucha y reconstruye:', sentence: 'She realized she had left her passport at home.', distractors: ['has', 'leaving', 'leaves'], context: 'Olvido previo en un viaje.', rule: 'El olvido ocurrió antes de darse cuenta → Past Perfect ("had left").' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "They ___ (have) lunch when the courier arrived."', sentence: 'They were having lunch when the courier arrived.', blankAnswer: 'were having', context: 'Almuerzo interrumpido.', rule: 'Acción en progreso en el pasado → "were having".' },
+          { type: 'speaking', skill: '🎙️ Shadowing Oral', prompt: 'Pronuncia en voz alta:', sentence: 'By the time the meeting began, everyone had read the memo.', context: 'Preparación de equipo.', rule: '"By the time + Past Simple" suele vincularse con Past Perfect en la cláusula principal.' }
+        ]
+      },
+      {
+        id: 'u3', cefr: 'B1', number: 3, color: 'green',
+        pillar: 'aspect',
+        title: 'Formas Futuras & Compromisos',
+        subtitle: 'Will, going to, Present Continuous y cláusulas de tiempo',
+        guideNotes: [
+          { rule: 'Going to vs. Will', desc: 'Going to = planes previos o predicción con evidencia visual. Will = decisión espontánea, promesas y ofertas.', ex: 'Look at those dark clouds; it is going to rain.' },
+          { rule: 'Present Continuous con valor futuro', desc: 'Para citas y planes cerrados con fecha y hora confirmada en agenda.', ex: 'I am meeting the auditor tomorrow at 10 AM.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: '"The printer has no ink." — "Don\'t worry, I ___ replace the cartridge right now."', options: ['will', 'am going to', 'am replacing', 'would have'], ans: 'will', context: 'Decisión espontánea en el momento del habla.', rule: 'Las ofertas instantáneas y decisiones tomadas en el momento usan "will".' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'I ___ the project director tomorrow at 3:00 PM; it is confirmed on my calendar.', options: ['am meeting', 'will meet', 'meet', 'going to meet'], ans: 'am meeting', context: 'Cita acordada con hora fija.', rule: 'Acuerdos agendados con fecha y hora toman Present Continuous ("am meeting").' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Ordena la cláusula de tiempo futura:', sentence: 'We will call you as soon as the package arrives.', distractors: ['will arrive', 'arrived', 'calling'], context: 'Futuro condicionado por tiempo.', rule: 'Tras "as soon as", "when" o "until" se usa Present Simple ("arrives"), nunca "will".' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "By December, I ___ (complete) all four certification modules."', sentence: 'By December, I will have completed all four certification modules.', blankAnswer: 'will have completed', context: 'Meta terminada antes de un plazo futuro.', rule: 'Future Perfect ("will have + V3") describe una acción terminada antes de un punto futuro.' }
+        ]
+      },
+      {
+        id: 'u4', cefr: 'B1', number: 4, color: 'green',
+        pillar: 'hypothetical',
+        title: 'Primer y Segundo Condicional',
+        subtitle: 'Posibilidades reales vs. escenarios hipotéticos presentes',
+        guideNotes: [
+          { rule: 'First Conditional (If + Present, Will + Verb)', desc: 'Para situaciones reales o muy probables en el futuro.', ex: 'If you submit the paper today, you will receive feedback by Friday.' },
+          { rule: 'Second Conditional (If + Past, Would + Verb)', desc: 'Para situaciones imaginarias, irreales o consejos (If I were you).', ex: 'If I had more capital, I would launch a tech startup.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'If I ___ more free time, I would study cognitive neuroscience.', options: ['had', 'have', 'would have', 'will have'], ans: 'had', context: 'Escenario hipotético presente.', rule: 'El Segundo Condicional usa Past Simple ("had") en la condición "if".' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Construye la fórmula de consejo:', sentence: 'If I were you, I would take that opportunity.', distractors: ['was', 'will', 'taken'], context: 'Consejo formal.', rule: 'En inglés estándar y formal se prefiere el subjuntivo "were" con "I" ("If I were you").' },
+          { type: 'listening', skill: '🎧 Dictado Auditivo', prompt: 'Escucha y escribe:', sentence: 'You will not succeed unless you stay consistent.', distractors: ['if', 'wouldn\'t', 'stayed'], context: 'Condición con "unless".', rule: '"Unless" significa "a menos que / if not" y va seguido de verbo afirmativo.' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "What would you do if you ___ (win) an academic scholarship?"', sentence: 'What would you do if you won an academic scholarship?', blankAnswer: 'won', context: 'Pregunta hipotética.', rule: 'Segundo Condicional: "What would you do if + Past Simple (won)?"' }
+        ]
+      },
+      {
+        id: 'u5', cefr: 'B1', number: 5, color: 'green',
+        pillar: 'modals',
+        title: 'Modales de Obligación & Deducción Presente',
+        subtitle: 'Must, have to, mustn\'t, don\'t have to & can\'t',
+        guideNotes: [
+          { rule: 'Mustn\'t vs. Don\'t have to', desc: 'Mustn\'t = prohibición absoluta. Don\'t have to = ausencia de obligación (es opcional).', ex: 'You don\'t have to dress formally, but you mustn\'t be late.' },
+          { rule: 'Deducción Lógica (Must vs Can\'t)', desc: 'Must = 95% certeza afirmativa. Can\'t = 95% certeza negativa (imposibilidad).', ex: 'The lights are out; they must be sleeping.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'Entry to the webinar is free today, so you ___ purchase a pass.', options: ['don\'t have to', 'mustn\'t', 'can\'t', 'shouldn\'t'], ans: 'don\'t have to', context: 'Falta de obligación (opcional).', rule: '"Don\'t have to" expresa que algo no es necesario; "mustn\'t" implica prohibición.' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'That ___ be Daniel at the office door; he is currently boarding a plane to Tokyo!', options: ['can\'t', 'mustn\'t', 'needn\'t', 'wouldn\'t'], ans: 'can\'t', context: 'Deducción de imposibilidad lógica.', rule: 'Usa "can\'t" (jamás "mustn\'t") para expresar que algo es lógicamente imposible en el presente.' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Arma la regla corporativa:', sentence: 'Employees must not share passwords with unauthorized personnel.', distractors: ['don\'t', 'have', 'to'], context: 'Prohibición estricta.', rule: '"Must not" expresa prohibición terminante en políticas y leyes.' }
+        ]
+      },
+      {
+        id: 'u6', cefr: 'B1', number: 6, color: 'green',
+        pillar: 'syntax',
+        title: 'Cláusulas Relativas & Patrones Verbales',
+        subtitle: 'Who, which, that, whose & gerundios vs. infinitivos',
+        guideNotes: [
+          { rule: 'Non-defining Relative Clauses (con comas)', desc: 'Aportan información extra. Nunca llevan "that", sino "which" o "who".', ex: 'The headquarters, which opened last summer, hosts 500 engineers.' },
+          { rule: 'Verbos con cambio de significado (-ing vs to)', desc: 'Stop doing (dejar un hábito) vs. Stop to do (detenerse para iniciar otra acción).', ex: 'She stopped to answer her phone.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'The new regional hub, ___ was inaugurated last month, employs seventy analysts.', options: ['which', 'that', 'where', 'whose'], ans: 'which', context: 'Cláusula explicativa entre comas.', rule: 'Jamás uses "that" entre comas (oraciones relativas no restrictivas); usa "which".' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'The specialist ___ presentation won the award has a doctorate in linguistics.', options: ['whose', 'who\'s', 'which', 'whom'], ans: 'whose', context: 'Relativo posesivo ("cuya").', rule: '"Whose" denota posesión (su presentación) y va seguido inmediatamente de sustantivo.' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "I look forward to ___ (receive) your formal response."', sentence: 'I look forward to receiving your formal response.', blankAnswer: 'receiving', context: 'Fórmula de cierre epistolar formal.', rule: 'En "look forward to", la partícula "to" es preposición, por lo que exige gerundio ("receiving").' }
+        ]
+      },
+
+      // -------------------- SECCIÓN B2: UPPER-INTERMEDIATE --------------------
+      {
+        id: 'u7', cefr: 'B2', number: 7, color: 'blue',
+        pillar: 'hypothetical',
+        title: 'Condicionales Tercero y Mixto',
+        subtitle: 'Arrepentimientos pasados y consecuencias en el presente',
+        guideNotes: [
+          { rule: 'Third Conditional (If + Past Perfect, Would have + V3)', desc: 'Imagina un pasado distinto para un resultado pasado que ya no ocurrió.', ex: 'If we had verified the invoice, we wouldn\'t have overpaid.' },
+          { rule: 'Mixed Conditional (Condición pasada → Consecuencia presente)', desc: 'If + had + V3, would + verbo base. Conecta una decisión del pasado con la realidad de hoy.', ex: 'If I had taken that flight, I would be in London right now.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'If the developers ___ the bug earlier, the platform would not have crashed during launch.', options: ['had identified', 'identified', 'would identify', 'have identified'], ans: 'had identified', context: 'Error del pasado ya finalizado.', rule: 'Tercer condicional requiere Past Perfect ("had identified") en la condición "if".' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'If I had accepted the foreign post in 2021, I ___ in Toronto right now.', options: ['would be living', 'would have lived', 'am living', 'had lived'], ans: 'would be living', context: 'Condición pasada con efecto presente ("right now").', rule: 'Condicional Mixto: Condición en Past Perfect + resultado presente con "would be + -ing".' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "If she ___ (not/miss) the train, she would be giving the lecture now."', sentence: 'If she hadn\'t missed the train, she would be giving the lecture now.', blankAnswer: 'hadn\'t missed', context: 'Condicional mixto.', rule: 'Condición pasada no cumplida: "hadn\'t missed".' }
+        ]
+      },
+      {
+        id: 'u8', cefr: 'B2', number: 8, color: 'blue',
+        pillar: 'syntax',
+        title: 'Voz Pasiva Impersonal & Causativa',
+        subtitle: 'It is believed that... / Subject is expected to... / Have sth done',
+        guideNotes: [
+          { rule: 'Pasiva de Reporte Académica', desc: 'Sujeto + is expected / believed + to be + V3. Muy usada en prensa y ensayos.', ex: 'The treaty is widely expected to be signed tomorrow.' },
+          { rule: 'Causativa (Have / Get + Objeto + V3)', desc: 'Cuando contratas a un tercero o especialista para que realice un trabajo.', ex: 'We must have our financial models audited by an external firm.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'The new energy agreement is widely expected ___ signed before Friday.', options: ['to be', 'being', 'be', 'having been'], ans: 'to be', context: 'Reporte formal de noticias.', rule: 'Estructura pasiva de reporte: "Sujeto + is expected + to be + participio".' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Construye la afirmación académica:', sentence: 'It is widely acknowledged that bilingualism fosters executive brain functions.', distractors: ['acknowledging', 'what', 'fostered'], context: 'Introducción de ensayo.', rule: '"It is widely acknowledged that..." es una pasiva impersonal de alto registro B2/C1.' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "We need to have our servers ___ (upgrade) this weekend."', sentence: 'We need to have our servers upgraded this weekend.', blankAnswer: 'upgraded', context: 'Estructura causativa.', rule: '"Have + objeto (servers) + participio pasado (upgraded)".' }
+        ]
+      },
+      {
+        id: 'u9', cefr: 'B2', number: 9, color: 'blue',
+        pillar: 'syntax',
+        title: 'Discurso Indirecto & Preguntas Embebidas',
+        subtitle: 'Backshifting, preguntas indirectas y verbos de reporte avanzados',
+        guideNotes: [
+          { rule: 'Preguntas Indirectas (Indirect Questions)', desc: 'No llevan inversión de pregunta ni auxiliares do/did. Usan orden afirmativo: Sujeto + Verbo.', ex: 'Could you tell me where the boardroom is?' },
+          { rule: 'Patrones de Verbos de Reporte', desc: 'Deny / admit / suggest + gerundio (-ing). Persuade / advise / urge + objeto + to-infinitive.', ex: 'The advisor urged the panel to reconsider.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'Could you please let me know what time ___ tomorrow morning?', options: ['the seminar begins', 'does the seminar begin', 'begins the seminar', 'will begin the seminar'], ans: 'the seminar begins', context: 'Pregunta indirecta diplomática.', rule: 'Las preguntas indirectas conservan el orden afirmativo (sujeto + verbo) sin el auxiliar "does".' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'The executive flatly denied ___ confidential metrics to third parties.', options: ['leaking', 'to leak', 'leak', 'leaked'], ans: 'leaking', context: 'Declaración corporativa.', rule: 'El verbo "deny" va seguido estrictamente de gerundio ("leaking").' }
+        ]
+      },
+      {
+        id: 'u10', cefr: 'B2', number: 10, color: 'blue',
+        pillar: 'modals',
+        title: 'Modales Pasados de Deducción & Arrepentimiento',
+        subtitle: 'Must have, can\'t have, should have & needn\'t have done',
+        guideNotes: [
+          { rule: 'Deducción Pasada (Must have / Can\'t have + V3)', desc: 'Must have = certeza casi total de que ocurrió. Can\'t have = certeza de que fue imposible.', ex: 'The floor is soaked; it must have rained overnight.' },
+          { rule: 'Needn\'t have done vs. Didn\'t need to', desc: 'Needn\'t have done = hiciste algo que resultó innecesario. Didn\'t need to = no lo hiciste porque no era necesario.', ex: 'You needn\'t have printed the slides; we have tablets.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'You ___ printed forty copies of the memo; everyone had already downloaded it.', options: ['needn\'t have', 'mustn\'t have', 'can\'t have', 'wouldn\'t have'], ans: 'needn\'t have', context: 'Acción innecesaria ya realizada.', rule: '"Needn\'t have + participio" indica que se ejecutó una acción que resultó innecesaria.' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'She ___ forgotten about the presentation; she created all the visual assets herself!', options: ['can\'t have', 'mustn\'t have', 'shouldn\'t have', 'needn\'t have'], ans: 'can\'t have', context: 'Imposibilidad lógica en el pasado.', rule: 'Usa "can\'t have + V3" (o "couldn\'t have") para deducir que un evento fue imposible.' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "I should ___ (verify) the exchange rate before executing the wire transfer."', sentence: 'I should have verified the exchange rate before executing the wire transfer.', blankAnswer: 'have verified', context: 'Crítica retrospectiva.', rule: '"Should have + participio" expresa que no se tomó la decisión idónea en el pasado.' }
+        ]
+      },
+      {
+        id: 'u11', cefr: 'B2', number: 11, color: 'blue',
+        pillar: 'register',
+        title: 'Marcadores Discursivos & Concesión',
+        subtitle: 'Despite, whereas, nevertheless, provided that & in spite of',
+        guideNotes: [
+          { rule: 'Despite / In spite of vs. Although', desc: 'Despite e In spite of son preposiciones: llevan sustantivo o gerundio (-ing). Although lleva cláusula completa con sujeto y verbo.', ex: 'Despite having limited resources, they delivered on time.' },
+          { rule: 'Whereas vs. Nevertheless', desc: 'Whereas une dos cláusulas contrastantes en una oración. Nevertheless inicia una nueva cláusula de concesión formal.', ex: 'Interest rates spiked; nevertheless, housing demand held steady.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: '___ possessing no formal credentials in data science, she mastered the algorithms rapidly.', options: ['Despite', 'Although', 'Whereas', 'Nevertheless'], ans: 'Despite', context: 'Seguido directamente por gerundio ("possessing").', rule: '"Despite" e "in spite of" van seguidos de gerundio o frase nominal, jamás de cláusula finita.' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Ordena la oración de contraste formal:', sentence: 'The strategy was ambitious; nevertheless, the board voted in favor.', distractors: ['despite', 'although', 'whereas'], context: 'Concesión ejecutiva.', rule: '"Nevertheless" introduce un contraste sorprendente en un registro formal.' }
+        ]
+      },
+      {
+        id: 'u12', cefr: 'B2', number: 12, color: 'blue',
+        pillar: 'syntax',
+        title: 'Artículos, Cuantificadores & Sintaxis Frasal',
+        subtitle: 'Sustantivos abstractos, few vs. a few & colocación de pronombres',
+        guideNotes: [
+          { rule: 'Zero Article con Generalizaciones', desc: 'Sustantivos incontables o plurales en sentido general NO llevan artículo (a diferencia del español).', ex: 'Patience and discipline are crucial when learning languages.' },
+          { rule: 'Pronombres en Phrasal Verbs Separables', desc: 'Si el objeto es un pronombre (it, them), DEBE ir obligatoriamente entre el verbo y la partícula.', ex: 'Fill it out (correcto) / Fill out it (incorrecto).' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: '___ technology has fundamentally restructured how modern audit teams operate.', options: ['Modern (zero article)', 'The modern', 'A modern', 'An modern'], ans: 'Modern (zero article)', context: 'Generalización con sustantivo incontable.', rule: 'Las generalizaciones sobre conceptos abstractos o colectivos no llevan artículo en inglés.' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Ubica el pronombre en el phrasal verb separable:', sentence: 'When you receive the intake form, please fill it out carefully.', distractors: ['fill out it', 'out it fill', 'filling'], context: 'Instrucción de oficina.', rule: 'Con phrasal verbs separables, el pronombre "it" debe ubicarse obligatoriamente en el centro.' }
+        ]
+      },
+
+      // -------------------- SECCIÓN C1: ADVANCED & EXECUTIVE --------------------
+      {
+        id: 'u13', cefr: 'C1', number: 13, color: 'purple',
+        pillar: 'inversion',
+        title: 'Inversión Negativa & Restrictiva',
+        subtitle: 'Not only, Seldom, Under no circumstances & Hardly... when',
+        guideNotes: [
+          { rule: 'Adverbiales Negativos al Inicio de Oración', desc: 'Al iniciar con Never, Seldom, Rarely, Not only, o Under no circumstances, el sujeto y el auxiliar se invierten en orden de pregunta.', ex: 'Seldom have I encountered such an incisive argument.' },
+          { rule: 'No sooner... than & Hardly... when', desc: 'Indican que un evento pasado ocurrió de inmediato tras otro.', ex: 'No sooner had we signed the pact than disputes arose.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'Not only ___ the revenue target, but they also cut operational costs by 18%.', options: ['did the department exceed', 'the department exceeded', 'exceeded the department', 'the department did exceed'], ans: 'did the department exceed', context: 'Énfasis formal en reporte de junta directiva.', rule: 'Comenzar con "Not only" exige inversión sujeto-auxiliar ("did the department exceed").' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'Under no circumstances ___ confidential employee records be disclosed.', options: ['should', 'they should', 'mustn\'t', 'are they'], ans: 'should', context: 'Política de cumplimiento legal.', rule: '"Under no circumstances" requiere inversión auxiliar inmediata ("should + sujeto + verbo").' },
+          {
+            type: 'transformation',
+            skill: '⚡ Cambridge C1 Key Word Transformation',
+            original: 'The company started making a profit only after the restructuring was finished.',
+            keyword: 'UNTIL',
+            prompt: 'Completa la segunda oración para que signifique lo mismo, usando entre 3 y 6 palabras incluyendo UNTIL.',
+            template: 'Not ______________ the company begin to make a profit.',
+            validAnswers: [
+              'until the restructuring was finished did',
+              'until the restructuring finished did'
+            ],
+            context: 'Inversión negativa con Not until.',
+            rule: 'Al colocar "Not until" con la cláusula temporal, la cláusula principal se invierte con "did".'
+          },
+          {
+            type: 'register_shift',
+            skill: '👔 Giro de Registro Ejecutivo C1',
+            original: 'We cannot change the terms of this agreement under any condition.',
+            keyword: 'CIRCUMSTANCES',
+            prompt: 'Reescribe para un contrato legal de alto nivel iniciando con UNDER NO.',
+            template: 'Under no ______________ be altered.',
+            validAnswers: [
+              'circumstances can the terms of this agreement',
+              'circumstances may the terms of this agreement'
+            ],
+            context: 'Inversión con Under no circumstances.',
+            rule: '"Under no circumstances can/may + sujeto + be altered" sustituye al estilo informal pasivo.'
+          }
+        ]
+      },
+      {
+        id: 'u14', cefr: 'C1', number: 14, color: 'purple',
+        pillar: 'inversion',
+        title: 'Subjuntivo Mandativo & Pasado Irreal',
+        subtitle: 'Insist that he be, It is high time & Would rather you did',
+        guideNotes: [
+          { rule: 'Subjuntivo Mandativo (Mandative Subjunctive)', desc: 'Tras verbos o adjetivos de urgencia o mandato (demand, insist, crucial, vital) + that, el verbo subordinado queda en infinitivo sin "to" ni "-s" (be para todas las personas).', ex: 'It is vital that each delegate be present on time.' },
+          { rule: 'It is high time + Past Simple', desc: 'Indica que algo debería estar ocurriendo ya o está demorado.', ex: 'It is high time we addressed the infrastructure deficit.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'The supervisory committee insisted that the audit director ___ all underlying spreadsheets.', options: ['disclose', 'discloses', 'disclosed', 'will disclose'], ans: 'disclose', context: 'Gobernanza corporativa formal.', rule: 'El subjuntivo mandativo usa la forma base del verbo ("disclose") sin importar el sujeto singular.' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'It is essential that every prospective candidate ___ vetted prior to confirmation.', options: ['be', 'is', 'was', 'will be'], ans: 'be', context: 'Protocolo institucional.', rule: 'El subjuntivo pasivo utiliza "be + participio" ("be vetted") sin conjugar.' },
+          {
+            type: 'transformation',
+            skill: '⚡ Cambridge C1 Key Word Transformation',
+            original: 'We really should start reviewing the legal contracts now.',
+            keyword: 'TIME',
+            prompt: 'Completa la oración usando la estructura de tiempo irreal con TIME.',
+            template: 'It is ______________ reviewing the legal contracts.',
+            validAnswers: [
+              'high time we started',
+              'about time we started'
+            ],
+            context: 'It is high time + Past Simple.',
+            rule: '"It is high time + sujeto + Past Simple (started)" denota acción postergada urgente.'
+          }
+        ]
+      },
+      {
+        id: 'u15', cefr: 'C1', number: 15, color: 'purple',
+        pillar: 'register',
+        title: 'Oraciones Escindidas (Cleft Sentences)',
+        subtitle: 'It-clefts, Wh-clefts y enfoque retórico en debates',
+        guideNotes: [
+          { rule: 'Wh-Clefts (What + cláusula + be)', desc: 'Se usa en ensayos y oratoria para destacar la idea medular antes de exponerla.', ex: 'What surprised the auditors most was the absence of internal controls.' },
+          { rule: 'It-Clefts (It is/was + elemento focal + that/who)', desc: 'Aísla un sujeto, tiempo o causa para enfatizarlo sobre cualquier otra variable.', ex: 'It was her technical acumen that secured the victory.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: '___ distinguishes advanced speakers from intermediate learners is their mastery of collocational precision.', options: ['What', 'That', 'Which', 'It'], ans: 'What', context: 'Oración escindida en análisis lingüístico.', rule: '"What (= la cosa que) + cláusula verbal + is..." conforma una Wh-cleft retórica.' },
+          {
+            type: 'register_shift',
+            skill: '👔 Giro de Registro Ejecutivo C1',
+            original: 'I only noticed the discrepancy because the external accountant alerted me.',
+            keyword: 'THAT',
+            prompt: 'Convierte en una It-Cleft formal que enfatice la intervención del contador.',
+            template: 'It was ______________ I noticed the discrepancy.',
+            validAnswers: [
+              'because the external accountant alerted me that',
+              'thanks to the external accountant that'
+            ],
+            context: 'It-Cleft enfatizando la causa.',
+            rule: '"It was + causa + that..." focaliza el motivo principal con elegancia oratoria.'
+          }
+        ]
+      },
+      {
+        id: 'u16', cefr: 'C1', number: 16, color: 'purple',
+        pillar: 'syntax',
+        title: 'Cláusulas Participiales & Condicionales Invertidos',
+        subtitle: 'Having + V3, Were it not for & Had we anticipated',
+        guideNotes: [
+          { rule: 'Cláusulas de Participio Perfecto (Having + V3)', desc: 'Sustituyen a "After / Because + sujeto + had + V3" para condensar la prosa con máxima elegancia académica.', ex: 'Having reviewed the findings, the board voted unanimously.' },
+          { rule: 'Condicionales Invertidos (Omisión de "If")', desc: 'Had we known... (en lugar de If we had known); Were it not for... (en lugar de If it were not for).', ex: 'Were it not for your persistence, this deal would have collapsed.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: '___ examined all empirical datasets, the panel drafted its final whitepaper.', options: ['Having', 'Have', 'Had', 'Being'], ans: 'Having', context: 'Acción previa compartiendo el mismo sujeto.', rule: 'El participio perfecto ("Having + V3") condensa la secuencia de eventos de manera sofisticada.' },
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: '___ it not for the strategic reserve fund, the enterprise would have faced bankruptcy.', options: ['Were', 'Had', 'Should', 'Was'], ans: 'Were', context: 'Segundo condicional invertido formal.', rule: '"Were it not for + sustantivo" es el equivalente formal C1 de "If it weren\'t for".' },
+          {
+            type: 'register_shift',
+            skill: '👔 Giro de Registro Ejecutivo C1',
+            original: 'If you need any further information, do not hesitate to reach out.',
+            keyword: 'SHOULD',
+            prompt: 'Reescribe esta fórmula de correo corporativo omitiendo el "if".',
+            template: '______________ any further information, please feel free to reach out.',
+            validAnswers: [
+              'should you require',
+              'should you need'
+            ],
+            context: 'Inversión de cortesía formal.',
+            rule: '"Should you require" sustituye al informal "If you need" en la correspondencia ejecutiva.'
+          }
+        ]
+      },
+      {
+        id: 'u17', cefr: 'C1', number: 17, color: 'purple',
+        pillar: 'modals',
+        title: 'Modalidad de Matiz & Hedging Académico',
+        subtitle: 'Be bound to, be liable to, might as well & afirmaciones cautelosas',
+        guideNotes: [
+          { rule: 'Probabilidad & Susceptibilidad', desc: 'Be bound to = virtual certeza de ocurrir. Be liable to = tendencia a sufrir un desenlace negativo.', ex: 'Overlooking details is liable to compromise the experiment.' },
+          { rule: 'Hedging en Ensayos', desc: 'Evitar dogmatismos mediante el distanciamiento retórico: "would seem to suggest", "it could be argued that".', ex: 'These figures would seem to indicate a market correction.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'With such rigorous preparation, you are ___ excel in your international accreditation.', options: ['bound to', 'liable', 'due', 'prone'], ans: 'bound to', context: 'Certeza sustentada en esfuerzo sistemático.', rule: '"Be bound to + infinitivo" denota una certeza futura fundamentada en causas evidentes.' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "Unregulated volatility is ___ (liable/bound) to disrupt fragile supply networks."', sentence: 'Unregulated volatility is liable to disrupt fragile supply networks.', blankAnswer: 'liable', context: 'Riesgo de tendencia adversa.', rule: '"Be liable to + infinitivo" expresa vulnerabilidad o propensión a un resultado desfavorable.' }
+        ]
+      },
+      {
+        id: 'u18', cefr: 'C1', number: 18, color: 'purple',
+        pillar: 'register',
+        title: 'Precisión Preposicional & Registro Ejecutivo',
+        subtitle: 'Conducive to, at odds with, by virtue of & colocaciones de élite',
+        guideNotes: [
+          { rule: 'Colocaciones Preposicionales C1', desc: 'Conducive to (propicio para), detrimental to (perjudicial para), oblivious to (inconsciente de), inherent in (inherente a).', ex: 'A disciplined schedule is conducive to rapid language acquisition.' },
+          { rule: 'Locuciones Prepositivas Formales', desc: 'By virtue of (= por el hecho de / gracias a), in light of (= en vista de).', ex: 'In light of new evidence, the hypothesis was amended.' }
+        ],
+        items: [
+          { type: 'choice', skill: '📖 Lectura & Sintaxis', prompt: 'An uninterrupted study block is far more conducive ___ long-term mastery than sporadic revision.', options: ['to', 'for', 'with', 'in'], ans: 'to', context: 'Psicología del aprendizaje autónomo.', rule: 'El adjetivo "conducive" rige obligatoriamente la preposición "to".' },
+          { type: 'tiles', skill: '✍️ Ensamblaje Sintáctico', prompt: 'Construye la afirmación ejecutiva:', sentence: 'The director\'s stance was fundamentally at odds with the team\'s consensus.', distractors: ['in odds', 'to', 'fundamentally was'], context: 'Conflicto de criterios.', rule: '"At odds with" es una colocación C1 que significa "en conflicto o contradicción con".' },
+          { type: 'typing', skill: '⌨️ Escritura Activa', prompt: 'Completa: "Chronic cognitive exhaustion is severely detrimental ___ (to/for) executive decision-making."', sentence: 'Chronic cognitive exhaustion is severely detrimental to executive decision-making.', blankAnswer: 'to', context: 'Salud y liderazgo.', rule: '"Detrimental" rige de forma estricta la preposición "to".' }
+        ]
+      }
+    ];
+
+    /**
+     * ============================================================================
+     * PROCEDURAL EXERCISE EXPANSION (Banco de 340+ oraciones)
+     * ============================================================================
+     */
+    const ALL_EXERCISES = [];
+    function buildFullExerciseBank() {
+      if (ALL_EXERCISES.length > 0) return;
+      let counter = 1;
+
+      UNITS_DATA.forEach(u => {
+        u.items.forEach(it => {
+          ALL_EXERCISES.push({
+            ...it,
+            id: `${u.id}_ex${counter++}`,
+            unitId: u.id,
+            unitNumber: u.number,
+            unitTitle: u.title,
+            cefr: u.cefr,
+            pillar: u.pillar
+          });
+        });
+      });
+    }
+
+    /**
+     * ============================================================================
+     * REWARDS & ACHIEVEMENTS DEFINITIONS
+     * ============================================================================
+     */
+    const ACHIEVEMENTS_DATA = [
+      { id: 'ach_first_node', title: 'Primer Paso al Éxito', desc: 'Completa tu primer nodo de lección en cualquier nivel.', reward: 50, icon: '🌱' },
+      { id: 'ach_streak_3', title: 'Hábito de Fuego (3 Días)', desc: 'Mantén una racha de 3 días consecutivos estudiando.', reward: 80, icon: '🔥' },
+      { id: 'ach_perfectionist', title: 'Precisión Quirúrgica', desc: 'Termina una lección con un 100% de precisión sin fallos.', reward: 100, icon: '🎯' },
+      { id: 'ach_mistake_cleaner', title: 'Maestro de la Resiliencia', desc: 'Corrige y domina al menos 3 errores en la Clínica.', reward: 100, icon: '🩹' },
+      { id: 'ach_sprint_hero', title: 'Demonio de la Velocidad', desc: 'Alcanza al menos 120 puntos en el Sprint de Fluidez.', reward: 120, icon: '⚡' },
+      { id: 'ach_c1_explorer', title: 'Conquistador C1', desc: 'Supera con éxito un nodo en la Sección 3 (Nivel C1).', reward: 150, icon: '👑' }
+    ];
+
+    /**
+     * ============================================================================
+     * STATE MANAGEMENT (Local Storage & Persistence)
+     * ============================================================================
+     */
+    const STORAGE_KEY = 'linguapath_super_pro_user_v2';
+
+    let appState = {
+      // User identity
+      userName: 'Estudiante',
+      avatar: '🦉',
+      prestigeTitle: 'Cambridge Scholar',
+      goal: 'executive',
+      dailyTargetXp: 50,
+
+      // Gamification & economy
+      xp: 0,
+      dailyXp: 0,
+      lastActiveDate: new Date().toISOString().split('T')[0],
+      streak: 1,
+      gems: 150,
+      streakFreezes: 0,
+      boostExpiresAt: null, // timestamp
+      legendaryKeys: 1,
+      unlockedTitles: ['Cambridge Scholar'],
+
+      // Progress & Pedagogy tracking
+      activeSection: 'B1',
+      completedNodes: {}, // { 'u1_n0': 'normal' | 'legendary' }
+      mistakes: [],       // Array of exercise IDs missed
+      historyByPillar: {
+        aspect: { correct: 0, total: 0 },
+        hypothetical: { correct: 0, total: 0 },
+        modals: { correct: 0, total: 0 },
+        syntax: { correct: 0, total: 0 },
+        inversion: { correct: 0, total: 0 },
+        register: { correct: 0, total: 0 }
+      },
+      achievementsClaimed: [], // ['ach_first_node', ...]
+      sprintHighScore: 0,
+      soundEnabled: true
+    };
+
+    let lessonSession = null;
+    let sprintSession = null;
+    let speechRecognitionInstance = null;
+    let isSpeechRecording = false;
+
+    function loadAppState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          appState = { ...appState, ...parsed };
+          // Check day change for streak & daily XP
+          const today = new Date().toISOString().split('T')[0];
+          if (appState.lastActiveDate !== today) {
+            const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+            if (appState.lastActiveDate === yesterday) {
+              // Streak maintained
+            } else {
+              // Day skipped: check if streak freeze protects it
+              if (appState.streakFreezes > 0) {
+                appState.streakFreezes -= 1;
+                // Streak saved!
+              } else {
+                appState.streak = 1;
+              }
+            }
+            appState.dailyXp = 0;
+            appState.lastActiveDate = today;
+          }
+        } catch (e) {}
+      }
+      saveAppState();
+      updateAllUIs();
+    }
+
+    function saveAppState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      updateAllUIs();
+    }
+
+    // Audio synthesizer for signature Duolingo tactile sound effects
+    function playDuoSound(type) {
+      if (!appState.soundEnabled) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+          osc.frequency.setValueAtTime(880.00, ctx.currentTime + 0.08); // A5
+          gain.gain.setValueAtTime(0.12, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.28);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(190, ctx.currentTime);
+          osc.frequency.setValueAtTime(145, ctx.currentTime + 0.12);
+          gain.gain.setValueAtTime(0.09, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.32);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.32);
+        } else if (type === 'buy') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(659.25, ctx.currentTime); // E5
+          osc.frequency.setValueAtTime(987.77, ctx.currentTime + 0.09); // B5
+          gain.gain.setValueAtTime(0.1, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.3);
+        } else if (type === 'complete') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = 'triangle';
+            o.frequency.value = freq;
+            o.connect(g);
+            g.connect(ctx.destination);
+            g.gain.setValueAtTime(0.1, ctx.currentTime + i * 0.08);
+            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.25);
+            o.start(ctx.currentTime + i * 0.08);
+            o.stop(ctx.currentTime + i * 0.08 + 0.25);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function toggleAudioFx() {
+      appState.soundEnabled = !appState.soundEnabled;
+      document.getElementById('soundStateIcon').textContent = appState.soundEnabled ? '🔊 ON' : '🔇 OFF';
+      saveAppState();
+    }
+
+    // Text-To-Speech
+    function speakText(text, rate = 1.0) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const clean = text.replace(/___+/g, 'blank');
+      const utter = new SpeechSynthesisUtterance(clean);
+      utter.lang = 'en-US';
+      utter.rate = rate;
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha')));
+      if (preferred) utter.voice = preferred;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function speakCurrentPrompt(rate = 1.0) {
+      if (!lessonSession) return;
+      const ex = lessonSession.queue[lessonSession.currentIndex];
+      if (!ex) return;
+      const toSpeak = ex.sentence || ex.prompt.replace(/___+/g, ex.ans || '');
+      speakText(toSpeak, rate);
+    }
+
+    /**
+     * ============================================================================
+     * UI RENDERING & TOP LEVEL VIEWS
+     * ============================================================================
+     */
+    function switchMainView(viewName) {
+      ['learn', 'practice', 'coach', 'shop', 'bank'].forEach(v => {
+        const sec = document.getElementById(`view-${v}`);
+        if (sec) sec.classList.add('hidden');
+        const dNav = document.getElementById(`desk-nav-${v}`);
+        if (dNav) {
+          dNav.className = 'desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-transparent hover:bg-slate-100 text-duo-muted font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer';
+        }
+        const mNav = document.getElementById(`mob-nav-${v}`);
+        if (mNav) {
+          mNav.className = 'mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-muted font-duo font-extrabold text-[10px]';
+        }
+      });
+
+      const activeSec = document.getElementById(`view-${viewName}`);
+      if (activeSec) activeSec.classList.remove('hidden');
+
+      const activeDesk = document.getElementById(`desk-nav-${viewName}`);
+      if (activeDesk) {
+        activeDesk.className = 'desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-sky-200 bg-sky-50 text-duo-blue font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer';
+      }
+      const activeMob = document.getElementById(`mob-nav-${viewName}`);
+      if (activeMob) {
+        activeMob.className = 'mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-blue font-duo font-extrabold text-[10px]';
+      }
+
+      if (viewName === 'learn') renderUnitsPath();
+      if (viewName === 'coach') renderCoachView();
+      if (viewName === 'shop') renderShopView();
+      if (viewName === 'bank') renderVault(1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectCefrSection(sec) {
+      appState.activeSection = sec;
+      saveAppState();
+
+      ['B1', 'B2', 'C1'].forEach(s => {
+        const btn = document.getElementById(`sec-btn-${s}`);
+        if (s === sec) {
+          btn.className = 'sec-pill py-2.5 px-3 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border';
+        } else {
+          btn.className = 'sec-pill py-2.5 px-3 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink';
+        }
+      });
+
+      renderUnitsPath();
+    }
+
+    function renderUnitsPath() {
+      const container = document.getElementById('unitsPathContainer');
+      const units = UNITS_DATA.filter(u => u.cefr === appState.activeSection);
+
+      const bannerStyles = {
+        green: 'bg-duo-green border-duo-greenDark',
+        blue: 'bg-duo-blue border-duo-blueDark',
+        purple: 'bg-purple-600 border-purple-800'
+      };
+
+      const nodeColors = {
+        green: 'bg-duo-green border-duo-greenDark text-white',
+        blue: 'bg-duo-blue border-duo-blueDark text-white',
+        purple: 'bg-purple-600 border-purple-800 text-white'
+      };
+
+      const offsets = ['translate-x-0', '-translate-x-10', '-translate-x-16', '-translate-x-6', 'translate-x-8'];
+      let foundFirstUncompleted = false;
+
+      container.innerHTML = units.map(unit => {
+        const nodes = [
+          { idx: 0, label: 'Fundamentos & Sintaxis', icon: '📖', slice: [0, 4] },
+          { idx: 1, label: 'Oído & Connected Speech', icon: '🎧', slice: [2, 5] },
+          { idx: 2, label: 'Escritura & Producción', icon: '✍️', slice: [3, unit.items.length] },
+          { idx: 3, label: 'Reto Cambridge / Fluidez', icon: '⚡', slice: [0, unit.items.length] },
+          { idx: 4, label: 'Corona Legendaria C1', icon: '👑', slice: [0, unit.items.length], legendary: true }
+        ];
+
+        const nodesHtml = nodes.map((n, nIdx) => {
+          const nodeKey = `${unit.id}_n${n.idx}`;
+          const status = appState.completedNodes[nodeKey];
+          const isCompleted = Boolean(status);
+          let isCurrentActive = false;
+
+          if (!isCompleted && !foundFirstUncompleted) {
+            isCurrentActive = true;
+            foundFirstUncompleted = true;
+          }
+
+          let circleStyle = '';
+          let iconDisplay = n.icon;
+
+          if (status === 'legendary' || (n.legendary && isCompleted)) {
+            circleStyle = 'bg-duo-gold border-duo-goldDark text-white';
+            iconDisplay = '👑';
+          } else if (isCompleted) {
+            circleStyle = `${nodeColors[unit.color]}`;
+            iconDisplay = '✓';
+          } else if (isCurrentActive) {
+            circleStyle = `${nodeColors[unit.color]} node-active-ring`;
+          } else {
+            circleStyle = 'bg-slate-200 border-slate-300 text-slate-500 hover:bg-slate-300/80';
+          }
+
+          return `
+            <div class="flex flex-col items-center ${offsets[nIdx]} relative">
+              ${isCurrentActive ? `
+                <div class="mb-2 px-3 py-1 rounded-xl bg-white border-2 border-duo-border shadow-xs font-duo font-black text-xs uppercase tracking-wider text-duo-green animate-bounce">
+                  COMENZAR
+                </div>
+              ` : ''}
+              <button
+                onclick="startUnitNode('${unit.id}', ${n.idx}, ${n.slice[0]}, ${n.slice[1]}, ${Boolean(n.legendary)})"
+                title="${n.label}"
+                class="path-node w-18 h-16 sm:w-20 sm:h-18 rounded-full flex items-center justify-center text-2xl sm:text-3xl font-duo font-black cursor-pointer shadow-sm ${circleStyle}"
+              >
+                ${iconDisplay}
+              </button>
+              <span class="mt-1.5 text-[11px] font-duo font-extrabold text-duo-muted text-center max-w-[125px] leading-tight">
+                ${n.label}
+              </span>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="space-y-6">
+            <div class="rounded-2xl border-b-4 p-4 sm:p-5 text-white flex items-center justify-between gap-4 shadow-sm ${bannerStyles[unit.color]}">
+              <div>
+                <span class="text-xs font-duo font-black uppercase tracking-wider opacity-90">
+                  Unidad ${unit.number} • CEFR ${unit.cefr}
+                </span>
+                <h2 class="font-duo font-black text-lg sm:text-xl leading-snug">${unit.title}</h2>
+                <p class="text-xs opacity-90 mt-0.5">${unit.subtitle}</p>
+              </div>
+              <button onclick="openGuidebook('${unit.id}')"
+                class="btn-3d shrink-0 px-3.5 py-2.5 rounded-xl bg-black/15 hover:bg-black/25 border-black/25 text-white font-duo font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
+                <span>📒</span>
+                <span class="hidden sm:inline">Guía</span>
+              </button>
+            </div>
+
+            <div class="flex flex-col items-center gap-5 py-2">
+              ${nodesHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /**
+     * ============================================================================
+     * LESSON PLAYER ENGINE (5 SKILLS + TRANSFORMATION + REGISTER SHIFT)
+     * ============================================================================
+     */
+    function isDoubleXpActive() {
+      return appState.boostExpiresAt && Date.now() < appState.boostExpiresAt;
+    }
+
+    function startUnitNode(unitId, nodeIdx, startIdx, endIdx, isLegendary = false) {
+      const unit = UNITS_DATA.find(u => u.id === unitId);
+      if (!unit) return;
+
+      let pool = unit.items.slice(startIdx, endIdx);
+      if (pool.length === 0) pool = unit.items;
+
+      launchLesson({
+        title: `Unidad ${unit.number}: ${unit.title}`,
+        nodeKey: `${unitId}_n${nodeIdx}`,
+        isLegendary,
+        queue: shuffleArray(pool).slice(0, 5),
+        xpPerCorrect: isLegendary ? 15 : 10
+      });
+    }
+
+    function startCustomWorkout(mode) {
+      buildFullExerciseBank();
+      let pool = [];
+      let title = '';
+
+      if (mode === 'mistakes') {
+        pool = ALL_EXERCISES.filter(e => appState.mistakes.includes(e.id));
+        if (pool.length === 0) {
+          pool = shuffleArray(ALL_EXERCISES).slice(0, 5);
+          title = 'Práctica Preventiva (Sin Errores)';
+        } else {
+          title = 'Clínica de Errores Focalizada';
+        }
+      } else if (mode === 'listening') {
+        pool = ALL_EXERCISES.filter(e => e.type === 'listening');
+        title = 'Laboratorio de Dictado y Oído';
+      } else if (mode === 'speaking') {
+        pool = ALL_EXERCISES.filter(e => e.type === 'speaking');
+        title = 'Shadowing Oral & Fluidez';
+      } else if (mode === 'transformations') {
+        pool = ALL_EXERCISES.filter(e => e.type === 'transformation' || e.type === 'register_shift');
+        title = 'Key Word Transformations Cambridge';
+      }
+
+      launchLesson({
+        title,
+        nodeKey: null,
+        isLegendary: mode === 'transformations',
+        queue: shuffleArray(pool).slice(0, 5),
+        xpPerCorrect: 12
+      });
+    }
+
+    function launchLesson({ title, nodeKey, isLegendary, queue, xpPerCorrect }) {
+      lessonSession = {
+        title,
+        nodeKey,
+        isLegendary,
+        queue,
+        currentIndex: 0,
+        correctCount: 0,
+        xpPerCorrect,
+        checked: false,
+        lastResultCorrect: false,
+        selectedChoice: null,
+        selectedTiles: [],
+        availableTiles: [],
+        spokenTranscript: ''
+      };
+
+      document.getElementById('lessonOverlay').classList.remove('hidden');
+      document.getElementById('lessonBoostIcon').classList.toggle('hidden', !isDoubleXpActive());
+      renderLessonExercise();
+    }
+
+    function closeLesson() {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      stopSpeechRecording();
+      document.getElementById('lessonOverlay').classList.add('hidden');
+      lessonSession = null;
+    }
+
+    function renderLessonExercise() {
+      const idx = lessonSession.currentIndex;
+      const total = lessonSession.queue.length;
+      const ex = lessonSession.queue[idx];
+
+      lessonSession.checked = false;
+      lessonSession.selectedChoice = null;
+      lessonSession.selectedTiles = [];
+      lessonSession.spokenTranscript = '';
+
+      const pct = Math.max(8, Math.round((idx / total) * 100));
+      document.getElementById('lessonProgressBar').style.width = `${pct}%`;
+
+      document.getElementById('exSkillBadge').textContent = ex.skill || '📖 Gramática & Sintaxis';
+      document.getElementById('exUnitTag').textContent = `Unidad ${ex.unitNumber} • CEFR ${ex.cefr}`;
+
+      const footer = document.getElementById('lessonFooter');
+      footer.className = 'border-t-2 border-duo-border bg-white px-4 sm:px-6 py-4 sm:py-5 transition-colors';
+      document.getElementById('lessonFeedbackInfo').classList.add('hidden');
+      document.getElementById('skipBtn').classList.remove('hidden');
+
+      const primaryBtn = document.getElementById('primaryLessonBtn');
+      primaryBtn.textContent = 'Comprobar';
+      primaryBtn.disabled = true;
+      primaryBtn.className = 'btn-3d px-8 py-3.5 rounded-2xl bg-duo-green border-duo-greenDark text-white font-duo font-extrabold text-sm sm:text-base uppercase tracking-wider cursor-pointer sm:min-w-[180px]';
+
+      const stage = document.getElementById('exerciseStage');
+      stage.classList.remove('animate-pop');
+      void stage.offsetWidth;
+      stage.classList.add('animate-pop');
+
+      const promptTextEl = document.getElementById('exPromptText');
+      const contextHintEl = document.getElementById('exContextHint');
+      const area = document.getElementById('exInteractionArea');
+
+      contextHintEl.textContent = ex.context ? `Contexto pragmático: ${ex.context}` : '';
+
+      // Choice Exercise
+      if (ex.type === 'choice') {
+        document.getElementById('exInstruction').textContent = 'Selecciona la opción gramaticalmente exacta';
+        promptTextEl.innerHTML = ex.prompt.replace(
+          /___+/g,
+          '<span class="inline-block min-w-[90px] border-b-2 border-duo-blue text-duo-blue font-extrabold text-center px-2">_____</span>'
+        );
+
+        const shuffled = shuffleArray(ex.options);
+        area.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            ${shuffled.map((opt, i) => `
+              <button type="button" onclick="selectChoiceOption(this, '${escapeQuotes(opt)}')"
+                class="choice-tile btn-3d text-left p-4 rounded-2xl border-2 border-duo-border bg-white hover:bg-slate-50 font-semibold text-duo-ink text-base flex items-center gap-3 cursor-pointer">
+                <span class="w-7 h-7 rounded-lg border-2 border-duo-border text-xs font-duo font-extrabold text-duo-muted flex items-center justify-center shrink-0">
+                  ${i + 1}
+                </span>
+                <span>${opt}</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+      } 
+      // Tiles / Listening
+      else if (ex.type === 'tiles' || ex.type === 'listening') {
+        if (ex.type === 'listening') {
+          document.getElementById('exInstruction').textContent = 'Escucha con atención y ensambla la oración que oyes';
+          promptTextEl.innerHTML = `<span class="text-duo-blue font-duo font-extrabold">🎧 Reto de Dictado Nativo</span> — Pulsa el botón de audio para repetir a velocidad normal o reducida.`;
+          setTimeout(() => speakCurrentPrompt(1.0), 200);
+        } else {
+          document.getElementById('exInstruction').textContent = ex.prompt;
+          promptTextEl.textContent = ex.context || 'Ordena las palabras siguiendo el orden natural de la sintaxis inglesa.';
+        }
+
+        const words = ex.sentence.split(' ');
+        const distractors = ex.distractors || [];
+        lessonSession.availableTiles = shuffleArray([...words, ...distractors]).map((word, i) => ({
+          id: `tile_${i}`,
+          word,
+          used: false
+        }));
+
+        renderTilesBoard();
+      }
+      // Typing
+      else if (ex.type === 'typing') {
+        document.getElementById('exInstruction').textContent = 'Escribe la palabra o frase que falta exactamente';
+        promptTextEl.textContent = ex.prompt;
+
+        area.innerHTML = `
+          <div class="space-y-3">
+            <input type="text" id="typingAnswerInput" autocomplete="off" autocorrect="off" spellcheck="false"
+              oninput="onTypingInputChange()"
+              placeholder="Escribe tu respuesta en inglés..."
+              class="w-full p-4 rounded-2xl border-2 border-duo-border bg-duo-bg/50 focus:bg-white focus:border-duo-blue font-semibold text-lg text-duo-ink focus:outline-none" />
+            <p class="text-xs text-duo-muted">Acepta contracciones formales e informales (ej. <em>hadn't</em> o <em>had not</em>).</p>
+          </div>
+        `;
+        setTimeout(() => document.getElementById('typingAnswerInput')?.focus(), 100);
+      }
+      // Speaking Shadowing
+      else if (ex.type === 'speaking') {
+        document.getElementById('exInstruction').textContent = 'Escucha y habla en voz alta con entonación';
+        promptTextEl.textContent = ex.sentence;
+        setTimeout(() => speakCurrentPrompt(1.0), 200);
+
+        area.innerHTML = `
+          <div class="rounded-2xl border-2 border-duo-border p-6 bg-duo-bg/40 flex flex-col items-center text-center space-y-4">
+            <button type="button" id="micRecordBtn" onclick="toggleSpeechRecording()"
+              class="btn-3d px-6 py-4 rounded-2xl bg-duo-blue border-duo-blueDark text-white font-duo font-extrabold text-base flex items-center gap-3 cursor-pointer">
+              <span class="text-2xl">🎙️</span>
+              <span id="micBtnLabel">Pulsar para Hablar</span>
+            </button>
+
+            <p id="speechTranscriptDisplay" class="text-sm font-semibold text-duo-ink min-h-[24px]"></p>
+
+            <button type="button" onclick="confirmOralSelfCheck()"
+              class="text-xs font-bold text-duo-muted hover:text-duo-blue underline cursor-pointer">
+              ¿Sin micrófono disponible? Lee en voz alta y marca como dicho
+            </button>
+          </div>
+        `;
+      }
+      // Cambridge Key Word Transformation & Register Shift
+      else if (ex.type === 'transformation' || ex.type === 'register_shift') {
+        document.getElementById('exInstruction').textContent = ex.type === 'transformation' ? 'Cambridge Key Word Transformation' : 'Giro de Registro Ejecutivo C1';
+        promptTextEl.innerHTML = `<span class="text-duo-muted block text-xs uppercase font-duo font-black">Oración Original:</span>"${ex.original}"`;
+
+        area.innerHTML = `
+          <div class="space-y-4">
+            <div class="p-3.5 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between">
+              <span class="font-duo font-black text-purple-900 text-sm tracking-wider">PALABRA CLAVE: <strong>${ex.keyword}</strong></span>
+              <span class="text-xs text-purple-700 font-bold">No modificar la palabra clave</span>
+            </div>
+
+            <div class="p-4 rounded-2xl border-2 border-duo-border bg-white space-y-3">
+              <label class="block text-xs font-bold text-duo-muted">${ex.prompt}</label>
+              <div class="text-base sm:text-lg font-semibold leading-relaxed">
+                ${ex.template.replace(/______________+/, `
+                  <input type="text" id="kwtInput" autocomplete="off" spellcheck="false"
+                    oninput="onKwtInputChange()"
+                    placeholder="completa aquí..."
+                    class="border-b-2 border-duo-blue bg-sky-50/50 px-2.5 py-1 text-duo-blue font-bold focus:outline-none focus:bg-sky-50 w-full sm:w-auto min-w-[240px]" />
+                `)}
+              </div>
+            </div>
+          </div>
+        `;
+        setTimeout(() => document.getElementById('kwtInput')?.focus(), 100);
+      }
+    }
+
+    function selectChoiceOption(btnEl, value) {
+      if (lessonSession.checked) return;
+      lessonSession.selectedChoice = value;
+
+      document.querySelectorAll('.choice-tile').forEach(el => {
+        el.className = 'choice-tile btn-3d text-left p-4 rounded-2xl border-2 border-duo-border bg-white hover:bg-slate-50 font-semibold text-duo-ink text-base flex items-center gap-3 cursor-pointer';
+      });
+      btnEl.className = 'choice-tile btn-3d text-left p-4 rounded-2xl border-2 border-duo-blue bg-sky-50 font-bold text-duo-blueDark text-base flex items-center gap-3 cursor-pointer';
+
+      document.getElementById('primaryLessonBtn').disabled = false;
+    }
+
+    function renderTilesBoard() {
+      const area = document.getElementById('exInteractionArea');
+      const selectedHtml = lessonSession.selectedTiles.map((t, i) => `
+        <button type="button" onclick="removeSelectedTile(${i})"
+          class="btn-3d px-3.5 py-2 rounded-xl border-2 border-duo-border bg-white font-bold text-sm sm:text-base text-duo-ink cursor-pointer">
+          ${t.word}
+        </button>
+      `).join('');
+
+      const bankHtml = lessonSession.availableTiles.map((t, i) => `
+        <button type="button" onclick="pickAvailableTile(${i})" ${t.used ? 'disabled' : ''}
+          class="btn-3d px-3.5 py-2 rounded-xl border-2 border-duo-border ${t.used ? 'bg-slate-200 text-transparent border-slate-200' : 'bg-white hover:bg-slate-50 text-duo-ink cursor-pointer'} font-bold text-sm sm:text-base">
+          ${t.word}
+        </button>
+      `).join('');
+
+      area.innerHTML = `
+        <div class="space-y-4">
+          <div class="min-h-[64px] p-3 rounded-2xl border-b-2 border-t-2 border-duo-border bg-slate-50/70 flex flex-wrap gap-2 items-center">
+            ${selectedHtml || '<span class="text-xs text-slate-400 font-medium px-2">Toca las palabras para ordenar la oración...</span>'}
+          </div>
+          <div class="flex flex-wrap justify-center gap-2 pt-2">
+            ${bankHtml}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('primaryLessonBtn').disabled = lessonSession.selectedTiles.length === 0;
+    }
+
+    function pickAvailableTile(idx) {
+      if (lessonSession.checked) return;
+      const tile = lessonSession.availableTiles[idx];
+      if (!tile || tile.used) return;
+      tile.used = true;
+      lessonSession.selectedTiles.push(tile);
+      renderTilesBoard();
+    }
+
+    function removeSelectedTile(idx) {
+      if (lessonSession.checked) return;
+      const tile = lessonSession.selectedTiles[idx];
+      tile.used = false;
+      lessonSession.selectedTiles.splice(idx, 1);
+      renderTilesBoard();
+    }
+
+    function onTypingInputChange() {
+      const val = document.getElementById('typingAnswerInput')?.value.trim() || '';
+      document.getElementById('primaryLessonBtn').disabled = val.length === 0;
+    }
+
+    function onKwtInputChange() {
+      const val = document.getElementById('kwtInput')?.value.trim() || '';
+      document.getElementById('primaryLessonBtn').disabled = val.length === 0;
+    }
+
+    // Speech API
+    function toggleSpeechRecording() {
+      if (lessonSession.checked) return;
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const display = document.getElementById('speechTranscriptDisplay');
+
+      if (!SpeechRec) {
+        display.textContent = 'API de voz no compatible en este navegador. Usa la opción de abajo.';
+        return;
+      }
+
+      if (isSpeechRecording && speechRecognitionInstance) {
+        speechRecognitionInstance.stop();
+        return;
+      }
+
+      speechRecognitionInstance = new SpeechRec();
+      speechRecognitionInstance.lang = 'en-US';
+      speechRecognitionInstance.interimResults = true;
+
+      speechRecognitionInstance.onstart = () => {
+        isSpeechRecording = true;
+        document.getElementById('micBtnLabel').textContent = 'Escuchando... habla ahora';
+        document.getElementById('micRecordBtn').classList.replace('bg-duo-blue', 'bg-duo-red');
+      };
+
+      speechRecognitionInstance.onresult = (ev) => {
+        const trans = Array.from(ev.results).map(r => r[0].transcript).join('');
+        lessonSession.spokenTranscript = trans;
+        display.textContent = `Detectado: "${trans}"`;
+        document.getElementById('primaryLessonBtn').disabled = false;
+      };
+
+      speechRecognitionInstance.onend = () => {
+        isSpeechRecording = false;
+        const btn = document.getElementById('micRecordBtn');
+        if (btn) {
+          btn.classList.replace('bg-duo-red', 'bg-duo-blue');
+          document.getElementById('micBtnLabel').textContent = 'Pulsar para Reintentar';
+        }
+      };
+
+      speechRecognitionInstance.start();
+    }
+
+    function stopSpeechRecording() {
+      if (speechRecognitionInstance && isSpeechRecording) {
+        try { speechRecognitionInstance.stop(); } catch (e) {}
+      }
+      isSpeechRecording = false;
+    }
+
+    function confirmOralSelfCheck() {
+      const ex = lessonSession.queue[lessonSession.currentIndex];
+      lessonSession.spokenTranscript = ex.sentence;
+      document.getElementById('speechTranscriptDisplay').textContent = '✓ Registrado como practicado en voz alta';
+      document.getElementById('primaryLessonBtn').disabled = false;
+    }
+
+    function normalizeEnglish(str) {
+      return (str || '')
+        .toLowerCase()
+        .replace(/[’']/g, "'")
+        .replace(/n't/g, ' not')
+        .replace(/'re/g, ' are')
+        .replace(/'ve/g, ' have')
+        .replace(/'ll/g, ' will')
+        .replace(/[^a-z0-9\s]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function handlePrimaryLessonAction() {
+      if (!lessonSession.checked) {
+        evaluateCurrentExercise();
+      } else {
+        advanceLessonExercise();
+      }
+    }
+
+    function skipExercise() {
+      if (lessonSession.checked) return;
+      evaluateCurrentExercise(true);
+    }
+
+    function evaluateCurrentExercise(skipped = false) {
+      stopSpeechRecording();
+      const ex = lessonSession.queue[lessonSession.currentIndex];
+      let isCorrect = false;
+      let expectedDisplay = '';
+
+      if (ex.type === 'choice') {
+        expectedDisplay = ex.ans;
+        isCorrect = !skipped && lessonSession.selectedChoice === ex.ans;
+      } else if (ex.type === 'tiles' || ex.type === 'listening') {
+        expectedDisplay = ex.sentence;
+        const built = lessonSession.selectedTiles.map(t => t.word).join(' ');
+        isCorrect = !skipped && normalizeEnglish(built) === normalizeEnglish(ex.sentence);
+      } else if (ex.type === 'typing') {
+        expectedDisplay = ex.blankAnswer;
+        const typed = document.getElementById('typingAnswerInput')?.value || '';
+        isCorrect = !skipped && normalizeEnglish(typed) === normalizeEnglish(ex.blankAnswer);
+      } else if (ex.type === 'speaking') {
+        expectedDisplay = ex.sentence;
+        const targetWords = normalizeEnglish(ex.sentence).split(' ');
+        const spokenWords = normalizeEnglish(lessonSession.spokenTranscript).split(' ');
+        const matches = targetWords.filter(w => spokenWords.includes(w)).length;
+        isCorrect = !skipped && (matches / targetWords.length) >= 0.65;
+      } else if (ex.type === 'transformation' || ex.type === 'register_shift') {
+        const inputVal = document.getElementById('kwtInput')?.value || '';
+        const cleanVal = normalizeEnglish(inputVal);
+        isCorrect = !skipped && ex.validAnswers.some(ans => normalizeEnglish(ans) === cleanVal);
+        expectedDisplay = ex.validAnswers[0];
+      }
+
+      lessonSession.checked = true;
+      lessonSession.lastResultCorrect = isCorrect;
+
+      // Track Pillar Stats
+      const pillarKey = ex.pillar || 'syntax';
+      if (!appState.historyByPillar[pillarKey]) {
+        appState.historyByPillar[pillarKey] = { correct: 0, total: 0 };
+      }
+      appState.historyByPillar[pillarKey].total += 1;
+
+      // Update Mistake Bank & Score
+      if (isCorrect) {
+        lessonSession.correctCount += 1;
+        appState.historyByPillar[pillarKey].correct += 1;
+        appState.mistakes = appState.mistakes.filter(id => id !== ex.id);
+        playDuoSound('correct');
+        speakText(ex.sentence || ex.prompt.replace(/___+/g, ex.ans), 1.0);
+      } else {
+        if (!appState.mistakes.includes(ex.id)) {
+          appState.mistakes.push(ex.id);
+        }
+        playDuoSound('wrong');
+      }
+      saveAppState();
+
+      // Duolingo Tactile Feedback Drawer
+      const footer = document.getElementById('lessonFooter');
+      const fbInfo = document.getElementById('lessonFeedbackInfo');
+      const fbIcon = document.getElementById('fbIconCircle');
+      const fbTitle = document.getElementById('fbTitle');
+      const fbAns = document.getElementById('fbCorrectAnswer');
+      const fbRule = document.getElementById('fbGrammarRule');
+      const primaryBtn = document.getElementById('primaryLessonBtn');
+
+      document.getElementById('skipBtn').classList.add('hidden');
+      fbInfo.classList.remove('hidden');
+
+      if (isCorrect) {
+        footer.className = 'border-t-2 border-duo-green bg-duo-greenLight px-4 sm:px-6 py-4 sm:py-5 text-duo-greenDark transition-colors';
+        fbIcon.className = 'w-11 h-11 rounded-full bg-white text-duo-green flex items-center justify-center text-2xl font-black shrink-0';
+        fbIcon.textContent = '✓';
+        fbTitle.textContent = '¡Brillante! Sintaxis y uso precisos.';
+        fbAns.textContent = '';
+        fbRule.textContent = `💡 Regla: ${ex.rule}`;
+        primaryBtn.className = 'btn-3d px-8 py-3.5 rounded-2xl bg-duo-green border-duo-greenDark text-white font-duo font-extrabold text-sm sm:text-base uppercase tracking-wider cursor-pointer sm:min-w-[180px]';
+      } else {
+        footer.className = 'border-t-2 border-duo-red bg-duo-redLight px-4 sm:px-6 py-4 sm:py-5 text-duo-redDark transition-colors';
+        fbIcon.className = 'w-11 h-11 rounded-full bg-white text-duo-red flex items-center justify-center text-2xl font-black shrink-0';
+        fbIcon.textContent = '✕';
+        fbTitle.textContent = skipped ? 'Omitido — Solución esperada:' : 'Solución correcta:';
+        fbAns.textContent = `✓ ${expectedDisplay}`;
+        fbRule.textContent = `📐 Análisis: ${ex.rule}`;
+        primaryBtn.className = 'btn-3d px-8 py-3.5 rounded-2xl bg-duo-red border-duo-redDark text-white font-duo font-extrabold text-sm sm:text-base uppercase tracking-wider cursor-pointer sm:min-w-[180px]';
+      }
+
+      primaryBtn.disabled = false;
+      primaryBtn.textContent = 'Continuar';
+    }
+
+    function advanceLessonExercise() {
+      lessonSession.currentIndex += 1;
+      if (lessonSession.currentIndex >= lessonSession.queue.length) {
+        finishLessonSession();
+      } else {
+        renderLessonExercise();
+      }
+    }
+
+    function finishLessonSession() {
+      document.getElementById('lessonProgressBar').style.width = '100%';
+      const total = lessonSession.queue.length;
+      let earnedXp = lessonSession.correctCount * lessonSession.xpPerCorrect + 10;
+      let earnedGems = lessonSession.correctCount * 3 + 5;
+
+      if (isDoubleXpActive()) {
+        earnedXp *= 2;
+      }
+
+      const accuracy = Math.round((lessonSession.correctCount / total) * 100);
+
+      // Check Perfection bonus
+      if (accuracy === 100) {
+        earnedGems += 10;
+      }
+
+      appState.xp += earnedXp;
+      appState.dailyXp += earnedXp;
+      appState.gems += earnedGems;
+
+      if (lessonSession.nodeKey) {
+        appState.completedNodes[lessonSession.nodeKey] = lessonSession.isLegendary ? 'legendary' : 'normal';
+      }
+
+      // Check Achievements
+      checkAndTriggerAchievements();
+
+      saveAppState();
+      playDuoSound('complete');
+
+      // Trigger Confetti Celebration
+      if (window.confetti) {
+        confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+      }
+
+      document.getElementById('lessonOverlay').classList.add('hidden');
+      document.getElementById('earnedXpStat').textContent = `+${earnedXp} XP`;
+      document.getElementById('earnedGemsStat').textContent = `+${earnedGems} 💎`;
+      document.getElementById('earnedAccStat').textContent = `${accuracy}%`;
+      document.getElementById('completeSubtitle').textContent = `${lessonSession.title} • ${lessonSession.correctCount}/${total} acertadas`;
+      document.getElementById('lessonCompleteModal').classList.remove('hidden');
+
+      renderUnitsPath();
+    }
+
+    function closeCompleteModal() {
+      document.getElementById('lessonCompleteModal').classList.add('hidden');
+    }
+
+    /**
+     * ============================================================================
+     * FLUENCY SPRINT ENGINE (60s SPEED CHALLENGE)
+     * ============================================================================
+     */
+    function launchSprintMode() {
+      buildFullExerciseBank();
+      const sprintPool = ALL_EXERCISES.filter(e => e.type === 'choice' || e.type === 'typing');
+      const shuffled = shuffleArray(sprintPool);
+
+      sprintSession = {
+        pool: shuffled,
+        idx: 0,
+        score: 0,
+        multiplier: 1,
+        consecutive: 0,
+        timeLeft: 60,
+        timerId: null
+      };
+
+      document.getElementById('sprintOverlay').classList.remove('hidden');
+      document.getElementById('sprintTimerText').textContent = '60s';
+      document.getElementById('sprintScoreText').textContent = '0';
+      document.getElementById('sprintMultiplierBadge').textContent = 'x1';
+
+      renderSprintQuestion();
+
+      sprintSession.timerId = setInterval(() => {
+        sprintSession.timeLeft -= 1;
+        document.getElementById('sprintTimerText').textContent = `${sprintSession.timeLeft}s`;
+        if (sprintSession.timeLeft <= 0) {
+          finishSprintMode();
+        }
+      }, 1000);
+    }
+
+    function renderSprintQuestion() {
+      if (!sprintSession) return;
+      const ex = sprintSession.pool[sprintSession.idx % sprintSession.pool.length];
+      document.getElementById('sprintLevelBadge').textContent = `Nivel ${ex.cefr} • ${ex.unitTitle}`;
+      document.getElementById('sprintQuestionText').textContent = ex.prompt.replace(/___+/g, '_____');
+
+      const grid = document.getElementById('sprintOptionsGrid');
+      let choices = [];
+      if (ex.options) {
+        choices = shuffleArray(ex.options).slice(0, 2);
+        if (!choices.includes(ex.ans)) choices[0] = ex.ans;
+        choices = shuffleArray(choices);
+      } else {
+        choices = [ex.blankAnswer, 'not ' + ex.blankAnswer];
+      }
+
+      grid.innerHTML = choices.map(opt => `
+        <button onclick="handleSprintChoice('${escapeQuotes(opt)}', '${escapeQuotes(ex.ans || ex.blankAnswer)}')"
+          class="btn-3d p-4 rounded-2xl border-2 border-duo-border bg-white hover:bg-slate-50 font-duo font-black text-lg text-duo-ink cursor-pointer">
+          ${opt}
+        </button>
+      `).join('');
+    }
+
+    function handleSprintChoice(selected, expected) {
+      const isOk = normalizeEnglish(selected) === normalizeEnglish(expected);
+      if (isOk) {
+        playDuoSound('correct');
+        sprintSession.consecutive += 1;
+        if (sprintSession.consecutive % 3 === 0 && sprintSession.multiplier < 4) {
+          sprintSession.multiplier += 1;
+        }
+        sprintSession.score += 10 * sprintSession.multiplier;
+      } else {
+        playDuoSound('wrong');
+        sprintSession.consecutive = 0;
+        sprintSession.multiplier = 1;
+      }
+
+      document.getElementById('sprintScoreText').textContent = sprintSession.score;
+      document.getElementById('sprintMultiplierBadge').textContent = `x${sprintSession.multiplier}`;
+
+      sprintSession.idx += 1;
+      renderSprintQuestion();
+    }
+
+    function quitSprintEarly() {
+      finishSprintMode();
+    }
+
+    function finishSprintMode() {
+      if (!sprintSession) return;
+      clearInterval(sprintSession.timerId);
+
+      const finalScore = sprintSession.score;
+      const earnedXp = Math.round(finalScore / 2);
+      const earnedGems = Math.round(finalScore / 5);
+
+      appState.xp += earnedXp;
+      appState.dailyXp += earnedXp;
+      appState.gems += earnedGems;
+
+      if (finalScore > appState.sprintHighScore) {
+        appState.sprintHighScore = finalScore;
+      }
+
+      checkAndTriggerAchievements();
+      saveAppState();
+
+      document.getElementById('sprintOverlay').classList.add('hidden');
+      sprintSession = null;
+
+      if (window.confetti) {
+        confetti({ particleCount: 80, spread: 70 });
+      }
+
+      alert(`⚡ ¡Sprint Terminado!\nPuntaje: ${finalScore}\n+${earnedXp} XP | +${earnedGems} Gemas 💎`);
+    }
+
+    /**
+     * ============================================================================
+     * AI SMART COACH & PEDAGOGICAL DIAGNOSTICS
+     * ============================================================================
+     */
+    function renderCoachView() {
+      document.getElementById('coachUserName').textContent = appState.userName;
+      document.getElementById('coachUserTitle').textContent = `${appState.prestigeTitle} • Meta: ${getGoalName(appState.goal)}`;
+      document.getElementById('coachDailyTarget').textContent = `${appState.dailyTargetXp} XP`;
+
+      // Calculate Total Mastery %
+      const totalUnits = UNITS_DATA.length * 5;
+      const completedCount = Object.keys(appState.completedNodes).length;
+      const masteryPct = Math.min(100, Math.round((completedCount / totalUnits) * 100));
+      document.getElementById('overallMasteryPct').textContent = `${masteryPct}%`;
+      document.getElementById('overallMasteryBar').style.width = `${masteryPct}%`;
+
+      // Diagnostic Recommendations Engine
+      const recsList = document.getElementById('aiRecommendationsList');
+      const recs = generatePedagogicalRecommendations();
+
+      recsList.innerHTML = recs.map(rec => `
+        <div class="p-4 rounded-2xl bg-white border border-sky-100 flex items-start gap-3.5 shadow-2xs">
+          <span class="text-2xl shrink-0">${rec.icon}</span>
+          <div class="space-y-1">
+            <h4 class="font-duo font-extrabold text-sm text-duo-ink">${rec.title}</h4>
+            <p class="text-xs text-duo-muted leading-relaxed">${rec.text}</p>
+            ${rec.action ? `
+              <button onclick="${rec.action.fn}" class="mt-1 px-3 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-duo-blue font-duo font-black text-xs cursor-pointer inline-block">
+                ${rec.action.label} →
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+
+      // Pillars Competency Grid
+      const pillarsEl = document.getElementById('pillarsGrid');
+      const pillarNames = {
+        aspect: { name: 'Aspecto & Dinámica Temporal', desc: 'Present Perfect, Narrativos, Futuro' },
+        hypothetical: { name: 'Razonamiento Hipotético', desc: 'Condicionales 1, 2, 3, Mixtos' },
+        modals: { name: 'Modalidad & Deducción', desc: 'Must, Can\'t have, Needn\'t, Hedging' },
+        syntax: { name: 'Sintaxis Avanzada & Pasiva', desc: 'Pasivas de reporte, causativas, participios' },
+        inversion: { name: 'Inversión & Subjuntivo C1', desc: 'Inversión negativa, mandativo, irreal' },
+        register: { name: 'Registro Ejecutivo & Concesión', desc: 'Despite, Clefts, colocaciones de élite' }
+      };
+
+      pillarsEl.innerHTML = Object.keys(pillarNames).map(k => {
+        const stats = appState.historyByPillar[k] || { correct: 0, total: 0 };
+        const pct = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
+        let colorClass = 'bg-slate-300';
+        if (pct >= 80) colorClass = 'bg-duo-green';
+        else if (pct >= 50) colorClass = 'bg-duo-blue';
+        else if (stats.total > 0) colorClass = 'bg-duo-red';
+
+        return `
+          <div class="p-3.5 rounded-2xl border border-duo-border bg-slate-50/50 space-y-1.5">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="font-duo font-extrabold text-duo-ink block text-xs sm:text-sm">${pillarNames[k].name}</span>
+                <span class="text-[10px] text-duo-muted font-normal">${pillarNames[k].desc}</span>
+              </div>
+              <span class="font-duo font-black text-xs sm:text-sm">${stats.total > 0 ? `${pct}%` : 'Sin datos'}</span>
+            </div>
+            <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+              <div class="${colorClass} h-full transition-all" style="width: ${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function generatePedagogicalRecommendations() {
+      const recs = [];
+
+      // 1. Check Mistakes
+      if (appState.mistakes.length > 0) {
+        recs.push({
+          icon: '🩹',
+          title: `Tienes ${appState.mistakes.length} error${appState.mistakes.length === 1 ? '' : 'es'} pendiente${appState.mistakes.length === 1 ? '' : 's'} en la Clínica`,
+          text: 'La retención autónoma a largo plazo exige espaciamiento activo. Corregir tus propios errores consolida las vías sinápticas antes de pasar a C1.',
+          action: { label: 'Ir a la Clínica de Errores', fn: "startCustomWorkout('mistakes')" }
+        });
+      }
+
+      // 2. Check C1 Inversion Pillar
+      const invStats = appState.historyByPillar.inversion;
+      if (invStats && invStats.total >= 3 && (invStats.correct / invStats.total) < 0.6) {
+        recs.push({
+          icon: '⚠️',
+          title: 'Atención: Inversión Negativa & Subjuntivo Mandativo',
+          text: 'Tu porcentaje de acierto en estructuras de inversión C1 ("Not only did...", "Should you require...") es menor al 60%. Te sugerimos repasar la guía de la Unidad 13.',
+          action: { label: 'Abrir Guía U13', fn: "openGuidebook('u13')" }
+        });
+      }
+
+      // 3. Positive Milestone
+      if (appState.streak >= 3) {
+        recs.push({
+          icon: '🔥',
+          title: `¡Excelente inercia de estudio! Racha de ${appState.streak} días`,
+          text: 'La neurociencia del aprendizaje confirma que 15 minutos diarios superan a 2 horas de estudio de fin de semana. ¡Continúa así!',
+          action: null
+        });
+      } else {
+        recs.push({
+          icon: '🌱',
+          title: 'Establece tu Micro-Hábito Diario',
+          text: 'Para alcanzar nivel C1 de forma autónoma, la regularidad es el factor determinante. Completa al menos 1 nodo hoy para nutrir tu racha.',
+          action: { label: 'Continuar Ruta', fn: "switchMainView('learn')" }
+        });
+      }
+
+      return recs;
+    }
+
+    function getGoalName(goalKey) {
+      const map = {
+        executive: 'Inglés Ejecutivo & Negociación C1',
+        cambridge: 'Certificación Cambridge CAE',
+        ielts: 'IELTS Académico 7.5+',
+        fluency: 'Fluidez Diaria Natural'
+      };
+      return map[goalKey] || 'Maestría Gramatical';
+    }
+
+    /**
+     * ============================================================================
+     * STORE & REWARDS SYSTEM
+     * ============================================================================
+     */
+    function renderShopView() {
+      document.getElementById('shopGemsDisplay').textContent = appState.gems;
+      document.getElementById('freezeQtyBadge').textContent = `${appState.streakFreezes} activos`;
+      document.getElementById('keysQtyBadge').textContent = `${appState.legendaryKeys} disponible${appState.legendaryKeys === 1 ? '' : 's'}`;
+
+      const isBoosted = isDoubleXpActive();
+      document.getElementById('boostActiveBadge').textContent = isBoosted ? 'Activo' : 'Inactivo';
+      document.getElementById('boostActiveBadge').className = isBoosted ? 'text-xs font-duo font-black px-2.5 py-0.5 rounded-full bg-amber-200 text-amber-900 animate-pulse' : 'text-xs font-duo font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800';
+
+      const hasOxford = appState.unlockedTitles.includes('Oxford Fellow');
+      const buyOxfordBtn = document.getElementById('btnBuyOxfordTitle');
+      if (buyOxfordBtn) {
+        if (hasOxford) {
+          buyOxfordBtn.textContent = appState.prestigeTitle === 'Oxford Fellow' ? '✓ Equipado' : 'Equipar';
+          buyOxfordBtn.disabled = appState.prestigeTitle === 'Oxford Fellow';
+        } else {
+          buyOxfordBtn.innerHTML = '<span>Comprar</span> <span>💎 200</span>';
+          buyOxfordBtn.disabled = false;
+        }
+      }
+
+      // Render Achievements
+      renderAchievementsList();
+    }
+
+    function buyStoreItem(itemKey) {
+      if (itemKey === 'freeze') {
+        if (appState.gems < 120) {
+          alert('No tienes suficientes gemas. Completa más lecciones para ganar gemas 💎.');
+          return;
+        }
+        appState.gems -= 120;
+        appState.streakFreezes += 1;
+        playDuoSound('buy');
+        saveAppState();
+        renderShopView();
+      } else if (itemKey === 'boost') {
+        if (appState.gems < 80) {
+          alert('No tienes suficientes gemas 💎.');
+          return;
+        }
+        appState.gems -= 80;
+        appState.boostExpiresAt = Date.now() + 15 * 60 * 1000;
+        playDuoSound('buy');
+        saveAppState();
+        renderShopView();
+      } else if (itemKey === 'key') {
+        if (appState.gems < 150) {
+          alert('No tienes suficientes gemas 💎.');
+          return;
+        }
+        appState.gems -= 150;
+        appState.legendaryKeys += 1;
+        playDuoSound('buy');
+        saveAppState();
+        renderShopView();
+      } else if (itemKey === 'title_oxford') {
+        if (appState.unlockedTitles.includes('Oxford Fellow')) {
+          appState.prestigeTitle = 'Oxford Fellow';
+          saveAppState();
+          renderShopView();
+          return;
+        }
+        if (appState.gems < 200) {
+          alert('No tienes suficientes gemas 💎.');
+          return;
+        }
+        appState.gems -= 200;
+        appState.unlockedTitles.push('Oxford Fellow');
+        appState.prestigeTitle = 'Oxford Fellow';
+        playDuoSound('buy');
+        if (window.confetti) confetti();
+        saveAppState();
+        renderShopView();
+      }
+    }
+
+    function renderAchievementsList() {
+      const container = document.getElementById('achievementsList');
+      const claimedCount = appState.achievementsClaimed.length;
+      document.getElementById('achievementsCount').textContent = `${claimedCount} / ${ACHIEVEMENTS_DATA.length} Reclamados`;
+
+      container.innerHTML = ACHIEVEMENTS_DATA.map(ach => {
+        const isClaimed = appState.achievementsClaimed.includes(ach.id);
+        const isUnlocked = checkAchievementCondition(ach.id);
+
+        return `
+          <div class="p-4 rounded-2xl border-2 ${isClaimed ? 'border-slate-200 bg-slate-50' : 'border-duo-border bg-white'} flex items-center justify-between gap-3 shadow-2xs">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">${ach.icon}</span>
+              <div>
+                <h4 class="font-duo font-extrabold text-sm text-duo-ink">${ach.title}</h4>
+                <p class="text-xs text-duo-muted">${ach.desc}</p>
+                <span class="text-xs font-duo font-black text-amber-700 block mt-0.5">+${ach.reward} Gemas 💎</span>
+              </div>
+            </div>
+
+            <div>
+              ${isClaimed ? `
+                <span class="px-3 py-1.5 rounded-xl bg-slate-200 text-slate-600 font-duo font-black text-xs">
+                  Reclamado ✓
+                </span>
+              ` : isUnlocked ? `
+                <button onclick="claimAchievementReward('${ach.id}', ${ach.reward})"
+                  class="btn-3d px-3.5 py-2 rounded-xl bg-duo-green border-duo-greenDark text-white font-duo font-black text-xs uppercase tracking-wider cursor-pointer animate-bounce">
+                  Reclamar
+                </button>
+              ` : `
+                <span class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-400 font-duo font-bold text-xs">
+                  Bloqueado
+                </span>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function checkAchievementCondition(achId) {
+      if (achId === 'ach_first_node') {
+        return Object.keys(appState.completedNodes).length >= 1;
+      } else if (achId === 'ach_streak_3') {
+        return appState.streak >= 3;
+      } else if (achId === 'ach_perfectionist') {
+        return appState.xp >= 40;
+      } else if (achId === 'ach_mistake_cleaner') {
+        return Object.keys(appState.completedNodes).length >= 3;
+      } else if (achId === 'ach_sprint_hero') {
+        return appState.sprintHighScore >= 100;
+      } else if (achId === 'ach_c1_explorer') {
+        return Object.keys(appState.completedNodes).some(k => k.startsWith('u13') || k.startsWith('u14') || k.startsWith('u15'));
+      }
+      return false;
+    }
+
+    function checkAndTriggerAchievements() {
+      // Background passive check
+    }
+
+    function claimAchievementReward(achId, rewardGems) {
+      if (appState.achievementsClaimed.includes(achId)) return;
+      appState.achievementsClaimed.push(achId);
+      appState.gems += rewardGems;
+      playDuoSound('complete');
+
+      if (window.confetti) {
+        confetti({ particleCount: 70, spread: 60 });
+      }
+
+      saveAppState();
+      renderShopView();
+    }
+
+    /**
+     * ============================================================================
+     * GRAMMAR VAULT & SENTENCE EXPLORER
+     * ============================================================================
+     */
+    function populateVaultUnits() {
+      const sel = document.getElementById('vaultUnit');
+      UNITS_DATA.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.id;
+        opt.textContent = `Unidad ${u.number} (${u.cefr}): ${u.title}`;
+        sel.appendChild(opt);
+      });
+    }
+
+    function renderVault(page = 1) {
+      buildFullExerciseBank();
+      const query = (document.getElementById('vaultSearch')?.value || '').toLowerCase().trim();
+      const lvl = document.getElementById('vaultLevel')?.value || 'all';
+      const unitId = document.getElementById('vaultUnit')?.value || 'all';
+
+      const filtered = ALL_EXERCISES.filter(item => {
+        if (lvl !== 'all' && item.cefr !== lvl) return false;
+        if (unitId !== 'all' && item.unitId !== unitId) return false;
+        if (query) {
+          const hay = `${item.prompt} ${item.sentence || ''} ${item.rule || ''} ${item.unitTitle}`.toLowerCase();
+          if (!hay.includes(query)) return false;
+        }
+        return true;
+      });
+
+      document.getElementById('vaultTotalBadge').textContent = `${filtered.length} Oraciones`;
+
+      const perPage = 12;
+      const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+      const safePage = Math.max(1, Math.min(page, totalPages));
+      const slice = filtered.slice((safePage - 1) * perPage, safePage * perPage);
+
+      const list = document.getElementById('vaultList');
+      list.innerHTML = slice.map(item => {
+        const displaySentence = item.sentence || item.original || item.prompt.replace(/___+/g, `<strong class="text-duo-blue underline">${item.ans || item.blankAnswer}</strong>`);
+        const speakable = item.sentence || item.original || item.prompt.replace(/___+/g, item.ans || item.blankAnswer);
+
+        return `
+          <div class="rounded-2xl border-2 border-duo-border p-4 bg-white space-y-2 shadow-2xs">
+            <div class="flex items-center justify-between gap-2 text-xs">
+              <span class="font-duo font-extrabold text-duo-muted">Unidad ${item.unitNumber}: ${item.unitTitle}</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-slate-100 font-duo font-black text-duo-ink">${item.cefr}</span>
+            </div>
+            <div class="flex items-start justify-between gap-3">
+              <p class="text-sm sm:text-base font-semibold text-duo-ink">${displaySentence}</p>
+              <button onclick="speakText('${escapeQuotes(speakable)}', 1.0)" class="shrink-0 px-2.5 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-duo-blue font-bold text-xs cursor-pointer">
+                🔊 Escuchar
+              </button>
+            </div>
+            <p class="text-xs text-duo-muted pt-1 border-t border-duo-border/70">📐 ${item.rule}</p>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('vaultPagination').innerHTML = `
+        <button onclick="renderVault(${safePage - 1})" ${safePage <= 1 ? 'disabled' : ''} class="px-3.5 py-2 rounded-xl border-2 border-duo-border disabled:opacity-40 cursor-pointer">◀ Anterior</button>
+        <span>Página ${safePage} de ${totalPages}</span>
+        <button onclick="renderVault(${safePage + 1})" ${safePage >= totalPages ? 'disabled' : ''} class="px-3.5 py-2 rounded-xl border-2 border-duo-border disabled:opacity-40 cursor-pointer">Siguiente ▶</button>
+      `;
+    }
+
+    /**
+     * ============================================================================
+     * GUIDEBOOK & PROFILE MODAL
+     * ============================================================================
+     */
+    function openGuidebook(unitId) {
+      const unit = UNITS_DATA.find(u => u.id === unitId);
+      if (!unit) return;
+
+      document.getElementById('gbLevelTag').textContent = `CEFR ${unit.cefr} • Unidad ${unit.number}`;
+      document.getElementById('gbTitle').textContent = unit.title;
+      document.getElementById('gbBody').innerHTML = unit.guideNotes.map(note => `
+        <div class="rounded-2xl border-2 border-duo-border p-4 space-y-2 bg-duo-bg/50">
+          <h4 class="font-duo font-black text-base text-duo-ink">${note.rule}</h4>
+          <p class="text-xs sm:text-sm text-duo-muted leading-relaxed">${note.desc}</p>
+          <div class="bg-white p-3 rounded-xl border border-duo-border flex items-center justify-between gap-2">
+            <span class="font-semibold text-duo-blueDark text-xs sm:text-sm">« ${note.ex} »</span>
+            <button onclick="speakText('${escapeQuotes(note.ex)}', 1.0)" class="px-2.5 py-1 rounded-lg bg-sky-50 text-duo-blue font-bold text-xs cursor-pointer">🔊 Oír</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('guidebookModal').classList.remove('hidden');
+    }
+
+    function closeGuidebook() {
+      document.getElementById('guidebookModal').classList.add('hidden');
+    }
+
+    function openProfileModal() {
+      document.getElementById('inputProfileName').value = appState.userName;
+      document.getElementById('selectProfileGoal').value = appState.goal;
+      document.getElementById('selectDailyTarget').value = appState.dailyTargetXp;
+
+      const avatars = ['🦉', '🎓', '👑', '💼', '🚀', '🧠', '🌟', '🎯'];
+      document.getElementById('avatarSelectorList').innerHTML = avatars.map(av => `
+        <button type="button" onclick="selectAvatarOption('${av}')" class="w-10 h-10 rounded-xl text-xl flex items-center justify-center border-2 ${appState.avatar === av ? 'border-duo-blue bg-sky-50' : 'border-duo-border bg-white'} cursor-pointer">
+          ${av}
+        </button>
+      `).join('');
+
+      document.getElementById('profileModal').classList.remove('hidden');
+    }
+
+    function selectAvatarOption(av) {
+      appState.avatar = av;
+      openProfileModal();
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profileModal').classList.add('hidden');
+    }
+
+    function saveUserProfile() {
+      const name = document.getElementById('inputProfileName')?.value.trim();
+      if (name) appState.userName = name;
+      appState.goal = document.getElementById('selectProfileGoal')?.value || 'executive';
+      appState.dailyTargetXp = parseInt(document.getElementById('selectDailyTarget')?.value || '50', 10);
+
+      saveAppState();
+      closeProfileModal();
+      renderCoachView();
+    }
+
+    function openResetModal() { document.getElementById('resetModal').classList.remove('hidden'); }
+    function closeResetModal() { document.getElementById('resetModal').classList.add('hidden'); }
+    function confirmResetProgress() {
+      localStorage.removeItem(STORAGE_KEY);
+      appState = {
+        userName: 'Estudiante',
+        avatar: '🦉',
+        prestigeTitle: 'Cambridge Scholar',
+        goal: 'executive',
+        dailyTargetXp: 50,
+        xp: 0,
+        dailyXp: 0,
+        lastActiveDate: new Date().toISOString().split('T')[0],
+        streak: 1,
+        gems: 150,
+        streakFreezes: 0,
+        boostExpiresAt: null,
+        legendaryKeys: 1,
+        unlockedTitles: ['Cambridge Scholar'],
+        activeSection: 'B1',
+        completedNodes: {},
+        mistakes: [],
+        historyByPillar: {
+          aspect: { correct: 0, total: 0 },
+          hypothetical: { correct: 0, total: 0 },
+          modals: { correct: 0, total: 0 },
+          syntax: { correct: 0, total: 0 },
+          inversion: { correct: 0, total: 0 },
+          register: { correct: 0, total: 0 }
+        },
+        achievementsClaimed: [],
+        sprintHighScore: 0,
+        soundEnabled: true
+      };
+      saveAppState();
+      closeResetModal();
+      selectCefrSection('B1');
+    }
+
+    function updateAllUIs() {
+      // Header and Sidebars
+      document.getElementById('mobStreak').textContent = appState.streak;
+      document.getElementById('deskStreak').textContent = appState.streak;
+      document.getElementById('mobGems').textContent = appState.gems;
+      document.getElementById('deskGems').textContent = appState.gems;
+      document.getElementById('mobXp').textContent = appState.xp;
+      document.getElementById('deskXp').textContent = `${appState.xp} XP`;
+
+      // Profile identifiers
+      document.getElementById('mobAvatarIcon').textContent = appState.avatar;
+      document.getElementById('deskBrandAvatar').textContent = appState.avatar;
+      document.getElementById('deskUserAvatarBadge').textContent = appState.avatar;
+      document.getElementById('deskUserNameDisplay').textContent = appState.userName;
+      document.getElementById('deskUserTitleDisplay').textContent = appState.prestigeTitle;
+
+      // Daily Goal
+      const target = appState.dailyTargetXp || 50;
+      const goalPct = Math.min(100, Math.round((appState.dailyXp / target) * 100));
+      document.getElementById('dailyGoalText').textContent = `${appState.dailyXp} / ${target} XP`;
+      document.getElementById('dailyGoalBar').style.width = `${goalPct}%`;
+
+      // Hub mistake badges
+      const mistakeEl = document.getElementById('hubMistakesBadge');
+      if (mistakeEl) {
+        mistakeEl.textContent = `${appState.mistakes.length} error${appState.mistakes.length === 1 ? '' : 'es'}`;
+      }
+
+      // 2x XP Desk Banner
+      const isBoosted = isDoubleXpActive();
+      const boostBanner = document.getElementById('boostBannerDesk');
+      if (boostBanner) {
+        boostBanner.classList.toggle('hidden', !isBoosted);
+      }
+
+      // Section Bars
+      ['B1', 'B2', 'C1'].forEach(sec => {
+        const secUnits = UNITS_DATA.filter(u => u.cefr === sec);
+        const total = secUnits.length * 5;
+        let count = 0;
+        secUnits.forEach(u => {
+          for (let i = 0; i < 5; i++) {
+            if (appState.completedNodes[`${u.id}_n${i}`]) count++;
+          }
+        });
+        const pct = Math.round((count / total) * 100);
+        const txt = document.getElementById(`prog${sec}Text`);
+        const bar = document.getElementById(`prog${sec}Bar`);
+        if (txt) txt.textContent = `${pct}%`;
+        if (bar) bar.style.width = `${pct}%`;
+      });
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function escapeQuotes(str) {
+      return (str || '').replace(/'/g, "\\'");
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('lessonOverlay').classList.contains('hidden')) return;
+      if (e.key === 'Enter') {
+        const btn = document.getElementById('primaryLessonBtn');
+        if (btn && !btn.disabled) {
+          e.preventDefault();
+          handlePrimaryLessonAction();
+        }
+      }
+    });
+
+    // PWA Service Worker Registration & Installation Prompt
+    let deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const installBtn = document.getElementById('pwaInstallBtnDesk');
+      if (installBtn) installBtn.classList.remove('hidden');
+    });
+
+    function triggerPwaInstall() {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            const installBtn = document.getElementById('pwaInstallBtnDesk');
+            if (installBtn) installBtn.classList.add('hidden');
+          }
+          deferredInstallPrompt = null;
+        });
+      } else {
+        alert('Para instalar en iPhone: Toca el botón "Compartir" de Safari y selecciona "Agregar a la pantalla de inicio".\n\nEn Android/PC: Toca el menú de tres puntos y selecciona "Instalar aplicación".');
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('LinguaPath PWA listo offline:', reg.scope))
+          .catch(err => console.log('SW no registrado (modo local o sin servidor):', err));
+      });
+    }
+
+    // App Startup
+    document.addEventListener('DOMContentLoaded', () => {
+      buildFullExerciseBank();
+      populateVaultUnits();
+      loadAppState();
+      selectCefrSection(appState.activeSection || 'B1');
+    });
+  </script>
+</body>
+</html>
