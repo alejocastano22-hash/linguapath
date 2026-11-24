@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#58CC02"/>
+      <stop offset="100%" stop-color="#46A302"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD900"/>
+      <stop offset="100%" stop-color="#FF9900"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="12" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Base Rounded Squircle -->
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="url(#bgGrad)" filter="url(#shadow)"/>
+  
+  <!-- Tactile 3D bottom edge -->
+  <path d="M 24 380 Q 24 488 136 488 L 376 488 Q 488 488 488 380 L 488 404 Q 488 488 376 488 L 136 488 Q 24 488 24 404 Z" fill="#3B8702" opacity="0.9"/>
+
+  <!-- Owl Mask / Eyes Motif -->
+  <!-- Outer Eye circles -->
+  <circle cx="180" cy="230" r="80" fill="#FFFFFF" filter="url(#shadow)"/>
+  <circle cx="332" cy="230" r="80" fill="#FFFFFF" filter="url(#shadow)"/>
+  
+  <!-- Pupil circles (Dark duo ink) -->
+  <circle cx="196" cy="230" r="42" fill="#3C3C3C"/>
+  <circle cx="316" cy="230" r="42" fill="#3C3C3C"/>
+
+  <!-- Eye glints -->
+  <circle cx="210" cy="216" r="14" fill="#FFFFFF"/>
+  <circle cx="330" cy="216" r="14" fill="#FFFFFF"/>
+
+  <!-- Beak -->
+  <polygon points="256,260 216,330 296,330" fill="url(#goldGrad)"/>
+
+  <!-- Golden Crown (Super C1 status) -->
+  <path d="M 180 120 L 210 160 L 256 100 L 302 160 L 332 120 L 320 185 L 192 185 Z" fill="url(#goldGrad)"/>
+  <circle cx="180" cy="116" r="10" fill="#FFF"/>
+  <circle cx="256" cy="94" r="12" fill="#FFF"/>
+  <circle cx="332" cy="116" r="10" fill="#FFF"/>
+
+  <!-- Bottom Badge: "SUPER" -->
+  <rect x="136" y="380" width="240" height="52" rx="26" fill="#131F42"/>
+  <text x="256" y="415" font-family="'Nunito', 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#00CD9C" text-anchor="middle" letter-spacing="4">SUPER C1</text>
+</svg>
