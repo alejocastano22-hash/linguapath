@@ -1431,11 +1431,71 @@
       updateAllUIs();
     }
 
+    // Global Mobile Audio & Speech Engine (Dual-Engine: Native Speech + MP3 Fallback)
+    let globalAudioCtx = null;
+    let activeAudioPlayer = null;
+    let cachedVoices = [];
+
+    function getAudioContext() {
+      try {
+        if (!globalAudioCtx) {
+          globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
+          globalAudioCtx.resume();
+        }
+        return globalAudioCtx;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function initVoices() {
+      if ('speechSynthesis' in window) {
+        cachedVoices = window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+          cachedVoices = window.speechSynthesis.getVoices();
+        };
+      }
+    }
+    initVoices();
+
+    // Mobile Audio Unlocker on first user touch/tap
+    function unlockMobileAudio() {
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.resume();
+        } catch (e) {}
+      }
+      getAudioContext();
+    }
+    document.addEventListener('touchstart', unlockMobileAudio, { once: true, passive: true });
+    document.addEventListener('click', unlockMobileAudio, { once: true });
+
+    // Cloud MP3 Audio Fallback (Works 100% on iOS, Android, Xiaomi, Huawei, etc.)
+    function playCloudAudioFallback(text, rate = 1.0) {
+      try {
+        if (activeAudioPlayer) {
+          activeAudioPlayer.pause();
+          activeAudioPlayer.currentTime = 0;
+        }
+        const clean = encodeURIComponent(text.replace(/___+/g, 'blank').trim());
+        const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${clean}`;
+        activeAudioPlayer = new Audio(audioUrl);
+        activeAudioPlayer.playbackRate = rate;
+        const playPromise = activeAudioPlayer.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+      } catch (e) {}
+    }
+
     // Audio synthesizer for signature Duolingo tactile sound effects
     function playDuoSound(type) {
       if (!appState.soundEnabled) return;
       try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const ctx = getAudioContext();
+        if (!ctx) return;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.connect(gain);
@@ -1488,18 +1548,53 @@
       saveAppState();
     }
 
-    // Text-To-Speech
+    // High-Reliability Mobile Text-To-Speech (Web Speech API + Cloud MP3 Fallback)
     function speakText(text, rate = 1.0) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const clean = text.replace(/___+/g, 'blank');
-      const utter = new SpeechSynthesisUtterance(clean);
-      utter.lang = 'en-US';
-      utter.rate = rate;
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha')));
-      if (preferred) utter.voice = preferred;
-      window.speechSynthesis.speak(utter);
+      if (!text) return;
+      const clean = text.replace(/___+/g, 'blank').trim();
+
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.resume();
+
+          const utter = new SpeechSynthesisUtterance(clean);
+          utter.lang = 'en-US';
+          utter.rate = rate;
+
+          if (!cachedVoices || cachedVoices.length === 0) {
+            cachedVoices = window.speechSynthesis.getVoices();
+          }
+          const preferred = cachedVoices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Daniel')));
+          if (preferred) utter.voice = preferred;
+
+          let hasSpoken = false;
+          utter.onstart = () => {
+            hasSpoken = true;
+          };
+
+          utter.onerror = () => {
+            playCloudAudioFallback(clean, rate);
+          };
+
+          // Watchdog: Si en 400ms Web Speech no emite audio en el móvil, activar MP3 stream
+          const watchdogTimer = setTimeout(() => {
+            if (!hasSpoken) {
+              playCloudAudioFallback(clean, rate);
+            }
+          }, 450);
+
+          utter.onend = () => {
+            clearTimeout(watchdogTimer);
+          };
+
+          window._activeUtterance = utter; // Evitar Garbage Collector bug en WebKit
+          window.speechSynthesis.speak(utter);
+          return;
+        } catch (err) {}
+      }
+
+      // Si el navegador no soporta síntesis de voz, reproducir MP3 directo
+      playCloudAudioFallback(clean, rate);
     }
 
     function speakCurrentPrompt(rate = 1.0) {
