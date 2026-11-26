@@ -201,6 +201,12 @@
             <span>Centro de Práctica</span>
           </button>
 
+                    <button onclick="switchMainView('cathoven')" id="desk-nav-cathoven"
+            class="desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-transparent hover:bg-slate-100 text-duo-muted font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer">
+            <span class="text-xl">✍️</span>
+            <span>IELTS & Writing Lab</span>
+          </button>
+
           <button onclick="switchMainView('coach')" id="desk-nav-coach"
             class="desk-nav w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl border-2 border-transparent hover:bg-slate-100 text-duo-muted font-duo font-extrabold text-sm uppercase tracking-wide transition-all cursor-pointer">
             <span class="text-xl">🧠</span>
@@ -288,6 +294,20 @@
           <p class="text-sm text-indigo-100 leading-relaxed">
             Perfecciona la procedimentalización de la gramática inglesa: corrige errores pasados en la clínica, entrena tu oído con dictados rápidos o pon a prueba tu velocidad en el Sprint de Fluidez.
           </p>
+        </div>
+
+        <!-- Cathoven IELTS Studio Marquee Card -->
+        <div class="rounded-3xl border-2 border-purple-300 bg-gradient-to-r from-purple-50 via-indigo-50 to-sky-50 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+          <div class="space-y-1.5 text-center sm:text-left">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-200 text-purple-900 font-duo font-black text-xs">
+              <span>🎓 Laboratorio IELTS & CEFR (Estilo Cathoven)</span>
+            </div>
+            <h2 class="font-duo font-black text-xl text-duo-ink">IELTS Essay Grader & Level Adaptor B1→C1</h2>
+            <p class="text-xs text-duo-muted max-w-md">Evalúa ensayos con las 4 bandas oficiales de Cambridge (TR, CC, LR, GRA) y transforma párrafos B1 en lenguaje C1 formal.</p>
+          </div>
+          <button onclick="switchMainView('cathoven')" class="btn-3d px-6 py-3.5 rounded-2xl bg-purple-600 border-purple-800 hover:bg-purple-500 text-white font-duo font-black text-sm uppercase tracking-wider shrink-0 cursor-pointer shadow-md">
+            ✍️ Abrir Estudio
+          </button>
         </div>
 
         <!-- Fluency Sprint Banner Card -->
@@ -453,6 +473,159 @@
       <!-- ============================================================
            VIEW 4: SUPER REWARDS STORE & ACHIEVEMENTS
            ============================================================ -->
+      
+      <!-- ============================================================
+           VIEW: CATHOVEN IELTS & CEFR WRITING STUDIO (100% GRATUITO)
+           ============================================================ -->
+      <section id="view-cathoven" class="hidden max-w-3xl mx-auto space-y-6">
+
+        <!-- Top Banner Cathoven Style -->
+        <div class="rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-3 relative overflow-hidden" style="background: linear-gradient(135deg, #241442 0%, #3f2684 50%, #5b21b6 100%);">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-duo font-black uppercase tracking-wider">
+              <span>⚡ AI IELTS & CEFR EVALUATION SUITE</span>
+            </div>
+            <span class="px-3 py-0.5 rounded-full bg-emerald-400 text-emerald-950 font-duo font-black text-xs uppercase tracking-wider">
+              100% GRATUITO & ILIMITADO
+            </span>
+          </div>
+          <h1 class="font-duo font-black text-2xl sm:text-3xl">IELTS Writing Lab & CEFR Adaptor</h1>
+          <p class="text-sm text-purple-100 leading-relaxed max-w-2xl">
+            Diagnóstico granular de ensayos calibrado con las 4 rúbricas de Cambridge (precisión ±0.5 bandas), escáner de legibilidad CEFR y reescritor de párrafos intermedios a nivel C1 ejecutivo.
+          </p>
+        </div>
+
+        <!-- Sub-Tabs Navigation (Cathoven Suite) -->
+        <div class="bg-duo-bg p-1.5 rounded-2xl border-2 border-duo-border grid grid-cols-3 gap-1.5">
+          <button onclick="switchCathovenTab('grader')" id="ctab-btn-grader"
+            class="ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border text-center">
+            <span class="block text-[10px] uppercase tracking-wider text-purple-600">Módulo 1</span>
+            <span>📝 Essay Grader</span>
+          </button>
+          <button onclick="switchCathovenTab('adaptor')" id="ctab-btn-adaptor"
+            class="ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center">
+            <span class="block text-[10px] uppercase tracking-wider text-duo-blue">Módulo 2</span>
+            <span>🔄 Level Adaptor</span>
+          </button>
+          <button onclick="switchCathovenTab('profiler')" id="ctab-btn-profiler"
+            class="ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center">
+            <span class="block text-[10px] uppercase tracking-wider text-emerald-600">Módulo 3</span>
+            <span>📊 CEFR Profiler</span>
+          </button>
+        </div>
+
+        <!-- ==================== SUB-PANEL 1: IELTS ESSAY GRADER ==================== -->
+        <div id="cpanel-grader" class="space-y-5">
+          <div class="rounded-2xl border-2 border-duo-border p-5 bg-white space-y-4 shadow-xs">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <label class="block text-xs font-duo font-black text-duo-muted uppercase tracking-wider">Consigna de Examen (IELTS Official Prompt)</label>
+              <div class="flex gap-2">
+                <button onclick="loadSampleEssay('band55')" class="text-xs font-duo font-bold text-amber-700 hover:underline cursor-pointer">
+                  📄 Probar Ensayo Band 5.5
+                </button>
+                <span class="text-xs text-slate-300">|</span>
+                <button onclick="loadSampleEssay('band80')" class="text-xs font-duo font-bold text-emerald-700 hover:underline cursor-pointer">
+                  📄 Probar Ensayo Band 8.0
+                </button>
+              </div>
+            </div>
+
+            <select id="essayTopicSelect" onchange="onTopicSelectChange()" class="w-full p-3 rounded-xl border-2 border-duo-border font-semibold text-sm text-duo-ink bg-slate-50 focus:border-purple-600 focus:bg-white outline-none">
+              <!-- Rendered via JS -->
+            </select>
+
+            <div id="essayTopicPromptDisplay" class="p-3.5 rounded-xl bg-purple-50/70 border border-purple-200 text-xs sm:text-sm text-purple-950 font-medium leading-relaxed">
+              ...
+            </div>
+
+            <!-- Essay Input Area -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs font-bold text-duo-muted">
+                <span>Tu Redacción (Escribe o pega aquí):</span>
+                <div class="flex items-center gap-3">
+                  <span id="essayWordCountBadge" class="font-duo font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">0 palabras</span>
+                  <span id="essayTargetNotice" class="text-amber-700 font-extrabold text-[11px]">(Mínimo 250)</span>
+                </div>
+              </div>
+
+              <textarea id="essayInputArea" rows="10" oninput="updateEssayStats()"
+                placeholder="Escribe o pega tu ensayo aquí en inglés..."
+                class="w-full p-4 rounded-2xl border-2 border-duo-border bg-slate-50/50 focus:bg-white focus:border-purple-600 font-sans text-sm sm:text-base text-duo-ink leading-relaxed outline-none resize-y"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between flex-wrap gap-3 pt-1">
+              <span class="text-xs text-duo-muted">💡 Evaluación algorítmica instantánea en base a las 4 bandas oficiales de Cambridge.</span>
+              <button onclick="analyzeEssaySubmission()" class="btn-3d px-6 py-3 rounded-xl bg-purple-600 border-purple-800 hover:bg-purple-500 text-white font-duo font-black text-sm uppercase tracking-wider cursor-pointer shadow-md">
+                🔍 Evaluar Ensayo con IA
+              </button>
+            </div>
+          </div>
+
+          <!-- Grader Report Card Container (Hidden initially) -->
+          <div id="essayReportCard" class="hidden space-y-5 animate-pop">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- ==================== SUB-PANEL 2: LEVEL ADAPTOR (B1 -> C1) ==================== -->
+        <div id="cpanel-adaptor" class="hidden space-y-5">
+          <div class="rounded-2xl border-2 border-duo-border p-5 bg-white space-y-4 shadow-xs">
+            <div>
+              <h3 class="font-duo font-black text-lg text-duo-ink">Reescritor de Nivel: B1 Cotidiano ➔ C1 Ejecutivo</h3>
+              <p class="text-xs text-duo-muted">Introduce cualquier párrafo o correo informal y observa cómo la IA eleva su vocabulario, formalidad y sintaxis.</p>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-duo-muted uppercase">Párrafo Original (Nivel B1/B2)</label>
+              <textarea id="adaptorInput" rows="4"
+                placeholder="Ejemplo: In my opinion, technology has a lot of good things and bad things for workers. Many people lose their jobs because computers do the work fast..."
+                class="w-full p-3.5 rounded-xl border-2 border-duo-border bg-slate-50/60 focus:bg-white focus:border-duo-blue font-sans text-sm text-duo-ink outline-none"></textarea>
+            </div>
+
+            <div class="flex justify-between items-center flex-wrap gap-2">
+              <button onclick="loadSampleAdaptor()" class="text-xs font-duo font-bold text-duo-blue hover:underline cursor-pointer">
+                📋 Cargar texto de ejemplo
+              </button>
+              <button onclick="executeLevelAdaptor()" class="btn-3d px-5 py-2.5 rounded-xl bg-duo-blue border-duo-blueDark text-white font-duo font-black text-xs uppercase tracking-wider cursor-pointer shadow-sm">
+                🔄 Transformar a Nivel C1
+              </button>
+            </div>
+          </div>
+
+          <!-- Adaptor Result Container -->
+          <div id="adaptorResultArea" class="hidden space-y-4 animate-pop">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- ==================== SUB-PANEL 3: CEFR TEXT PROFILER ==================== -->
+        <div id="cpanel-profiler" class="hidden space-y-5">
+          <div class="rounded-2xl border-2 border-duo-border p-5 bg-white space-y-4 shadow-xs">
+            <div>
+              <h3 class="font-duo font-black text-lg text-duo-ink">Perfilador Léxico & Legibilidad CEFR</h3>
+              <p class="text-xs text-duo-muted">Calcula el porcentaje de vocabulario A1-A2, B1-B2 y C1-C2, la longitud sintáctica y el índice de lectura Flesch-Kincaid.</p>
+            </div>
+
+            <textarea id="profilerInput" rows="5"
+              placeholder="Pega cualquier artículo en inglés, discurso o redacción para diagnosticar su nivel CEFR..."
+              class="w-full p-3.5 rounded-xl border-2 border-duo-border bg-slate-50/60 focus:bg-white focus:border-emerald-600 font-sans text-sm text-duo-ink outline-none"></textarea>
+
+            <div class="flex justify-end">
+              <button onclick="executeCefrProfiler()" class="btn-3d px-5 py-2.5 rounded-xl bg-emerald-600 border-emerald-800 text-white font-duo font-black text-xs uppercase tracking-wider cursor-pointer shadow-sm">
+                📊 Analizar Perfil CEFR
+              </button>
+            </div>
+          </div>
+
+          <!-- Profiler Result Card -->
+          <div id="profilerResultArea" class="hidden space-y-4 animate-pop">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+      </section>
+
+
       <section id="view-shop" class="hidden max-w-2xl mx-auto space-y-6">
 
         <!-- Gem Balance Card -->
@@ -685,6 +858,10 @@
     <button onclick="switchMainView('practice')" id="mob-nav-practice" class="mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-muted font-duo font-extrabold text-[10px]">
       <span class="text-lg">🏋️</span>
       <span>Práctica</span>
+    </button>
+        <button onclick="switchMainView('cathoven')" id="mob-nav-cathoven" class="mob-nav flex flex-col items-center py-1 px-1.5 rounded-xl text-duo-muted font-duo font-extrabold text-[10px]">
+      <span class="text-lg">✍️</span>
+      <span>IELTS</span>
     </button>
     <button onclick="switchMainView('coach')" id="mob-nav-coach" class="mob-nav flex flex-col items-center py-1 px-2.5 rounded-xl text-duo-muted font-duo font-extrabold text-[10px]">
       <span class="text-lg">🧠</span>
@@ -1611,7 +1788,7 @@
      * ============================================================================
      */
     function switchMainView(viewName) {
-      ['learn', 'practice', 'coach', 'shop', 'bank'].forEach(v => {
+      ['learn', 'practice', 'coach', 'cathoven', 'shop', 'bank'].forEach(v => {
         const sec = document.getElementById(`view-${v}`);
         if (sec) sec.classList.add('hidden');
         const dNav = document.getElementById(`desk-nav-${v}`);
@@ -2976,12 +3153,455 @@
       });
     }
 
+    
+    /**
+     * ============================================================================
+     * CATHOVEN IELTS & CEFR WRITING ENGINE (SUITE GRATUITA)
+     * Rúbricas Oficiales IELTS + Adaptador de Nivel B1->C1 + Perfilador CEFR
+     * ============================================================================
+     */
+    const CATHOVEN_PROMPTS = [
+      {
+        id: 't2_tech',
+        title: 'Task 2: AI & Technological Unemployment (Academic Essay)',
+        type: 'Academic Task 2',
+        minWords: 250,
+        prompt: 'Some people believe that artificial intelligence and automation will create widespread unemployment and social inequality, while others argue that it will generate unprecedented economic opportunities. Discuss both views and give your own opinion.'
+      },
+      {
+        id: 't2_env',
+        title: 'Task 2: Corporate Carbon Responsibility (Academic Essay)',
+        type: 'Academic Task 2',
+        minWords: 250,
+        prompt: 'The most effective way to solve global environmental crises is to impose heavy carbon taxes on multinational corporations rather than relying on individual voluntary actions. To what extent do you agree or disagree?'
+      },
+      {
+        id: 't1_telecom',
+        title: 'Task 1: Corporate Performance Report (Report Summary)',
+        type: 'Academic Task 1',
+        minWords: 150,
+        prompt: 'The chart illustrates the quarterly revenue and market share fluctuations of three major telecommunications providers following a landmark merger. Summarize the information by selecting and reporting the main features, and make comparisons where relevant.'
+      }
+    ];
+
+    const CATHOVEN_SAMPLES = {
+      band55: {
+        topicId: 't2_tech',
+        text: "Nowadays technology and computers are everywhere in our life. A lot of people think that artificial intelligence will make many people lose their jobs and this is very bad for poor people. But other people say that AI will make many new jobs and a lot of money for everyone. In my opinion, I think that AI has good things and bad things.\n\nFirst of all, many workers in factories will lose their jobs because machines can do the work fast and cheap. For example, robots make cars now and they don't need rest. This makes unemployment a big problem in many cities. Also, people who don't know how to use computers will not find a good job.\n\nOn the other hand, technology creates new opportunities. We need engineers to make the software and fix the computers. So young people can learn coding and get high salaries. This is good for the economy of the country.\n\nIn conclusion, I think government must help workers to learn new skills so they don't lose their jobs."
+      },
+      band80: {
+        topicId: 't2_tech',
+        text: "The pervasive expansion of artificial intelligence and automated systems across modern industries has sparked intense debate concerning the future trajectory of global labor markets. While critics contend that algorithmic substitution will inevitably exacerbate socioeconomic disparity and trigger widespread structural unemployment, proponents maintain that cognitive computing will catalyze unprecedented productivity and foster novel technological sectors. From my perspective, although the short-term disruption to routine vocations is undeniable, the long-term macroeconomic dividend of AI is poised to generate far more sophisticated employment opportunities, provided proactive reskilling frameworks are instituted.\n\nOn the one hand, apprehensions regarding technological dislocation are fundamentally grounded in historical reality. Automation is no longer confined to manual factory assembly; cognitive algorithms now perform complex data auditing, legal discovery, and medical diagnostics with remarkable accuracy. Consequently, non-specialized professionals face the imminent risk of professional obsolescence, which is liable to deepen existing income inequalities between capital owners and displaced laborers. Were governments to remain passive, this transition could precipitate profound socio-economic turbulence.\n\nOn the other hand, technological revolutions have historically replaced obsolete tasks rather than human labor in aggregate. The democratization of generative tools enables small enterprises to operate with the efficiency of multinational conglomerates, thereby stimulating decentralized entrepreneurship. Furthermore, burgeoning fields such as quantum architecture, bioinformatics, and ethical algorithm governance require nuanced human judgment and cross-disciplinary synthesis—qualities that stochastic language models inherently lack.\n\nIn conclusion, while the displacement of routine labor poses a formidable transitional hurdle, the transformative potential of artificial intelligence is fundamentally conducive to long-term prosperity, provided regulatory bodies invest aggressively in tertiary vocational recalibration."
+      }
+    };
+
+    // Curated Academic & C1 Lexicon
+    const C1_LEXICON = [
+      'pervasive', 'inevitably', 'exacerbate', 'proponents', 'unprecedented', 'dividend', 'instituted',
+      'dislocation', 'fundamentally', 'confined', 'obsolescence', 'liable', 'precipitate', 'turbulence',
+      'aggregate', 'democratization', 'conglomerates', 'decentralized', 'burgeoning', 'synthesis', 'inherently',
+      'formidable', 'transitional', 'transformative', 'conducive', 'recalibration', 'mitigate', 'alleviate',
+      'paramount', 'detrimental', 'scrutinize', 'empirical', 'profound', 'versatile', 'ubiquitous', 'resilient',
+      'consequently', 'furthermore', 'moreover', 'nevertheless', 'notwithstanding', 'whereas', 'substantiate',
+      'subsequent', 'discrepancy', 'plausible', 'ambiguity', 'adverse', 'compelling', 'comprehensive'
+    ];
+
+    const B2_LEXICON = [
+      'achieve', 'beneficial', 'conclude', 'debate', 'emphasize', 'maintain', 'perspective', 'primary',
+      'relevant', 'significant', 'undertake', 'valid', 'widespread', 'adapt', 'compensate', 'diverse',
+      'establish', 'facilitate', 'identify', 'illustrate', 'imply', 'justify', 'perceive', 'resolve',
+      'sustain', 'framework', 'potential', 'opportunity', 'disruption', 'complex', 'crucial', 'essential'
+    ];
+
+    const WEAK_WORDS = [
+      'a lot of', 'a lot', 'very good', 'very bad', 'very', 'good things', 'bad things', 'good', 'bad',
+      'big problem', 'big', 'small', 'stuff', 'thing', 'things', 'make many', 'lose their jobs', 'cheap', 'fast'
+    ];
+
+    function switchCathovenTab(tabName) {
+      ['grader', 'adaptor', 'profiler'].forEach(t => {
+        document.getElementById(`cpanel-${t}`).classList.add('hidden');
+        const btn = document.getElementById(`ctab-btn-${t}`);
+        if (t === tabName) {
+          btn.className = 'ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border text-center';
+        } else {
+          btn.className = 'ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center';
+        }
+      });
+      document.getElementById(`cpanel-${tabName}`).classList.remove('hidden');
+    }
+
+    function initCathovenStudio() {
+      const select = document.getElementById('essayTopicSelect');
+      if (!select) return;
+      select.innerHTML = CATHOVEN_PROMPTS.map(p => `
+        <option value="${p.id}">${p.title}</option>
+      `).join('');
+      onTopicSelectChange();
+    }
+
+    function onTopicSelectChange() {
+      const topicId = document.getElementById('essayTopicSelect')?.value;
+      const topic = CATHOVEN_PROMPTS.find(p => p.id === topicId) || CATHOVEN_PROMPTS[0];
+      const display = document.getElementById('essayTopicPromptDisplay');
+      if (display) {
+        display.innerHTML = `<strong>Prompt:</strong> ${topic.prompt}`;
+      }
+      const targetNotice = document.getElementById('essayTargetNotice');
+      if (targetNotice) {
+        targetNotice.textContent = `(Mínimo ${topic.minWords} palabras)`;
+      }
+      updateEssayStats();
+    }
+
+    function updateEssayStats() {
+      const text = document.getElementById('essayInputArea')?.value || '';
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const badge = document.getElementById('essayWordCountBadge');
+      if (badge) {
+        badge.textContent = `${words} palabras`;
+      }
+    }
+
+    function loadSampleEssay(key) {
+      const sample = CATHOVEN_SAMPLES[key];
+      if (!sample) return;
+      document.getElementById('essayTopicSelect').value = sample.topicId;
+      onTopicSelectChange();
+      const area = document.getElementById('essayInputArea');
+      area.value = sample.text;
+      updateEssayStats();
+      analyzeEssaySubmission();
+    }
+
+    // Comprehensive IELTS Rubric Scoring Engine
+    function analyzeEssaySubmission() {
+      const text = document.getElementById('essayInputArea')?.value.trim();
+      if (!text || text.split(/\s+/).length < 25) {
+        alert('Por favor escribe al menos 25 palabras para poder realizar una evaluación diagnóstica fiable.');
+        return;
+      }
+
+      const words = text.split(/\s+/);
+      const wordCount = words.length;
+      const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0);
+      const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+      const avgSentenceLen = Math.round(wordCount / Math.max(1, sentences.length));
+
+      // 1. Task Response / Achievement (TR)
+      let trScore = 5.0;
+      if (wordCount >= 250) trScore += 1.5;
+      else if (wordCount >= 180) trScore += 1.0;
+      else if (wordCount >= 140) trScore += 0.5;
+
+      if (paragraphs.length >= 4) trScore += 1.0; // Intro, Body 1, Body 2, Conclusion
+      if (/in conclusion|to conclude|to summarize/i.test(text)) trScore += 0.5;
+      trScore = Math.min(9.0, Math.max(4.0, trScore));
+
+      // 2. Coherence & Cohesion (CC)
+      let ccScore = 5.0;
+      const linkersFound = [
+        'furthermore', 'moreover', 'nevertheless', 'consequently', 'on the one hand',
+        'on the other hand', 'in contrast', 'first of all', 'in conclusion', 'provided',
+        'whereas', 'therefore', 'in light of', 'from my perspective', 'for example'
+      ].filter(l => text.toLowerCase().includes(l));
+
+      if (linkersFound.length >= 6) ccScore += 2.5;
+      else if (linkersFound.length >= 3) ccScore += 1.5;
+      else ccScore += 0.5;
+
+      if (paragraphs.length >= 3 && paragraphs.length <= 5) ccScore += 0.5;
+      ccScore = Math.min(9.0, Math.max(4.5, ccScore));
+
+      // 3. Lexical Resource (LR)
+      let lrScore = 5.0;
+      const lowerWords = words.map(w => w.toLowerCase().replace(/[^a-z]/g, ''));
+      const uniqueWords = new Set(lowerWords).size;
+      const typeTokenRatio = uniqueWords / wordCount;
+
+      const c1Count = C1_LEXICON.filter(term => text.toLowerCase().includes(term)).length;
+      const b2Count = B2_LEXICON.filter(term => text.toLowerCase().includes(term)).length;
+      const weakCount = WEAK_WORDS.filter(term => text.toLowerCase().includes(term)).length;
+
+      if (c1Count >= 6) lrScore += 2.5;
+      else if (c1Count >= 2 || b2Count >= 4) lrScore += 1.5;
+      else lrScore += 0.5;
+
+      if (weakCount >= 3) lrScore -= 0.5;
+      if (typeTokenRatio > 0.45) lrScore += 0.5;
+      lrScore = Math.min(9.0, Math.max(4.0, lrScore));
+
+      // 4. Grammatical Range & Accuracy (GRA)
+      let graScore = 5.0;
+      const hasPassives = /\b(is|are|was|were|been|being)\s+[a-z]+ed\b/i.test(text);
+      const hasConditionals = /\b(if|provided|unless|were it not|had [a-z]+ [a-z]+ed)\b/i.test(text);
+      const hasInversion = /\b(were [a-z]+ to|not only did|seldom have|under no circumstances)\b/i.test(text);
+      const hasCleft = /\b(what [a-z\s]+ is|it was [a-z\s]+ that)\b/i.test(text);
+
+      if (hasPassives) graScore += 0.8;
+      if (hasConditionals) graScore += 0.8;
+      if (hasInversion || hasCleft) graScore += 1.2;
+      if (avgSentenceLen >= 16 && avgSentenceLen <= 26) graScore += 0.6;
+      graScore = Math.min(9.0, Math.max(4.0, graScore));
+
+      // Calculate Overall Band (IELTS arithmetic mean to nearest 0.5)
+      const rawMean = (trScore + ccScore + lrScore + graScore) / 4;
+      const overallBand = (Math.round(rawMean * 2) / 2).toFixed(1);
+
+      // Generate Annotated Feedback HTML
+      let highlightedText = text;
+      WEAK_WORDS.forEach(w => {
+        const regex = new RegExp(`\\b${w}\\b`, 'gi');
+        highlightedText = highlightedText.replace(regex, `<span class="bg-amber-100 text-amber-900 border-b-2 border-amber-400 px-1 rounded font-semibold" title="Palabra básica / Sugerencia C1">// App Startup</span>`);
+      });
+      C1_LEXICON.forEach(w => {
+        const regex = new RegExp(`\\b${w}\\b`, 'gi');
+        highlightedText = highlightedText.replace(regex, `<span class="bg-emerald-100 text-emerald-800 font-bold px-1 rounded" title="Vocabulario C1/C2 de Alto Impacto">// App Startup</span>`);
+      });
+
+      // Render Diagnostic Report Card
+      const reportCard = document.getElementById('essayReportCard');
+      reportCard.classList.remove('hidden');
+      reportCard.innerHTML = `
+        <div class="rounded-3xl border-2 border-purple-200 bg-white p-6 sm:p-8 space-y-6 shadow-lg">
+          <!-- Overall Band Header -->
+          <div class="flex items-center justify-between flex-wrap gap-4 border-b-2 border-duo-border/60 pb-6">
+            <div class="space-y-1">
+              <span class="text-xs font-duo font-black text-purple-700 uppercase tracking-widest">Resultado Oficial Estimado</span>
+              <h2 class="font-duo font-black text-3xl text-duo-ink">IELTS Assessment Report</h2>
+              <p class="text-xs text-duo-muted">${wordCount} palabras • ${paragraphs.length} párrafos • ${sentences.length} oraciones (Promedio: ${avgSentenceLen} palabras/oración)</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="rounded-2xl p-4 text-center min-w-[120px] shadow-sm" style="background: linear-gradient(135deg, #3f2684 0%, #5b21b6 100%); color: white;">
+                <span class="text-[10px] font-duo font-black uppercase tracking-wider block opacity-90">Overall Band</span>
+                <strong class="font-duo font-black text-4xl block leading-none mt-1">${overallBand}</strong>
+                <span class="text-[10px] font-bold block mt-1 opacity-90">${getCefrEquivalence(overallBand)}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 IELTS Criterion Sub-scores -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="p-3.5 rounded-2xl border-2 border-sky-100 bg-sky-50/50 space-y-1">
+              <span class="text-[10px] font-duo font-black text-duo-blue uppercase block">Task Response</span>
+              <strong class="font-duo font-black text-xl text-duo-ink">${trScore.toFixed(1)}</strong>
+              <p class="text-[11px] text-duo-muted">${trScore >= 7 ? 'Cumplimiento exhaustivo' : 'Desarrollo parcial'}</p>
+            </div>
+            <div class="p-3.5 rounded-2xl border-2 border-purple-100 bg-purple-50/50 space-y-1">
+              <span class="text-[10px] font-duo font-black text-purple-700 uppercase block">Coherence & Coh.</span>
+              <strong class="font-duo font-black text-xl text-duo-ink">${ccScore.toFixed(1)}</strong>
+              <p class="text-[11px] text-duo-muted">${linkersFound.length} conectores lógicos</p>
+            </div>
+            <div class="p-3.5 rounded-2xl border-2 border-emerald-100 bg-emerald-50/50 space-y-1">
+              <span class="text-[10px] font-duo font-black text-emerald-700 uppercase block">Lexical Resource</span>
+              <strong class="font-duo font-black text-xl text-duo-ink">${lrScore.toFixed(1)}</strong>
+              <p class="text-[11px] text-duo-muted">${c1Count} términos C1/C2</p>
+            </div>
+            <div class="p-3.5 rounded-2xl border-2 border-amber-100 bg-amber-50/50 space-y-1">
+              <span class="text-[10px] font-duo font-black text-amber-700 uppercase block">Grammar Range</span>
+              <strong class="font-duo font-black text-xl text-duo-ink">${graScore.toFixed(1)}</strong>
+              <p class="text-[11px] text-duo-muted">${hasInversion || hasConditionals ? 'Sintaxis compleja' : 'Estructuras simples'}</p>
+            </div>
+          </div>
+
+          <!-- Annotated Visual Feedback Area (Cathoven signature) -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="font-duo font-black text-sm text-duo-ink uppercase tracking-wider">Análisis Visual del Ensayo (Cathoven Highlights)</h4>
+              <div class="flex items-center gap-3 text-xs">
+                <span class="inline-flex items-center gap-1 text-emerald-800"><span class="w-3 h-3 rounded-full bg-emerald-300 inline-block"></span> Vocabulario C1/C2</span>
+                <span class="inline-flex items-center gap-1 text-amber-800"><span class="w-3 h-3 rounded-full bg-amber-300 inline-block"></span> Término a elevar</span>
+              </div>
+            </div>
+            <div class="p-5 rounded-2xl border-2 border-duo-border bg-slate-50/70 font-sans text-sm sm:text-base leading-relaxed text-duo-ink whitespace-pre-line">
+              ${highlightedText}
+            </div>
+          </div>
+
+          <!-- Prescription / Next Actions -->
+          <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 space-y-2">
+            <h4 class="font-duo font-black text-xs text-indigo-950 uppercase tracking-wider">🎯 Recomendación del Examinador para Subir +1.0 Banda:</h4>
+            <ul class="text-xs text-indigo-900 space-y-1.5 list-disc pl-4">
+              ${overallBand < 7.0 ? `
+                <li><strong>Sustituye léxico informal:</strong> Evita "a lot of", "big problem" y "good/bad things". Utiliza "a substantial volume of", "formidable predicament" y "conducive / detrimental".</li>
+                <li><strong>Incorpora oraciones complejas:</strong> Incluye al menos un condicional mixto ("If we hadn't..., we wouldn't be...") y una pasiva de reporte ("It is widely asserted that...").</li>
+              ` : `
+                <li><strong>Excelente madurez sintáctica:</strong> Para alcanzar Banda 8.5 o 9.0, incorpora inversiones condicionales ("Were governments to intervene...") y estructuras de oraciones escindidas ("What proves most decisive is...").</li>
+              `}
+            </ul>
+          </div>
+        </div>
+      `;
+
+      reportCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function getCefrEquivalence(band) {
+      const b = parseFloat(band);
+      if (b >= 8.5) return 'CEFR C2 Mastery';
+      if (b >= 7.0) return 'CEFR C1 Advanced';
+      if (b >= 5.5) return 'CEFR B2 Vantage';
+      return 'CEFR B1 Threshold';
+    }
+
+    // Level Adaptor Engine (B1 -> C1)
+    const ADAPTOR_RULES = [
+      { pattern: /in my opinion,?\s*i think that/gi, replacement: "It could be cogently argued that" },
+      { pattern: /i think that/gi, replacement: "evidence suggests that" },
+      { pattern: /a lot of people/gi, replacement: "a significant proportion of the populace" },
+      { pattern: /a lot of/gi, replacement: "a substantial volume of" },
+      { pattern: /good things and bad things/gi, replacement: "both advantageous dividends and inherent vulnerabilities" },
+      { pattern: /very bad for/gi, replacement: "severely detrimental to" },
+      { pattern: /very good for/gi, replacement: "fundamentally conducive to" },
+      { pattern: /make many people lose their jobs/gi, replacement: "precipitate widespread labor displacement" },
+      { pattern: /big problem/gi, replacement: "formidable systemic predicament" },
+      { pattern: /fast and cheap/gi, replacement: "with unparalleled velocity and cost-efficiency" },
+      { pattern: /in conclusion,?\s*i think/gi, replacement: "In conclusion, the empirical trajectory indicates that" },
+      { pattern: /must help/gi, replacement: "is under an ethical imperative to support" }
+    ];
+
+    function loadSampleAdaptor() {
+      const input = document.getElementById('adaptorInput');
+      input.value = "In my opinion, I think that artificial intelligence has a lot of good things and bad things. A lot of people believe it is very bad for workers because computers do the job fast and cheap, and this creates a big problem in many cities. In conclusion, I think government must help people learn new skills.";
+      executeLevelAdaptor();
+    }
+
+    function executeLevelAdaptor() {
+      const original = document.getElementById('adaptorInput')?.value.trim();
+      if (!original) {
+        alert('Por favor introduce un texto para adaptar.');
+        return;
+      }
+
+      let adapted = original;
+      const changesMade = [];
+
+      ADAPTOR_RULES.forEach(r => {
+        if (r.pattern.test(adapted)) {
+          adapted = adapted.replace(r.pattern, `<strong class="text-purple-700 underline font-bold">${r.replacement}</strong>`);
+          changesMade.push(r.replacement);
+        }
+      });
+
+      const area = document.getElementById('adaptorResultArea');
+      area.classList.remove('hidden');
+      area.innerHTML = `
+        <div class="rounded-3xl border-2 border-duo-border bg-white p-6 space-y-5 shadow-md">
+          <div class="flex items-center justify-between border-b border-duo-border pb-3">
+            <h4 class="font-duo font-black text-base text-duo-ink">Transformación Adaptativa B1 ➔ C1 Ejecutivo</h4>
+            <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-800 font-duo font-black text-xs">C1 Executive Standard</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-2">
+              <span class="text-xs font-duo font-black uppercase text-amber-800">Texto Original (B1 Informal)</span>
+              <p class="text-sm text-duo-ink leading-relaxed font-sans">${original}</p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-purple-50/60 border border-purple-200 space-y-2">
+              <span class="text-xs font-duo font-black uppercase text-purple-900">Versión Adaptada C1 (Sintaxis Elevada)</span>
+              <p class="text-sm text-duo-ink leading-relaxed font-sans">${adapted}</p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-duo-border space-y-2">
+            <h5 class="font-duo font-black text-xs uppercase text-duo-muted">¿Por qué este cambio eleva tu banda?</h5>
+            <p class="text-xs text-duo-ink leading-relaxed">
+              En el estándar C1 y en el mundo ejecutivo internacional, se sustituyen las opiniones personales directas (<em>"I think"</em>) por <strong>marcos despersonalizados y modalizadores de cautela (Hedging)</strong>, y se reemplaza el léxico genérico (<em>"good/bad"</em>) por <strong>colocaciones preposicionales de alta precisión</strong> (<em>"conducive to"</em>, <em>"detrimental to"</em>).
+            </p>
+          </div>
+        </div>
+      `;
+      area.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // CEFR Profiler & Readability Engine
+    function executeCefrProfiler() {
+      const text = document.getElementById('profilerInput')?.value.trim();
+      if (!text) {
+        alert('Por favor introduce un texto para analizar.');
+        return;
+      }
+
+      const words = text.toLowerCase().match(/\b[a-z']+\b/g) || [];
+      const totalWords = words.length;
+      const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+
+      let c1Count = 0;
+      let b2Count = 0;
+      let a1a2Count = 0;
+
+      words.forEach(w => {
+        if (C1_LEXICON.includes(w)) c1Count++;
+        else if (B2_LEXICON.includes(w)) b2Count++;
+        else a1a2Count++;
+      });
+
+      const c1Pct = Math.round((c1Count / Math.max(1, totalWords)) * 100);
+      const b2Pct = Math.round((b2Count / Math.max(1, totalWords)) * 100);
+      const a1Pct = Math.max(0, 100 - c1Pct - b2Pct);
+
+      // Flesch Reading Ease Formula
+      const syllables = words.reduce((acc, w) => acc + countSyllables(w), 0);
+      const wordsPerSentence = totalWords / Math.max(1, sentences.length);
+      const syllablesPerWord = syllables / Math.max(1, totalWords);
+      const flesch = Math.max(0, Math.min(100, Math.round(206.835 - (1.015 * wordsPerSentence) - (84.6 * syllablesPerWord))));
+
+      const resultArea = document.getElementById('profilerResultArea');
+      resultArea.classList.remove('hidden');
+      resultArea.innerHTML = `
+        <div class="rounded-3xl border-2 border-emerald-200 bg-white p-6 space-y-5 shadow-md">
+          <h4 class="font-duo font-black text-base text-duo-ink border-b border-duo-border pb-3">Desglose del Perfil Léxico CEFR</h4>
+
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+              <span class="text-[10px] font-duo font-black uppercase text-emerald-800 block">C1 / C2 Advanced</span>
+              <strong class="font-duo font-black text-2xl text-emerald-900">${c1Pct}%</strong>
+              <span class="text-[10px] text-emerald-700 block">${c1Count} palabras</span>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-sky-50 border border-sky-200">
+              <span class="text-[10px] font-duo font-black uppercase text-duo-blue block">B1 / B2 Intermediate</span>
+              <strong class="font-duo font-black text-2xl text-sky-900">${b2Pct}%</strong>
+              <span class="text-[10px] text-sky-700 block">${b2Count} palabras</span>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="text-[10px] font-duo font-black uppercase text-slate-600 block">A1 / A2 Foundation</span>
+              <strong class="font-duo font-black text-2xl text-slate-800">${a1Pct}%</strong>
+              <span class="text-[10px] text-slate-500 block">${a1a2Count} palabras</span>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-duo-border flex items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-duo font-black text-duo-ink block">Índice de Legibilidad (Flesch Reading Ease): ${flesch} / 100</span>
+              <span class="text-xs text-duo-muted">${flesch >= 60 ? 'Accesible para público general' : flesch >= 40 ? 'Texto académico universitario' : 'Prosa de alta complejidad / Artículos científicos'}</span>
+            </div>
+            <span class="px-3 py-1 rounded-xl bg-purple-100 text-purple-800 font-duo font-black text-xs shrink-0">
+              ${wordsPerSentence.toFixed(1)} palabras/oración
+            </span>
+          </div>
+        </div>
+      `;
+      resultArea.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function countSyllables(word) {
+      word = word.toLowerCase();
+      if (word.length <= 3) return 1;
+      word = word.replace(/(?:[^laeiouy]|ed|es|e)$/, '');
+      word = word.replace(/^y/, '');
+      const match = word.match(/[aeiouy]{1,2}/g);
+      return match ? match.length : 1;
+    }
+
+
     // App Startup
     document.addEventListener('DOMContentLoaded', () => {
       buildFullExerciseBank();
       populateVaultUnits();
       loadAppState();
       selectCefrSection(appState.activeSection || 'B1');
+      initCathovenStudio();
     });
   </script>
 </body>
