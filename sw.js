@@ -3,7 +3,7 @@
  * Proporciona funcionamiento 100% offline y soporte PWA para móviles.
  */
 
-const CACHE_NAME = 'linguapath-cache-v2';
+const CACHE_NAME = 'linguapath-cache-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
