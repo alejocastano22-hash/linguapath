@@ -148,7 +148,7 @@
         💎 <span id="mobGems">150</span>
       </span>
       <span class="flex items-center gap-1 text-duo-blue" title="Puntos de experiencia (XP)">
-        ⚡ <span id="mobXp">0</span>
+        ��� <span id="mobXp">0</span>
       </span>
       <span class="flex items-center gap-1 text-fuchsia-600" title="Vidas Ilimitadas Super">
         ❤️ <span class="text-base leading-none">∞</span>
@@ -496,20 +496,25 @@
         </div>
 
         <!-- Sub-Tabs Navigation (Cathoven Suite) -->
-        <div class="bg-duo-bg p-1.5 rounded-2xl border-2 border-duo-border grid grid-cols-3 gap-1.5">
+        <div class="bg-duo-bg p-1.5 rounded-2xl border-2 border-duo-border grid grid-cols-2 sm:grid-cols-4 gap-1.5">
           <button onclick="switchCathovenTab('grader')" id="ctab-btn-grader"
             class="ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border text-center">
             <span class="block text-[10px] uppercase tracking-wider text-purple-600">Módulo 1</span>
             <span>📝 Essay Grader</span>
           </button>
+          <button onclick="switchCathovenTab('speaking')" id="ctab-btn-speaking"
+            class="ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center">
+            <span class="block text-[10px] uppercase tracking-wider text-amber-600">Módulo 2</span>
+            <span>🎙️ Speaking Exam</span>
+          </button>
           <button onclick="switchCathovenTab('adaptor')" id="ctab-btn-adaptor"
             class="ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center">
-            <span class="block text-[10px] uppercase tracking-wider text-duo-blue">Módulo 2</span>
+            <span class="block text-[10px] uppercase tracking-wider text-duo-blue">Módulo 3</span>
             <span>🔄 Level Adaptor</span>
           </button>
           <button onclick="switchCathovenTab('profiler')" id="ctab-btn-profiler"
             class="ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center">
-            <span class="block text-[10px] uppercase tracking-wider text-emerald-600">Módulo 3</span>
+            <span class="block text-[10px] uppercase tracking-wider text-emerald-600">Módulo 4</span>
             <span>📊 CEFR Profiler</span>
           </button>
         </div>
@@ -568,6 +573,114 @@
         </div>
 
         <!-- ==================== SUB-PANEL 2: LEVEL ADAPTOR (B1 -> C1) ==================== -->
+        
+        <!-- ==================== SUB-PANEL: IELTS SPEAKING EXAMINER (PART 1, 2, 3) ==================== -->
+        <div id="cpanel-speaking" class="hidden space-y-5">
+          <div class="rounded-3xl border-2 border-duo-border p-5 sm:p-6 bg-white space-y-5 shadow-xs">
+            
+            <!-- Speaking Header & Part Selector -->
+            <div class="flex items-center justify-between flex-wrap gap-3 border-b-2 border-duo-border/60 pb-4">
+              <div>
+                <span class="text-xs font-duo font-black uppercase tracking-wider text-amber-700">Official Cambridge Speaking Format</span>
+                <h3 class="font-duo font-black text-xl text-duo-ink">IELTS Speaking Simulator & Audio Examiner</h3>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="loadSampleSpeaking('band60')" class="text-xs font-duo font-bold text-amber-700 hover:underline cursor-pointer">
+                  🎙️ Probar Audio Band 6.0
+                </button>
+                <span class="text-xs text-slate-300">|</span>
+                <button onclick="loadSampleSpeaking('band85')" class="text-xs font-duo font-bold text-emerald-700 hover:underline cursor-pointer">
+                  🎙️ Probar Audio Band 8.5
+                </button>
+              </div>
+            </div>
+
+            <!-- Parts Selector Pills -->
+            <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1.5 rounded-2xl">
+              <button onclick="selectSpeakingPart(1)" id="spk-part-btn-1" class="py-2 px-3 rounded-xl font-duo font-extrabold text-xs transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center">
+                Part 1: Interview
+              </button>
+              <button onclick="selectSpeakingPart(2)" id="spk-part-btn-2" class="py-2 px-3 rounded-xl font-duo font-extrabold text-xs transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border text-center">
+                Part 2: Cue Card (2 min)
+              </button>
+              <button onclick="selectSpeakingPart(3)" id="spk-part-btn-3" class="py-2 px-3 rounded-xl font-duo font-extrabold text-xs transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center">
+                Part 3: Discussion
+              </button>
+            </div>
+
+            <!-- Prompt Card (Dynamic depending on Part) -->
+            <div id="speakingPromptCard" class="p-5 rounded-2xl bg-amber-50/70 border-2 border-amber-200/80 space-y-3">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Timer & Recording Studio Stage -->
+            <div class="rounded-2xl border-2 border-duo-border p-5 bg-duo-bg/60 flex flex-col items-center justify-center text-center space-y-4">
+              
+              <!-- Countdown Timers -->
+              <div class="flex items-center justify-center gap-6">
+                <!-- Prep Timer (1 min for Part 2) -->
+                <div id="spkPrepTimerContainer" class="flex flex-col items-center">
+                  <span class="text-[10px] font-duo font-black uppercase tracking-wider text-duo-muted">Preparación</span>
+                  <div class="w-16 h-16 rounded-full border-4 border-amber-400 bg-white flex items-center justify-center shadow-xs">
+                    <span id="spkPrepTimerText" class="font-duo font-black text-lg text-amber-700">01:00</span>
+                  </div>
+                </div>
+
+                <!-- Speech Timer (2 min) -->
+                <div class="flex flex-col items-center">
+                  <span class="text-[10px] font-duo font-black uppercase tracking-wider text-duo-muted">Tiempo de Habla</span>
+                  <div class="w-20 h-20 rounded-full border-4 border-duo-blue bg-white flex items-center justify-center shadow-xs">
+                    <span id="spkSpeechTimerText" class="font-duo font-black text-2xl text-duo-blue">02:00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Controls Buttons -->
+              <div class="flex flex-wrap items-center justify-center gap-3">
+                <button id="spkStartPrepBtn" onclick="toggleSpkPrepTimer()" class="btn-3d px-4 py-2.5 rounded-xl bg-amber-500 border-amber-600 text-white font-duo font-black text-xs uppercase tracking-wider cursor-pointer">
+                  ⏱️ 1 Min Preparación
+                </button>
+                <button id="spkRecordBtn" onclick="toggleSpkRecording()" class="btn-3d px-6 py-3 rounded-2xl bg-duo-red border-red-700 text-white font-duo font-black text-sm uppercase tracking-wider cursor-pointer flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-white animate-pulse"></span>
+                  <span id="spkRecordBtnText">Iniciar Grabación de Audio</span>
+                </button>
+              </div>
+
+              <div id="spkMicStatus" class="text-xs font-semibold text-duo-muted flex items-center gap-1.5">
+                <span>🎤 Micrófono listo. Pulsa "Iniciar Grabación" o escribe/pega tu transcripción abajo.</span>
+              </div>
+            </div>
+
+            <!-- Live Speech-to-Text & Transcript Editor -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-xs font-bold text-duo-muted">
+                <span>Transcripción de tu Respuesta Oral:</span>
+                <span id="spkLiveStats">0 palabras | 0 WPM | 0 muletillas</span>
+              </div>
+              <textarea id="spkTranscriptInput" rows="5"
+                placeholder="Tu audio se transcribirá aquí en tiempo real a medida que hablas. También puedes pegar o escribir una respuesta para evaluarla con los criterios oficiales de Cambridge..."
+                class="w-full p-4 rounded-2xl border-2 border-duo-border focus:border-amber-500 focus:outline-hidden font-medium text-sm text-duo-ink resize-y"></textarea>
+            </div>
+
+            <!-- Action Trigger Button -->
+            <div class="flex justify-end gap-3 pt-2">
+              <button onclick="clearSpeakingTranscript()" class="px-4 py-2.5 rounded-xl border-2 border-duo-border font-duo font-bold text-xs text-duo-muted hover:text-duo-ink cursor-pointer">
+                Limpiar
+              </button>
+              <button onclick="evaluateSpeakingSubmission()" class="btn-3d px-6 py-3 rounded-2xl bg-amber-600 border-amber-700 text-white font-duo font-black text-sm uppercase tracking-wider cursor-pointer">
+                ⚖️ Evaluar con Criterios Cambridge IELTS
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Dynamic Assessment Report Card -->
+          <div id="speakingReportCard" class="hidden space-y-5 animate-pop">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+
         <div id="cpanel-adaptor" class="hidden space-y-5">
           <div class="rounded-2xl border-2 border-duo-border p-5 bg-white space-y-4 shadow-xs">
             <div>
@@ -3219,16 +3332,23 @@
     ];
 
     function switchCathovenTab(tabName) {
-      ['grader', 'adaptor', 'profiler'].forEach(t => {
-        document.getElementById(`cpanel-${t}`).classList.add('hidden');
+      ['grader', 'speaking', 'adaptor', 'profiler'].forEach(t => {
+        const el = document.getElementById(`cpanel-${t}`);
+        if (el) el.classList.add('hidden');
         const btn = document.getElementById(`ctab-btn-${t}`);
-        if (t === tabName) {
-          btn.className = 'ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border text-center';
-        } else {
-          btn.className = 'ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center';
+        if (btn) {
+          if (t === tabName) {
+            btn.className = 'ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border text-center';
+          } else {
+            btn.className = 'ctab-pill py-2.5 px-2 rounded-xl font-duo font-extrabold text-xs sm:text-sm transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center';
+          }
         }
       });
-      document.getElementById(`cpanel-${tabName}`).classList.remove('hidden');
+      const targetPanel = document.getElementById(`cpanel-${tabName}`);
+      if (targetPanel) targetPanel.classList.remove('hidden');
+      if (tabName === 'speaking') {
+        renderSpeakingPrompt();
+      }
     }
 
     function initCathovenStudio() {
@@ -3238,6 +3358,7 @@
         <option value="${p.id}">${p.title}</option>
       `).join('');
       onTopicSelectChange();
+      renderSpeakingPrompt();
     }
 
     function onTopicSelectChange() {
@@ -3352,11 +3473,11 @@
       let highlightedText = text;
       WEAK_WORDS.forEach(w => {
         const regex = new RegExp(`\\b${w}\\b`, 'gi');
-        highlightedText = highlightedText.replace(regex, `<span class="bg-amber-100 text-amber-900 border-b-2 border-amber-400 px-1 rounded font-semibold" title="Palabra básica / Sugerencia C1">// App Startup</span>`);
+        highlightedText = highlightedText.replace(regex, (m) => `<span class="bg-amber-100 text-amber-900 border-b-2 border-amber-400 px-1 rounded font-semibold" title="Palabra básica / Sugerencia C1">${m}</span>`);
       });
       C1_LEXICON.forEach(w => {
         const regex = new RegExp(`\\b${w}\\b`, 'gi');
-        highlightedText = highlightedText.replace(regex, `<span class="bg-emerald-100 text-emerald-800 font-bold px-1 rounded" title="Vocabulario C1/C2 de Alto Impacto">// App Startup</span>`);
+        highlightedText = highlightedText.replace(regex, (m) => `<span class="bg-emerald-100 text-emerald-800 font-bold px-1 rounded" title="Vocabulario C1/C2 de Alto Impacto">${m}</span>`);
       });
 
       // Render Diagnostic Report Card
@@ -3595,7 +3716,527 @@
     }
 
 
-    // App Startup
+    /**
+     * ============================================================================
+     * IELTS SPEAKING EXAMINER ENGINE (CATH OVEN EQUIVALENT)
+     * Parts 1, 2, 3 Simulator + 2-min Timer + WPM & Fillers Tracker + 4 Criteria
+     * ============================================================================
+     */
+    const SPEAKING_TOPICS = {
+      part1: {
+        title: "Part 1: Studies, Career & Technological Routines",
+        desc: "El examinador oficial te formulará preguntas de presentación e introducción personal. Responde entre 20 y 30 segundos por pregunta con naturalidad.",
+        questions: [
+          "1. What field of study or professional career are you currently pursuing, and what initially motivated you to choose it?",
+          "2. In what ways has digital automation or AI reshaped your daily routine at work or university?",
+          "3. Do you find that you produce higher quality work in independent isolation or through collaborative teamwork? Why?"
+        ]
+      },
+      part2: {
+        title: "Part 2: Candidate Task Card (Cue Card - 2 Minutes)",
+        desc: "Dispones de exactamente 1 minuto de preparación para tomar notas mentales o escritas. A continuación, debes hablar de manera ininterrumpida durante 2 minutos.",
+        cueCard: {
+          topic: "Describe an influential mentor, teacher, or professional leader who significantly impacted your career or personal development.",
+          points: [
+            "Who this person was and how you initially came to know them",
+            "What core values, methodology, or perspectives they imparted to you",
+            "What specific intellectual, academic, or professional obstacle they helped you overcome",
+            "And explain why their mentorship has had such an enduring impact on your life trajectory."
+          ]
+        }
+      },
+      part3: {
+        title: "Part 3: Two-way Abstract Discussion (Analytical Debate)",
+        desc: "Preguntas de debate a profundidad sobre tendencias sociales, educación, ética y transformación tecnológica en el siglo XXI.",
+        questions: [
+          "1. To what extent has the rapid proliferation of remote communication altered the traditional dynamic of human mentorship?",
+          "2. Do contemporary academic systems place excessive emphasis on hyper-specialized technical skills at the expense of ethical critical thinking?",
+          "3. How might artificial intelligence redefine the responsibilities of intellectual leadership in the coming decades?"
+        ]
+      }
+    };
+
+    const SPEAKING_SAMPLES = {
+      band60: {
+        part: 2,
+        duration: 95,
+        transcript: "Well, I want to talk about my university professor, Mr. Gomez. I met him when I was in my second year of university. Um, he was very good teacher and he helped me a lot with my accounting thesis. You know, at that time I was very stressed because the numbers were difficult and I didn't understand how to do the statistical analysis. Like, he explained everything very slow and gave me extra books. Basically, because of his help, I passed the final exam with good grade. He was important for me because he told me to continue studying English and never give up on my dreams.",
+        fillersCount: 6,
+        wpm: 104
+      },
+      band85: {
+        part: 2,
+        duration: 118,
+        transcript: "I would like to speak about Dr. Elena Rostova, who served as my thesis supervisor and analytical mentor during my postgraduate research. I initially crossed paths with her when I attended an international symposium on computational linguistics, where her keynote lecture profoundly restructured my perspective on language modeling. What impressed me most was her unwavering insistence on empirical rigor paired with humanistic empathy. During an exceptionally turbulent phase of my research—when our preliminary datasets repeatedly failed to corroborate our working hypothesis—she dissuaded me from intellectual defeatism. Rather than offering superficial solutions, she guided me to scrutinize our methodological presuppositions, which ultimately enabled us to uncover a significant discrepancy in the algorithm. Consequently, her influence was not merely pedagogical; it fundamentally reshaped my analytical resilience and professional integrity.",
+        fillersCount: 0,
+        wpm: 138
+      }
+    };
+
+    let currentSpeakingPart = 2;
+    let spkPrepSeconds = 60;
+    let spkPrepTimerId = null;
+    let spkSpeechSeconds = 120;
+    let spkSpeechTimerId = null;
+    let isSpkRecording = false;
+    let spkRecognition = null;
+    let spkRecordedDuration = 0;
+    let spkRecordingStartTime = null;
+
+    function selectSpeakingPart(partNum) {
+      currentSpeakingPart = partNum;
+      [1, 2, 3].forEach(p => {
+        const btn = document.getElementById(`spk-part-btn-${p}`);
+        if (btn) {
+          if (p === partNum) {
+            btn.className = "py-2 px-3 rounded-xl font-duo font-extrabold text-xs transition-all cursor-pointer bg-white text-duo-ink shadow-xs border border-duo-border text-center";
+          } else {
+            btn.className = "py-2 px-3 rounded-xl font-duo font-extrabold text-xs transition-all cursor-pointer text-duo-muted hover:text-duo-ink text-center";
+          }
+        }
+      });
+
+      const prepContainer = document.getElementById('spkPrepTimerContainer');
+      const startPrepBtn = document.getElementById('spkStartPrepBtn');
+
+      if (prepContainer && startPrepBtn) {
+        if (partNum === 2) {
+          prepContainer.classList.remove('hidden');
+          startPrepBtn.classList.remove('hidden');
+        } else {
+          prepContainer.classList.add('hidden');
+          startPrepBtn.classList.add('hidden');
+        }
+      }
+
+      renderSpeakingPrompt();
+    }
+
+    function renderSpeakingPrompt() {
+      const card = document.getElementById('speakingPromptCard');
+      if (!card) return;
+
+      if (currentSpeakingPart === 1) {
+        const data = SPEAKING_TOPICS.part1;
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-amber-200 text-amber-900 font-duo font-black text-xs uppercase tracking-wider">Part 1</span>
+              <h4 class="font-duo font-black text-base text-duo-ink">${data.title}</h4>
+            </div>
+            <p class="text-xs text-duo-muted font-medium">${data.desc}</p>
+            <div class="space-y-2 pt-1">
+              ${data.questions.map(q => `
+                <div class="p-3 rounded-xl bg-white border border-amber-200/90 shadow-2xs text-xs font-semibold text-duo-ink flex items-start gap-2">
+                  <span class="text-amber-600 font-bold">🗣️</span>
+                  <span>${q}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (currentSpeakingPart === 2) {
+        const data = SPEAKING_TOPICS.part2;
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-white font-duo font-black text-xs uppercase tracking-wider shadow-2xs">Part 2</span>
+              <h4 class="font-duo font-black text-base text-duo-ink">${data.title}</h4>
+            </div>
+            <p class="text-xs text-duo-muted font-medium">${data.desc}</p>
+            <div class="p-4 rounded-xl bg-white border-2 border-amber-300 shadow-xs space-y-3">
+              <div class="border-b border-slate-100 pb-2">
+                <span class="text-[10px] font-duo font-black uppercase tracking-wider text-amber-700 block">Candidate Task Card</span>
+                <p class="font-duo font-black text-sm text-duo-ink mt-0.5">${data.cueCard.topic}</p>
+              </div>
+              <div>
+                <span class="text-[11px] font-bold text-slate-500 block mb-1">You should say:</span>
+                <ul class="text-xs space-y-1.5 text-duo-ink pl-4 list-disc font-medium">
+                  ${data.cueCard.points.map(pt => `<li>${pt}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (currentSpeakingPart === 3) {
+        const data = SPEAKING_TOPICS.part3;
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-purple-600 text-white font-duo font-black text-xs uppercase tracking-wider shadow-2xs">Part 3</span>
+              <h4 class="font-duo font-black text-base text-duo-ink">${data.title}</h4>
+            </div>
+            <p class="text-xs text-duo-muted font-medium">${data.desc}</p>
+            <div class="space-y-2 pt-1">
+              ${data.questions.map(q => `
+                <div class="p-3 rounded-xl bg-white border border-purple-200/90 shadow-2xs text-xs font-semibold text-duo-ink flex items-start gap-2">
+                  <span class="text-purple-600 font-bold">💡</span>
+                  <span>${q}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function toggleSpkPrepTimer() {
+      const btn = document.getElementById('spkStartPrepBtn');
+      const timerDisplay = document.getElementById('spkPrepTimerText');
+      if (!timerDisplay) return;
+
+      if (spkPrepTimerId) {
+        clearInterval(spkPrepTimerId);
+        spkPrepTimerId = null;
+        if (btn) btn.innerHTML = '⏱️ Continuar Preparación';
+      } else {
+        if (spkPrepSeconds <= 0) spkPrepSeconds = 60;
+        if (btn) btn.innerHTML = '⏸️ Pausar Preparación';
+        spkPrepTimerId = setInterval(() => {
+          spkPrepSeconds--;
+          const m = String(Math.floor(spkPrepSeconds / 60)).padStart(2, '0');
+          const s = String(spkPrepSeconds % 60).padStart(2, '0');
+          timerDisplay.innerText = `${m}:${s}`;
+          if (spkPrepSeconds <= 0) {
+            clearInterval(spkPrepTimerId);
+            spkPrepTimerId = null;
+            if (btn) btn.innerHTML = '✅ Tiempo de Preparación Concluido';
+            timerDisplay.innerText = '00:00';
+            playSound('correct');
+          }
+        }, 1000);
+      }
+    }
+
+    function toggleSpkRecording() {
+      if (!isSpkRecording) {
+        startSpkRecording();
+      } else {
+        stopSpkRecording();
+      }
+    }
+
+    function startSpkRecording() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const statusEl = document.getElementById('spkMicStatus');
+      const btnText = document.getElementById('spkRecordBtnText');
+      const recordBtn = document.getElementById('spkRecordBtn');
+      const timerDisplay = document.getElementById('spkSpeechTimerText');
+
+      isSpkRecording = true;
+      spkRecordedDuration = 0;
+      spkRecordingStartTime = Date.now();
+      spkSpeechSeconds = (currentSpeakingPart === 2) ? 120 : 60;
+
+      if (btnText) btnText.innerText = '⏹️ Detener Grabación Oficial';
+      if (recordBtn) recordBtn.className = 'btn-3d px-6 py-3 rounded-2xl bg-amber-600 border-amber-800 text-white font-duo font-black text-sm uppercase tracking-wider cursor-pointer flex items-center gap-2';
+
+      // Reset timers
+      if (spkSpeechTimerId) clearInterval(spkSpeechTimerId);
+      spkSpeechTimerId = setInterval(() => {
+        spkSpeechSeconds--;
+        spkRecordedDuration++;
+        const m = String(Math.floor(Math.max(0, spkSpeechSeconds) / 60)).padStart(2, '0');
+        const s = String(Math.max(0, spkSpeechSeconds) % 60).padStart(2, '0');
+        if (timerDisplay) timerDisplay.innerText = `${m}:${s}`;
+        updateLiveSpkStats();
+        if (spkSpeechSeconds <= 0) {
+          stopSpkRecording();
+          playSound('correct');
+        }
+      }, 1000);
+
+      // Web Speech API Initialization
+      if (SpeechRecognition) {
+        try {
+          spkRecognition = new SpeechRecognition();
+          spkRecognition.continuous = true;
+          spkRecognition.interimResults = true;
+          spkRecognition.lang = 'en-US';
+
+          spkRecognition.onstart = () => {
+            if (statusEl) statusEl.innerHTML = '<span class="text-emerald-700 animate-pulse font-bold">🔴 Grabando audio en tiempo real... Habla con claridad al micrófono.</span>';
+          };
+
+          spkRecognition.onresult = (event) => {
+            let fullText = "";
+            for (let i = 0; i < event.results.length; ++i) {
+              fullText += event.results[i][0].transcript + " ";
+            }
+            const textarea = document.getElementById('spkTranscriptInput');
+            if (textarea && fullText.trim()) {
+              textarea.value = fullText.trim();
+              updateLiveSpkStats();
+            }
+          };
+
+          spkRecognition.onerror = (event) => {
+            console.warn('SpeechRecognition error:', event.error);
+            if (statusEl) statusEl.innerHTML = `<span class="text-amber-700 font-semibold">⚠️ Micrófono: (${event.error}). Puedes transcribir o pegar tu respuesta abajo.</span>`;
+          };
+
+          spkRecognition.onend = () => {
+            if (isSpkRecording) {
+              try { spkRecognition.start(); } catch (e) {}
+            }
+          };
+
+          spkRecognition.start();
+        } catch (e) {
+          console.warn('Recognition start exception:', e);
+          if (statusEl) statusEl.innerHTML = '<span class="text-amber-700 font-semibold">⚠️ Reconocimiento por voz simulado: escribe o pega tu respuesta abajo.</span>';
+        }
+      } else {
+        if (statusEl) statusEl.innerHTML = '<span class="text-amber-700 font-semibold">ℹ️ Navegador sin SpeechRecognition nativo. Escribe o pega tu respuesta oral abajo para evaluar.</span>';
+      }
+    }
+
+    function stopSpkRecording() {
+      isSpkRecording = false;
+      if (spkSpeechTimerId) {
+        clearInterval(spkSpeechTimerId);
+        spkSpeechTimerId = null;
+      }
+
+      if (spkRecognition) {
+        try { spkRecognition.stop(); } catch (e) {}
+        spkRecognition = null;
+      }
+
+      const btnText = document.getElementById('spkRecordBtnText');
+      const recordBtn = document.getElementById('spkRecordBtn');
+      const statusEl = document.getElementById('spkMicStatus');
+
+      if (btnText) btnText.innerText = 'Iniciar Grabación de Audio';
+      if (recordBtn) recordBtn.className = 'btn-3d px-6 py-3 rounded-2xl bg-duo-red border-red-700 text-white font-duo font-black text-sm uppercase tracking-wider cursor-pointer flex items-center gap-2';
+      if (statusEl) statusEl.innerHTML = '<span class="text-duo-ink font-bold">✅ Grabación concluida. Pulsa "Evaluar con Criterios Cambridge IELTS" para ver tu informe.</span>';
+
+      updateLiveSpkStats();
+    }
+
+    function updateLiveSpkStats() {
+      const textarea = document.getElementById('spkTranscriptInput');
+      const statsEl = document.getElementById('spkLiveStats');
+      if (!textarea || !statsEl) return;
+
+      const text = textarea.value.trim();
+      const words = text ? text.split(/\s+/).filter(w => w.length > 0).length : 0;
+      const duration = Math.max(1, spkRecordedDuration);
+      const wpm = words > 0 ? Math.round((words / duration) * 60) : 0;
+
+      const fillerRegex = /\b(um|uh|erm|er|like|you know|sort of|kind of|basically|actually)\b/gi;
+      const fillerMatches = (text.match(fillerRegex) || []).length;
+
+      statsEl.innerText = `${words} palabras | ${wpm} WPM | ${fillerMatches} muletillas`;
+    }
+
+    function clearSpeakingTranscript() {
+      const textarea = document.getElementById('spkTranscriptInput');
+      if (textarea) textarea.value = '';
+      spkRecordedDuration = 0;
+      updateLiveSpkStats();
+      const report = document.getElementById('speakingReportCard');
+      if (report) {
+        report.classList.add('hidden');
+        report.innerHTML = '';
+      }
+    }
+
+    function loadSampleSpeaking(sampleKey) {
+      const sample = SPEAKING_SAMPLES[sampleKey];
+      if (!sample) return;
+
+      selectSpeakingPart(sample.part);
+      const textarea = document.getElementById('spkTranscriptInput');
+      if (textarea) {
+        textarea.value = sample.transcript;
+      }
+      spkRecordedDuration = sample.duration;
+      updateLiveSpkStats();
+      evaluateSpeakingSubmission();
+    }
+
+    function evaluateSpeakingSubmission() {
+      const textarea = document.getElementById('spkTranscriptInput');
+      const text = textarea ? textarea.value.trim() : "";
+      const reportCard = document.getElementById('speakingReportCard');
+      if (!reportCard) return;
+
+      if (!text || text.split(/\s+/).length < 15) {
+        alert('Por favor pronuncia o ingresa al menos 15 palabras para que el examinador de Cambridge pueda evaluar fluidez, léxico y sintaxis.');
+        return;
+      }
+
+      const words = text.split(/\s+/).filter(w => w.length > 0);
+      const wordCount = words.length;
+      const duration = Math.max(25, spkRecordedDuration || Math.round(wordCount / 2.1));
+      const wpm = Math.round((wordCount / duration) * 60);
+
+      // Detect fillers
+      const fillerRegex = /\b(um|uh|erm|er|like|you know|sort of|kind of|basically|actually)\b/gi;
+      const fillerMatches = (text.match(fillerRegex) || []).length;
+      const fillerDensity = fillerMatches / Math.max(1, wordCount);
+
+      // Detect C1 Academic Lexicon & Collocations
+      const c1AcademicList = [
+        'supervisor', 'analytical', 'mentor', 'postgraduate', 'symposium', 'computational',
+        'linguistics', 'profoundly', 'restructured', 'perspective', 'unwavering', 'empirical',
+        'rigor', 'humanistic', 'empathy', 'turbulent', 'preliminary', 'datasets', 'repeatedly',
+        'corroborate', 'hypothesis', 'dissuaded', 'intellectual', 'defeatism', 'superficial',
+        'scrutinize', 'methodological', 'presuppositions', 'discrepancy', 'algorithm',
+        'consequently', 'pedagogical', 'resilience', 'integrity', 'furthermore', 'articulate',
+        'paramount', 'comprehensive', 'proliferation', 'contemporary', 'hyper-specialized'
+      ];
+      let c1Count = 0;
+      c1AcademicList.forEach(w => {
+        const r = new RegExp(`\\b${w}\\b`, 'gi');
+        if (r.test(text)) c1Count++;
+      });
+
+      // Detect Complex Syntax
+      const hasComplexClauses = /(when\s+|what\s+impressed|rather\s+than|which\s+ultimately|consequently|to\s+what\s+extent|in\s+what\s+ways)/i.test(text);
+      const hasConditionals = /(if\s+|would\s+like\s+to|provided\s+that|unless)/i.test(text);
+
+      // 1. Fluency & Coherence (FC)
+      let fcScore = 6.0;
+      if (wpm >= 120 && wpm <= 155 && fillerDensity <= 0.02) {
+        fcScore = 8.5;
+      } else if (wpm >= 110 && fillerDensity <= 0.04) {
+        fcScore = 7.5;
+      } else if (wpm >= 90 && fillerDensity <= 0.06) {
+        fcScore = 6.5;
+      } else {
+        fcScore = 5.5;
+      }
+
+      // 2. Lexical Resource (LR)
+      let lrScore = 6.0;
+      if (c1Count >= 6) {
+        lrScore = 8.5;
+      } else if (c1Count >= 3) {
+        lrScore = 7.5;
+      } else if (c1Count >= 1) {
+        lrScore = 6.5;
+      } else {
+        lrScore = 5.5;
+      }
+
+      // 3. Grammatical Range & Accuracy (GRA)
+      let graScore = 6.0;
+      if (hasComplexClauses && hasConditionals && wordCount >= 80) {
+        graScore = 8.5;
+      } else if (hasComplexClauses || hasConditionals) {
+        graScore = 7.0;
+      } else {
+        graScore = 6.0;
+      }
+
+      // 4. Pronunciation & Articulation (P)
+      let pScore = 6.0;
+      if (fillerMatches === 0 && wpm >= 125) {
+        pScore = 8.5;
+      } else if (fillerMatches <= 2) {
+        pScore = 7.5;
+      } else if (fillerMatches <= 5) {
+        pScore = 6.5;
+      } else {
+        pScore = 5.5;
+      }
+
+      const meanScore = (fcScore + lrScore + graScore + pScore) / 4;
+      const overallBand = (Math.round(meanScore * 2) / 2).toFixed(1);
+
+      reportCard.classList.remove('hidden');
+      reportCard.innerHTML = `
+        <div class="rounded-3xl border-2 border-amber-300 p-5 sm:p-6 bg-white space-y-5 shadow-sm">
+          
+          <!-- Banner -->
+          <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-100 pb-4">
+            <div>
+              <span class="text-xs font-duo font-black uppercase tracking-wider text-amber-700">Official Cambridge Assessment Matrix</span>
+              <h3 class="font-duo font-black text-2xl text-duo-ink">IELTS Speaking Score Card</h3>
+              <p class="text-xs text-duo-muted mt-0.5">${wordCount} palabras pronunciadas en ${duration} seg (~${wpm} WPM)</p>
+            </div>
+            <div class="rounded-2xl p-4 text-center min-w-[120px] shadow-sm" style="background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: white;">
+              <span class="text-[10px] font-duo font-black uppercase tracking-wider block opacity-90">Speaking Band</span>
+              <strong class="font-duo font-black text-4xl block leading-none mt-1">${overallBand}</strong>
+              <span class="text-[10px] font-bold block mt-1 opacity-90">${getCefrEquivalence(overallBand)}</span>
+            </div>
+          </div>
+
+          <!-- 4 Criteria Breakdown -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="p-3.5 rounded-2xl border-2 border-amber-100 bg-amber-50/60 space-y-1">
+              <span class="text-[10px] font-duo font-black text-amber-800 uppercase block">Fluency & Coherence</span>
+              <strong class="font-duo font-black text-xl text-duo-ink">${fcScore.toFixed(1)}</strong>
+              <p class="text-[11px] text-duo-muted">${wpm >= 115 ? 'Cadencia fluida' : 'Ritmo vacilante'}</p>
+            </div>
+            <div class="p-3.5 rounded-2xl border-2 border-emerald-100 bg-emerald-50/60 space-y-1">
+              <span class="text-[10px] font-duo font-black text-emerald-800 uppercase block">Lexical Resource</span>
+              <strong class="font-duo font-black text-xl text-duo-ink">${lrScore.toFixed(1)}</strong>
+              <p class="text-[11px] text-duo-muted">${c1Count} colocaciones C1</p>
+            </div>
+            <div class="p-3.5 rounded-2xl border-2 border-sky-100 bg-sky-50/60 space-y-1">
+              <span class="text-[10px] font-duo font-black text-duo-blue uppercase block">Grammar Range</span>
+              <strong class="font-duo font-black text-xl text-duo-ink">${graScore.toFixed(1)}</strong>
+              <p class="text-[11px] text-duo-muted">${hasComplexClauses ? 'Sintaxis compleja' : 'Oraciones simples'}</p>
+            </div>
+            <div class="p-3.5 rounded-2xl border-2 border-purple-100 bg-purple-50/60 space-y-1">
+              <span class="text-[10px] font-duo font-black text-purple-700 uppercase block">Pronunciation</span>
+              <strong class="font-duo font-black text-xl text-duo-ink">${pScore.toFixed(1)}</strong>
+              <p class="text-[11px] text-duo-muted">${fillerMatches <= 2 ? 'Articulación limpia' : 'Pausas frecuentes'}</p>
+            </div>
+          </div>
+
+          <!-- Fluency & Fillers Analysis Bar -->
+          <div class="p-4 rounded-2xl bg-slate-50 border border-duo-border space-y-2">
+            <div class="flex justify-between items-center text-xs font-bold text-duo-ink">
+              <span>Velocidad de Habla: ${wpm} WPM (${wpm >= 120 && wpm <= 150 ? 'Óptima para Band 7.5 - 8.5' : wpm < 100 ? 'Por debajo del ritmo nativo' : 'Ligeramente acelerado'})</span>
+              <span class="text-amber-800">${fillerMatches} muletillas ("um", "like", "you know")</span>
+            </div>
+            <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+              <div class="bg-amber-500 h-full transition-all" style="width: ${Math.min(100, (wpm / 150) * 100)}%"></div>
+            </div>
+          </div>
+
+          <!-- Examiner Qualitative Feedback -->
+          <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-300/80 space-y-2 text-xs text-amber-950">
+            <h4 class="font-duo font-black uppercase tracking-wider">🎯 Diagnóstico del Examinador Oficial:</h4>
+            <ul class="space-y-1.5 list-disc pl-4 leading-relaxed">
+              ${parseFloat(overallBand) >= 7.5 ? `
+                <li><strong>Fluidez sobresaliente:</strong> Excelente continuidad rítmica sin vacilaciones sintácticas. Incorporaste oraciones subordinadas complejas ("when I attended...", "what impressed me most was...").</li>
+                <li><strong>Consejo para Banda 9.0:</strong> Continúa utilizando marcadores discursivos naturales ("From my perspective...", "Consequently...") para articular contrastes sin esfuerzo aparente.</li>
+              ` : `
+                <li><strong>Reducción de muletillas:</strong> Detectamos ${fillerMatches} pausas ("um", "you know"). En lugar de cortar la frase, utiliza marcadores de pausa reflexiva: <em>"That is an intriguing dimension...", "If we examine the underlying factor..."</em>.</li>
+                <li><strong>Ampliación léxica oral:</strong> Sustituye "he was very good teacher and helped me a lot" por estructuras con colocaciones formales: <em>"he proved to be an invaluable mentor who guided me through complex statistical hurdles"</em>.</li>
+              `}
+            </ul>
+          </div>
+
+          <!-- Shadowing & Model Audio Comparison -->
+          <div class="p-4 rounded-2xl border-2 border-emerald-200 bg-emerald-50/60 flex items-center justify-between flex-wrap gap-3">
+            <div class="space-y-0.5">
+              <span class="font-duo font-black text-xs text-emerald-900 uppercase tracking-wider block">Shadowing Oral & Modelo Band 8.5</span>
+              <p class="text-xs text-emerald-800">Escucha la respuesta modelo de este tema pronunciada con cadencia y entonación nativa.</p>
+            </div>
+            <button onclick="playSpeakingModelAnswer()" class="btn-3d px-4 py-2.5 rounded-xl bg-duo-green border-duo-greenDark text-white font-duo font-black text-xs uppercase tracking-wider cursor-pointer shadow-sm">
+              🔊 Escuchar Modelo Band 8.5
+            </button>
+          </div>
+        </div>
+      `;
+
+      reportCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function playSpeakingModelAnswer() {
+      if (SPEAKING_SAMPLES && SPEAKING_SAMPLES.band85 && SPEAKING_SAMPLES.band85.transcript) {
+        speakText(SPEAKING_SAMPLES.band85.transcript, 1.0);
+      }
+    }
+
+
+        // App Startup
     document.addEventListener('DOMContentLoaded', () => {
       buildFullExerciseBank();
       populateVaultUnits();
